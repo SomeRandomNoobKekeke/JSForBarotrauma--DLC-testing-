@@ -22,14 +22,18 @@ namespace JSForBarotrauma
 
     public void Reload()
     {
-      Mod.Engine.Stop();
-
       GameMain.LuaCs.Timer.Wait((args) =>
       {
-        Mod.Engine.Start();
-        Mod.ScriptLoader.LoadScripts();
-      }, 1000);
+        Mod.Engine.Stop();
 
+        GameMain.LuaCs.Timer.Wait((args) =>
+        {
+          Mod.Engine.Start();
+          Mod.ScriptLoader.LoadScripts();
+        }, 100);
+
+        // DebugConsole.ExecuteCommand("cl_reloadlua");
+      }, 100);
     }
   }
 

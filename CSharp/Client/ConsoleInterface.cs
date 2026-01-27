@@ -46,7 +46,6 @@ namespace JSForBarotrauma
     public void AddCommands()
     {
       AddedCommands.Add(new DebugConsole.Command("js", "", JS_Command));
-      AddedCommands.Add(new DebugConsole.Command("js_reload", "", JSReloadCommand));
 
       DebugConsole.Commands.InsertRange(0, AddedCommands);
     }
@@ -56,13 +55,6 @@ namespace JSForBarotrauma
       AddedCommands.ForEach(c => DebugConsole.Commands.Remove(c));
       AddedCommands.Clear();
     }
-
-    public void JSReloadCommand(object[] args)
-    {
-      Mod.JS.Reload();
-      Mod.Logger.Log($"JS reloaded");
-    }
-
     public void JS_Command(object[] args)
     {
       if (args.Length == 0) return;

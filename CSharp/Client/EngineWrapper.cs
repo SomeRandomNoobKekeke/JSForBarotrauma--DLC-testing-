@@ -72,15 +72,6 @@ namespace JSForBarotrauma
       Engine = null;
 
     }
-    public void Restart()
-    {
-      Stop();
-
-      GameMain.LuaCs.Timer.Wait((args) =>
-      {
-        Start();
-      }, 1000);
-    }
 
     public void PrintProps()
     {
