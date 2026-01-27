@@ -9,6 +9,10 @@ require("./kek.js")
 //   originalConsoleLog(...args)
 // };
 
+bruh = 123
+
+
+console.log("lolol123ol")
 Logger.Log("lololol")
 
 

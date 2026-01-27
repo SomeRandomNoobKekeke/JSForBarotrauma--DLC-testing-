@@ -1,6 +1,8 @@
 
 using System;
 using System.Reflection;
+using System.Linq;
+using System.Collections.Generic;
 using Barotrauma;
 using HarmonyLib;
 using Microsoft.Xna.Framework;
@@ -23,8 +25,9 @@ namespace JSForBarotrauma
     public static ConsoleInterface ConsoleInterface => Instance?._consoleInterface;
     public static EngineWrapper Engine => Instance?._engine;
     public static ScriptLoader ScriptLoader => Instance?._scriptLoader;
+    public static JS JS => Instance?._js;
 
-
+    private JS _js;
     private ScriptLoader _scriptLoader;
     private ConsoleInterface _consoleInterface;
     private EngineWrapper _engine;
@@ -33,16 +36,18 @@ namespace JSForBarotrauma
     {
       Instance = this;
 
+      _js = new JS();
       _engine = new();
       _consoleInterface = new(_engine);
       _scriptLoader = new ScriptLoader(_engine);
 
       Engine.Start();
 
+
       PatchAll();
 
       ConsoleInterface.AddCommands();
-      ScriptLoader.LoadScriptsFromMod(ModInfo.ModDir<Mod>());
+      ScriptLoader.LoadScripts();
     }
 
 

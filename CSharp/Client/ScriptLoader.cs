@@ -14,6 +14,7 @@ using Microsoft.ClearScript;
 using Microsoft.ClearScript.JavaScript;
 using Microsoft.ClearScript.V8;
 using System.IO;
+using BaroJunk;
 
 namespace JSForBarotrauma
 {
@@ -53,6 +54,11 @@ namespace JSForBarotrauma
       {
         LoadModuleFromPath(file);
       }
+    }
+
+    public void LoadScripts()
+    {
+      LoadScriptsFromMod(ModInfo.ModDir<Mod>());
     }
 
 
