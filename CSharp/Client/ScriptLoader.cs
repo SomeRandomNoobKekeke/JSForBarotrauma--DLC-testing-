@@ -39,6 +39,7 @@ namespace JSForBarotrauma
       }
       catch (ScriptEngineException e)
       {
+        Mod.Logger.Error($"JS | >> {path}");
         Mod.Logger.Error(e.ErrorDetails);
 
         EngineWrapper.Engine.Script.console.error($">> {path}");
@@ -48,6 +49,9 @@ namespace JSForBarotrauma
         return null;
       }
     }
+
+    public void LoadScriptsFromMod(ContentPackage package)
+      => LoadScriptsFromMod(package.Dir);
 
     public void LoadScriptsFromMod(string path)
     {
@@ -64,6 +68,21 @@ namespace JSForBarotrauma
     public void LoadScripts()
     {
       LoadScriptsFromMod(ModInfo.ModDir<Mod>());
+
+      foreach (ContentPackage package in ContentPackageManager.EnabledPackages.All)
+      {
+        if (package.Name == Mod.PackageName) continue;
+        if (!ModUsesJS(package)) continue;
+
+        LoadScriptsFromMod(package);
+      }
+    }
+
+    public bool ModUsesJS(ContentPackage package)
+    {
+      return Directory.Exists(
+        Path.Combine(package.Dir, AutorunPath)
+      );
     }
 
 

@@ -19,6 +19,8 @@ namespace JSForBarotrauma
   public partial class Mod : IAssemblyPlugin
   {
     public static Mod Instance { get; private set; }
+    //BRUH mb use actual package?
+    public static string PackageName;
     public static Logger Logger { get; } = new();
     public Harmony Harmony { get; } = new Harmony("JSForBarotrauma");
 
@@ -32,9 +34,12 @@ namespace JSForBarotrauma
     private ConsoleInterface _consoleInterface;
     private EngineWrapper _engine;
 
+
+
     public void Initialize()
     {
       Instance = this;
+      PackageName = ModInfo.ModName<Mod>();
 
       _js = new JS();
       _engine = new();
