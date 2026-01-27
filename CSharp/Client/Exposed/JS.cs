@@ -30,6 +30,7 @@ namespace JSForBarotrauma
         {
           Mod.Engine.Start();
           Mod.ScriptLoader.LoadScripts();
+          Mod.Logger.Log($"JS reloaded");
         }, 100);
 
         // DebugConsole.ExecuteCommand("cl_reloadlua");

@@ -47,21 +47,9 @@ namespace JSForBarotrauma
 
     public void Load()
     {
-      AddHostObjects();
+      HostObjects.Add(Engine);
     }
 
-
-    public void AddHostObjects()
-    {
-      Engine.AddHostObject("JS", Mod.JS);
-      Engine.AddHostObject("Logger", Mod.Logger);
-      Engine.AddHostType("Mod", typeof(Mod));
-      Engine.AddHostObject("Engine", Engine);
-
-      Engine.AddHostObject("lib", HostItemFlags.PrivateAccess, new HostTypeCollection("mscorlib", "System", "System.Core", "Barotrauma"));
-
-
-    }
 
     public void Stop()
     {
@@ -70,7 +58,6 @@ namespace JSForBarotrauma
       //Engine.Interrupt();
       Engine.Dispose();
       Engine = null;
-
     }
 
     public void PrintProps()
