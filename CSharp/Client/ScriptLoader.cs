@@ -28,6 +28,7 @@ namespace JSForBarotrauma
 
     public void SetRootPath(string path) => EngineWrapper.SearchPath = path;
 
+
     public object LoadModuleFromPath(string path)
     {
       try
@@ -67,6 +68,7 @@ namespace JSForBarotrauma
 
     public void LoadScripts()
     {
+      Mod.JS.ModPackage = ModInfo.ModPackage<Mod>();
       LoadScriptsFromMod(ModInfo.ModDir<Mod>());
 
       foreach (ContentPackage package in ContentPackageManager.EnabledPackages.All)
@@ -74,8 +76,10 @@ namespace JSForBarotrauma
         if (package.Name == Mod.PackageName) continue;
         if (!ModUsesJS(package)) continue;
 
+        Mod.JS.ModPackage = package; // HACK
         LoadScriptsFromMod(package);
       }
+      Mod.JS.ModPackage = null;
     }
 
     public bool ModUsesJS(ContentPackage package)

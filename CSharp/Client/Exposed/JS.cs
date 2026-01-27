@@ -20,6 +20,12 @@ namespace JSForBarotrauma
   {
     public V8ScriptEngine Engine => Mod.Engine.Engine;
 
+    /// <summary>
+    /// HACK this prop is set by ScriptLoader before loading the scripts and cleared after
+    /// if you want to keep, copy its value somewhere else
+    /// </summary>
+    public ContentPackage ModPackage { get; set; }
+
 
     //TODO remove engine callbacks after stop
     public event Action StopEvent;

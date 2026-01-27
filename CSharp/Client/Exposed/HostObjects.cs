@@ -26,6 +26,7 @@ namespace JSForBarotrauma
 
       Engine.AddHostObject("JS", Mod.JS);
       Engine.AddHostObject("Logger", Mod.Logger);
+      Engine.AddHostType("Console", typeof(UnifiedConsole));
       Engine.AddHostObject("Hook", GameMain.LuaCs.Hook);
       Engine.AddHostType("DebugConsole", HostItemFlags.PrivateAccess, typeof(DebugConsole));
 
