@@ -10,6 +10,7 @@ using Microsoft.ClearScript.V8;
 using System.Runtime.CompilerServices;
 using System.IO;
 using BaroJunk;
+using FluentResults;
 
 namespace JSForBarotrauma
 {
@@ -17,28 +18,37 @@ namespace JSForBarotrauma
   {
     public static Mod Instance { get; private set; }
     public static Logger Logger { get; } = new();
-    public Harmony Harmony { get; } = new Harmony("jsforbarotrauma");
+    public Harmony Harmony { get; } = new Harmony("JSForBarotrauma");
 
-    public static JS JS => Mod.Instance?.js;
-    private JS js;
+    public static ConsoleInterface ConsoleInterface => Instance?._consoleInterface;
+    public static EngineWrapper Engine => Instance?._engine;
+    public static ScriptLoader ScriptLoader => Instance?._scriptLoader;
 
+
+    private ScriptLoader _scriptLoader;
+    private ConsoleInterface _consoleInterface;
+    private EngineWrapper _engine;
 
     public void Initialize()
     {
       Instance = this;
-      js = new();
+
+      _engine = new();
+      _consoleInterface = new(_engine);
+      _scriptLoader = new ScriptLoader(_engine);
+
+      Engine.Start();
 
       PatchAll();
 
-      AddCommands();
-      js.Engine.ExecuteDocument(new DocumentInfo { Category = ModuleCategory.Standard }, "Autorun/lol.js");
+      ConsoleInterface.AddCommands();
+      ScriptLoader.LoadScriptsFromMod(ModInfo.ModDir<Mod>());
     }
 
 
     public void PatchAll()
     {
-      LuaGamePatch.PatchClientLuaGame(Harmony);
-      DebugConsolePatch.PatchClientDebugConsole(Harmony);
+      ConsoleInterface.AddPatches(Harmony);
     }
 
 
@@ -47,9 +57,9 @@ namespace JSForBarotrauma
 
     public void Dispose()
     {
-      RemoveCommands();
+      ConsoleInterface.RemoveCommands();
       Harmony.UnpatchSelf();
-      JS.Stop();
+      Engine.Stop();
       Instance = null;
     }
 

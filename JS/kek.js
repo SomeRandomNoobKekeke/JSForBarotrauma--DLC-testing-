@@ -1,6 +1,5 @@
 
-console.log("kek")
-BaroConsole.Log("kek")
+Logger.Log("kek")
 
 
 
