@@ -22,12 +22,6 @@ namespace JSForBarotrauma
     public V8ScriptEngine Engine { get; private set; }
     public int DebugPort { get; } = 9222;
 
-    /// <summary>
-    /// If you restart without delay attached debugger won't detachs
-    /// Can't find a proper way to detach it
-    /// </summary>
-    public int RestartDelay { get; } = 1000;
-
     public string SearchPath
     {
       get => Engine.DocumentSettings.SearchPath;
@@ -57,47 +51,41 @@ namespace JSForBarotrauma
     }
 
 
-
     public void AddHostObjects()
     {
+      Engine.AddHostObject("JS", Mod.JS);
       Engine.AddHostObject("Logger", Mod.Logger);
+      Engine.AddHostType("Mod", typeof(Mod));
       Engine.AddHostObject("Engine", Engine);
 
-      Engine.AddHostObject("lib", HostItemFlags.PrivateAccess, new HostTypeCollection("System", "Barotrauma", "mscorlib", "System.Core"));
+      Engine.AddHostObject("lib", HostItemFlags.PrivateAccess, new HostTypeCollection("mscorlib", "System", "System.Core", "Barotrauma"));
+
+
     }
 
     public void Stop()
     {
       if (Engine == null) return;
 
-      // Engine.Dispose(); Don't
+      //Engine.Interrupt();
+      Engine.Dispose();
       Engine = null;
+
     }
     public void Restart()
     {
       Stop();
-      Start();
+
+      GameMain.LuaCs.Timer.Wait((args) =>
+      {
+        Start();
+      }, 1000);
     }
 
     public void PrintProps()
     {
       Mod.Logger.Log(BaroJunk.Logger.Wrap.IEnumerable(Engine.Global.PropertyNames));
     }
-
-    // public void Reload() { Clear(); Load(); }
-
-    // This is not enough, can't find any gracefull method to clear all loaded stuff
-    // public void Clear()
-    // {
-    //   foreach (string name in Engine.Global.PropertyNames)
-    //   {
-    //     Engine.Global.DeleteProperty(name);
-    //   }
-
-    //   var moduleCache = typeof(CommonJSManager).GetField("moduleCache", AccessTools.all).GetValue(typeof(V8ScriptEngine).GetField("commonJSManager", AccessTools.all).GetValue(Engine));
-
-    //   moduleCache.GetType().GetMethod("Clear").Invoke(moduleCache, new object[] { });
-    // }
   }
 
 }

@@ -12,7 +12,7 @@ require("./kek.js")
 bruh = 123
 
 
-console.log("lolol123ol")
+console.log("gessrgse3ol")
 Logger.Log("lololol")
 
 

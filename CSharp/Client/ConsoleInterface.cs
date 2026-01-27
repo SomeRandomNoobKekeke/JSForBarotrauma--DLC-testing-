@@ -60,7 +60,7 @@ namespace JSForBarotrauma
     public void JSReloadCommand(object[] args)
     {
       Mod.JS.Reload();
-      Mod.Logger.Log($"JS restarted");
+      Mod.Logger.Log($"JS reloaded");
     }
 
     public void JS_Command(object[] args)
