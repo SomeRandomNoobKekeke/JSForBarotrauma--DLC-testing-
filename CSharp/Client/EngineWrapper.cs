@@ -22,6 +22,8 @@ namespace JSForBarotrauma
     public V8ScriptEngine Engine { get; private set; }
     public int DebugPort { get; } = 9222;
 
+    public bool IsRunning => Engine != null;
+
     public string SearchPath
     {
       get => Engine.DocumentSettings.SearchPath;
@@ -34,6 +36,7 @@ namespace JSForBarotrauma
       Engine = new V8ScriptEngine(V8ScriptEngineFlags.EnableDebugging, DebugPort)
       {
         AccessContext = typeof(GameMain),
+        AllowReflection = true,
         ExposeHostObjectStaticMembers = true,
         DisableTypeRestriction = true,
         DocumentSettings = new DocumentSettings()
@@ -48,6 +51,8 @@ namespace JSForBarotrauma
     public void Load()
     {
       HostObjects.Add(Engine);
+
+
     }
 
 

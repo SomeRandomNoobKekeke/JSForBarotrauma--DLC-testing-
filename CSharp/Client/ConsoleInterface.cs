@@ -24,7 +24,7 @@ namespace JSForBarotrauma
     public void ToggleRepl()
     {
       REPL = !REPL;
-      Mod.Logger.Log($"JS REPL mode [{Logger.WrapInColor((REPL ? "Enabled" : "Disabled"), "white")}]");
+      Mod.Logger.Log(WrapInBraces($"JS REPL mode [{Logger.WrapInColor(REPL ? " Enabled " : " Disabled ", "white")}]"));
     }
 
     public void ExecuteJSCommand(string command)
@@ -41,12 +41,17 @@ namespace JSForBarotrauma
       }
     }
 
+    public static string WrapInBraces(object msg)
+      => $"------------------------<<< {msg} >>>------------------------";
+
 
     public List<DebugConsole.Command> AddedCommands = new List<DebugConsole.Command>();
     public void AddCommands()
     {
       AddedCommands.Add(new DebugConsole.Command("js", "", JS_Command));
       AddedCommands.Add(new DebugConsole.Command("js_reload", "", JSReloadCommand));
+      AddedCommands.Add(new DebugConsole.Command("js_stop", "", JSStopCommand));
+      AddedCommands.Add(new DebugConsole.Command("js_start", "", JSStartCommand));
 
       DebugConsole.Commands.InsertRange(0, AddedCommands);
     }
@@ -57,10 +62,9 @@ namespace JSForBarotrauma
       AddedCommands.Clear();
     }
 
-    public void JSReloadCommand(object[] args)
-    {
-      Mod.JS.Reload();
-    }
+    public void JSReloadCommand(object[] args) => Mod.JS.Reload();
+    public void JSStopCommand(object[] args) => Mod.JS.Stop();
+    public void JSStartCommand(object[] args) => Mod.JS.Start();
 
     public void JS_Command(object[] args)
     {

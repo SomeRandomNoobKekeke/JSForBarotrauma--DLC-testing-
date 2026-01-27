@@ -21,15 +21,23 @@ namespace JSForBarotrauma
 
     public static void Add(V8ScriptEngine Engine)
     {
+      Engine.AddHostObject("host", new HostFunctions());
+      Engine.AddHostObject("xHost", new ExtendedHostFunctions());
+
       Engine.AddHostObject("JS", Mod.JS);
       Engine.AddHostObject("Logger", Mod.Logger);
-      Engine.AddHostType("Mod", typeof(Mod));
-      Engine.AddHostObject("Engine", Engine);
+      Engine.AddHostObject("Hook", GameMain.LuaCs.Hook);
+      Engine.AddHostType("DebugConsole", HostItemFlags.PrivateAccess, typeof(DebugConsole));
+
 
       HostTypeCollection exposedAssemblies = new HostTypeCollection("mscorlib", "System", "System.Core", "Barotrauma");
       exposedAssemblies.AddAssembly(typeof(Mod).Assembly);
+      exposedAssemblies.AddAssembly(typeof(Harmony).Assembly);
+      exposedAssemblies.AddAssembly(typeof(Vector2).Assembly);
 
       Engine.AddHostObject("lib", HostItemFlags.PrivateAccess, exposedAssemblies);
+
+      // Engine.Execute("function Throw(e){ throw e }");
     }
 
   }

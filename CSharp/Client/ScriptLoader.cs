@@ -40,6 +40,11 @@ namespace JSForBarotrauma
       catch (ScriptEngineException e)
       {
         Mod.Logger.Error(e.ErrorDetails);
+
+        EngineWrapper.Engine.Script.console.error($">> {path}");
+        EngineWrapper.Engine.Script.console.error(e.ErrorDetails);
+        // EngineWrapper.Engine.Script.console.error(e.ScriptException);
+
         return null;
       }
     }

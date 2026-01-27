@@ -1,19 +1,17 @@
 require("./kek.js")
 
-// let reload = () => Host.ReloadJS()
+// let harmony = new lib.HarmonyLib.Harmony("gigabruh")
 
-// const originalConsoleLog = console.log;
-// console.log = async function (...args) {
-//   originalConsoleLog("log")
-//   BaroConsole.Log(toString(args))
-//   originalConsoleLog(...args)
-// };
-
-bruh = 123
+// harmony.Patch(
+//   original: typeof (LuaGame).GetMethod("IsCustomCommandPermitted", AccessTools.all),
+//   postfix: new HarmonyMethod(typeof (ConsoleInterface).GetMethod("PermitCommands"))
+// );
 
 
-console.log("123")
-Logger.Log("lololol")
+2 +
 
-
+var connection = JS.StopEvent.connect(new lib.System.Action(() => {
+  console.log("js stop")
+  Logger.Log("js stop")
+}));
 
