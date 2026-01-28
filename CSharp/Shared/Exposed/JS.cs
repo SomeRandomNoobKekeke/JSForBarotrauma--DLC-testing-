@@ -30,6 +30,22 @@ namespace JSForBarotrauma
     //TODO remove engine callbacks after stop
     public event Action StopEvent;
 
+
+
+    public void ExposeModAs(string name)
+    {
+      ArgumentNullException.ThrowIfNull(name);
+      ArgumentNullException.ThrowIfNull(ModPackage);
+
+      // Why any code that touches CsPackageManager instantly turns into cringe?
+      Guid? guid = GameMain.LuaCs.PluginPackageManager._loadedCompiledPackageAssemblies.GetValueOrDefault(ModPackage);
+      if (!guid.HasValue) return;
+      Type modType = GameMain.LuaCs.PluginPackageManager._pluginTypes.GetValueOrDefault(guid.Value)?.First();
+      if (modType is null) return;
+
+      Engine.AddHostObject(name, HostItemFlags.PrivateAccess, new HostTypeCollection(modType.Assembly));
+    }
+
     public void ReloadLua()
     {
       GameMain.LuaCs.Timer.Wait((args) =>

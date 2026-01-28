@@ -14,7 +14,7 @@ using Microsoft.ClearScript;
 using Microsoft.ClearScript.JavaScript;
 using Microsoft.ClearScript.V8;
 using System.Threading;
-
+using BaroJunk;
 namespace JSForBarotrauma
 {
   public class EngineWrapper
@@ -32,7 +32,6 @@ namespace JSForBarotrauma
 
     public void Start()
     {
-
       Engine = new V8ScriptEngine(V8ScriptEngineFlags.EnableDebugging, DebugPort)
       {
         AccessContext = typeof(GameMain),
@@ -51,8 +50,6 @@ namespace JSForBarotrauma
     public void Load()
     {
       HostObjects.Add(Engine);
-
-
     }
 
 
