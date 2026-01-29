@@ -60,6 +60,7 @@ namespace JSForBarotrauma
       //Engine.Interrupt();
       Engine.Dispose();
       Engine = null;
+      DocumentLoader.Default.DiscardCachedDocuments();
     }
 
     public void PrintProps()

@@ -33,7 +33,7 @@ namespace JSForBarotrauma
       try
       {
         return EngineWrapper.Engine.Evaluate(
-          new DocumentInfo { Category = ModuleCategory.CommonJS },
+          new DocumentInfo { Category = ModuleCategory.Standard },
           File.ReadAllText(path)
         );
       }
