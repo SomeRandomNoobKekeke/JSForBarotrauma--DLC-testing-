@@ -47,7 +47,8 @@ namespace JSForBarotrauma
     public List<DebugConsole.Command> AddedCommands = new List<DebugConsole.Command>();
     public void AddCommands()
     {
-      AddedCommands.Add(new DebugConsole.Command("js", "", JS_Command));
+      AddedCommands.Add(new DebugConsole.Command("js", "", JS_Command,
+      () => new string[][] { EngineWrapper.Engine.Global.PropertyNames.ToArray() }));
       AddedCommands.Add(new DebugConsole.Command("js_reload", "", JSReloadCommand));
       AddedCommands.Add(new DebugConsole.Command("js_stop", "", JSStopCommand));
       AddedCommands.Add(new DebugConsole.Command("js_start", "", JSStartCommand));
