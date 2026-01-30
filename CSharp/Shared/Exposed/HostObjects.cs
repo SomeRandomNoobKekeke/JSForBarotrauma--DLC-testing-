@@ -30,11 +30,11 @@ namespace JSForBarotrauma
       Engine.AddHostObject("Hook", GameMain.LuaCs.Hook);
       Engine.AddHostType("DebugConsole", HostItemFlags.PrivateAccess, typeof(DebugConsole));
 
-
       HostTypeCollection exposedAssemblies = new HostTypeCollection("mscorlib", "System", "System.Core", "Barotrauma");
       exposedAssemblies.AddAssembly(typeof(Mod).Assembly);
       exposedAssemblies.AddAssembly(typeof(Harmony).Assembly);
       exposedAssemblies.AddAssembly(typeof(Vector2).Assembly);
+      exposedAssemblies.AddAssembly(typeof(List<int>).Assembly);
 
       Engine.AddHostObject("lib", HostItemFlags.PrivateAccess, exposedAssemblies);
 
