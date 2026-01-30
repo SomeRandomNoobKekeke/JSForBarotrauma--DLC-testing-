@@ -26,10 +26,10 @@ namespace JSForBarotrauma
     /// </summary>
     public ContentPackage ModPackage { get; set; }
 
-
     //TODO remove engine callbacks after stop
     public event Action StopEvent;
 
+    public ScriptObject Global => Engine.Global;
 
 
     public void ExposeModAs(string name)
