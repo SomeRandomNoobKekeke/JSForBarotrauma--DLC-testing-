@@ -46,6 +46,9 @@ namespace JSForBarotrauma
       _consoleInterface = new(_engine);
       _scriptLoader = new ScriptLoader(_engine);
 
+      V8Runtime.DebuggerConnected += (sender, args) => { };
+      V8Runtime.DebuggerDisconnected += (sender, args) => JS.Reload();
+
       Engine.Start();
 
 

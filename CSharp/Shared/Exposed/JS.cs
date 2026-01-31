@@ -73,7 +73,7 @@ namespace JSForBarotrauma
           Mod.ScriptLoader.LoadScripts();
           Mod.Logger.Log(ConsoleInterface.WrapInBraces(Logger.WrapInColor("JS Reloaded", "White")));
         }, 100);
-      }, 100);
+      }, 0);
     }
 
     public void Stop()
@@ -85,7 +85,7 @@ namespace JSForBarotrauma
         StopEvent?.Invoke();
         Mod.Engine.Stop();
         Mod.Logger.Log(ConsoleInterface.WrapInBraces(Logger.WrapInColor("JS Stopped", "White")));
-      }, 100);
+      }, 0);
     }
 
     public void Start()
