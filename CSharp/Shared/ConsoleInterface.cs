@@ -62,9 +62,9 @@ namespace JSForBarotrauma
       AddedCommands.Clear();
     }
 
-    public void JSReloadCommand(object[] args) => Mod.JS.Reload();
-    public void JSStopCommand(object[] args) => Mod.JS.Stop();
-    public void JSStartCommand(object[] args) => Mod.JS.Start();
+    public void JSReloadCommand(object[] args) => Mod.Engine?.Reload();
+    public void JSStopCommand(object[] args) => Mod.Engine?.Stop();
+    public void JSStartCommand(object[] args) => Mod.Engine?.Start();
 
     public void JS_Command(object[] args)
     {

@@ -22,22 +22,20 @@ namespace JSForBarotrauma
 
     public static void Log(object msg)
     {
-      Engine.Script.console.log(msg);
+      Engine?.Script.console.log(msg);
       Mod.Logger.Log(msg);
     }
 
     public static void Warning(object msg)
     {
-      Engine.Script.console.warn(msg);
+      Engine?.Script.console.warn(msg);
       Mod.Logger.Warning(msg);
     }
 
     public static void Error(object msg)
     {
-      Engine.Script.console.error(msg);
+      Engine?.Script.console.error(msg);
       Mod.Logger.Error(msg);
     }
-
   }
-
 }

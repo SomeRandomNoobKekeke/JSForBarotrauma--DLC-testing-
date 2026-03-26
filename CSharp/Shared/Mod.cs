@@ -18,50 +18,47 @@ namespace JSForBarotrauma
 {
   public partial class Mod : IAssemblyPlugin
   {
+    /// <summary>
+    /// Do it old fashioned way
+    /// </summary>
+    public static string ModName = "JS for Barotrauma [code]";
+    public static ContentPackage JSForBarotraumaPackage
+      => ContentPackageManager.EnabledPackages.All.First(p => p.Name == ModName);
+
     public static Mod Instance { get; private set; }
-    //BRUH mb use actual package?
-    public static string PackageName;
     public static Logger Logger { get; } = new();
     public Harmony Harmony { get; } = new Harmony("JSForBarotrauma");
 
     public static ConsoleInterface ConsoleInterface => Instance?._consoleInterface;
     public static EngineWrapper Engine => Instance?._engine;
-    public static ScriptLoader ScriptLoader => Instance?._scriptLoader;
-    public static JS JS => Instance?._js;
 
-    private JS _js;
-    private ScriptLoader _scriptLoader;
     private ConsoleInterface _consoleInterface;
     private EngineWrapper _engine;
 
+    private DebuggerTracker DebuggerTracker { get; } = new();
 
 
     public void Initialize()
     {
       Instance = this;
-      PackageName = ModInfo.ModName<Mod>();
 
-      _js = new JS();
       _engine = new();
       _consoleInterface = new(_engine);
-      _scriptLoader = new ScriptLoader(_engine);
 
-      V8Runtime.DebuggerConnected += (sender, args) => { };
-      V8Runtime.DebuggerDisconnected += (sender, args) => JS.Reload();
 
-      Engine.Start();
 
 
       PatchAll();
+      _consoleInterface.AddCommands();
 
-      ConsoleInterface.AddCommands();
-      ScriptLoader.LoadScripts();
+      DebuggerTracker.Track();
+      _engine.Start();
     }
 
 
     public void PatchAll()
     {
-      ConsoleInterface.AddPatches(Harmony);
+      _consoleInterface.AddPatches(Harmony);
     }
 
 
@@ -70,9 +67,11 @@ namespace JSForBarotrauma
 
     public void Dispose()
     {
-      ConsoleInterface.RemoveCommands();
+      _consoleInterface.RemoveCommands();
       Harmony.UnpatchSelf();
-      Engine.Stop();
+      _engine.Stop();
+      DebuggerTracker.Untrack();
+      Mod.Logger.Log($"Mod disposed");
       Instance = null;
     }
 
