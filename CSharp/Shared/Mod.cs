@@ -45,9 +45,6 @@ namespace JSForBarotrauma
       _engine = new();
       _consoleInterface = new(_engine);
 
-
-
-
       PatchAll();
       _consoleInterface.AddCommands();
 
@@ -71,7 +68,6 @@ namespace JSForBarotrauma
       Harmony.UnpatchSelf();
       _engine.Stop();
       DebuggerTracker.Untrack();
-      Mod.Logger.Log($"Mod disposed");
       Instance = null;
     }
 

@@ -55,23 +55,19 @@ namespace JSForBarotrauma
 
       ExposeStuff();
 
-      ScriptLoader.LoadScripts();
-
       Mod.Logger.Log(ConsoleInterface.WrapInBraces(Logger.WrapInColor("JS Started", "White")));
+
+      ScriptLoader.LoadScripts();
     }
 
     public void Reload()
     {
-      GameMain.LuaCs.Timer.Wait((args) =>
+      Utils.RunWithDelay(() =>
       {
         Mod.Engine.Stop();
 
-        GameMain.LuaCs.Timer.Wait((args) =>
-        {
-          Mod.Engine.Start();
-        }, 100);
-      }, 100);
-      // Mod.Logger.Log(ConsoleInterface.WrapInBraces(Logger.WrapInColor("JS Reloaded", "White")));
+        Utils.RunWithDelay(() => Mod.Engine.Start());
+      });
     }
 
     public void Stop()
@@ -81,12 +77,10 @@ namespace JSForBarotrauma
       JS.StopEvent.Raise();
       JS.StopEvent.Clear();
 
-      Mod.Logger.Log($"Engine.Interrupt");
       Engine.Interrupt();
-      Mod.Logger.Log($"Engine.Dispose");
       Engine.Dispose();
-      Mod.Logger.Log($"Engine = null");
       Engine = null;
+
       DocumentLoader.Default.DiscardCachedDocuments();
 
       Mod.Logger.Log(ConsoleInterface.WrapInBraces(Logger.WrapInColor("JS Stopped", "White")));

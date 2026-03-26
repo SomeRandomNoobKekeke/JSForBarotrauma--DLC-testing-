@@ -6,6 +6,7 @@ using System.Linq;
 using Barotrauma;
 using HarmonyLib;
 using Microsoft.Xna.Framework;
+using Barotrauma.Networking;
 
 namespace JSForBarotrauma
 {
@@ -14,7 +15,7 @@ namespace JSForBarotrauma
     public void AddPatches(Harmony harmony)
     {
       harmony.Patch(
-        original: typeof(LuaGame).GetMethod("IsCustomCommandPermitted", AccessTools.all),
+        original: typeof(DebugConsole).GetMethod("IsCommandPermitted", AccessTools.all),
         postfix: new HarmonyMethod(typeof(ConsoleInterface).GetMethod("PermitCommands"))
       );
 
@@ -24,7 +25,7 @@ namespace JSForBarotrauma
       );
     }
 
-    public static void PermitCommands(Identifier command, ref bool __result)
+    public static void PermitCommands(Identifier command, GameClient client, ref bool __result)
     {
       if (Mod.ConsoleInterface is null) return;
       if (Mod.ConsoleInterface.AddedCommands.Any(c => c.Names.Contains(command.Value))) __result = true;

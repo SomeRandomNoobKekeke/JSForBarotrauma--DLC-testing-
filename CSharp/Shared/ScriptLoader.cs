@@ -83,9 +83,6 @@ namespace JSForBarotrauma
       );
     }
 
-
-
-
     public ScriptLoader(EngineWrapper engineWrapper) => EngineWrapper = engineWrapper;
   }
 

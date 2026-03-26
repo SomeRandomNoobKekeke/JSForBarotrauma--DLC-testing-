@@ -32,17 +32,11 @@ namespace JSForBarotrauma
 
       public void Reload()
       {
-        GameMain.LuaCs.Timer.Wait((args) =>
-        {
-          Mod.Engine.Reload();
-        }, 100);
+        Utils.RunWithDelay(() => Mod.Engine.Reload());
       }
       public void Stop()
       {
-        GameMain.LuaCs.Timer.Wait((args) =>
-        {
-          Mod.Engine.Stop();
-        }, 100);
+        Utils.RunWithDelay(() => Mod.Engine.Stop());
       }
       public void Start() => EngineWrapper.Start();
 

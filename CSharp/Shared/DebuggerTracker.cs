@@ -23,13 +23,11 @@ namespace JSForBarotrauma
     public void OnDebuggerConnected(object sender, V8RuntimeDebuggerEventArgs args)
     {
       if (Mod.Engine != null) Mod.Engine.DebuggerAttached = true;
-      Mod.Logger.Log($"DebuggerConnected");
     }
 
     public void OnDebuggerDisconnected(object sender, V8RuntimeDebuggerEventArgs args)
     {
       if (Mod.Engine != null) Mod.Engine.DebuggerAttached = false;
-      Mod.Logger.Log($"DebuggerDisconnected");
     }
 
     public void Track()
