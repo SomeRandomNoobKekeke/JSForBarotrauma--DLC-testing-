@@ -1,0 +1,42 @@
+
+using System;
+using System.Reflection;
+using System.Linq;
+using System.Collections.Generic;
+using Barotrauma;
+using HarmonyLib;
+using Microsoft.Xna.Framework;
+using Microsoft.ClearScript;
+using Microsoft.ClearScript.JavaScript;
+using Microsoft.ClearScript.V8;
+using System.Runtime.CompilerServices;
+using System.IO;
+using BaroJunk;
+
+using System.Threading.Tasks;
+
+namespace JSForBarotrauma
+{
+  public static class Utils
+  {
+
+    public static void RunWithDelay(Action action, int delay = 100)
+    {
+      Task.Delay(delay).ContinueWith((t) => action());
+    }
+
+
+    // public static void RunWithDelay(Action action, float delay = 100)
+    // {
+    //   CoroutineManager.Invoke(action, delay);
+    // }
+
+    // public static void RunWithDelay(Action action, double delay = 100)
+    // {
+    //   GameMain.LuaCs.Timer.Wait((args) =>
+    //   {
+    //     action();
+    //   }, 100);
+    // }
+  }
+}

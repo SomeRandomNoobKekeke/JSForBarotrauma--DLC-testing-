@@ -1,0 +1,38 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <MSBuildAllProjects Condition="'$(MSBuildVersion)' == '' Or '$(MSBuildVersion)' &lt; '16.0'">$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <HasSharedItems>true</HasSharedItems>
+    <SharedGUID>7c1c5d04-3108-447b-8ce6-9f5effa614ec</SharedGUID>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration">
+    <Import_RootNamespace>SharedSource</Import_RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <Content Include="$(MSBuildThisFileDirectory)SharedItems.props" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)SharedSource\ConsoleInterface.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)SharedSource\DebuggerTracker.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)SharedSource\EngineWrapper.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)SharedSource\Exposed\EngineWrapper.Exposed.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)SharedSource\Exposed\UnifiedConsole.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)SharedSource\Libs\ClearableEvent\ClearableEvent.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)SharedSource\Libs\ClearableEvent\ClearableEvent.Variants1.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)SharedSource\Libs\ClearableEvent\ClearableEvent.Variants2.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)SharedSource\Libs\ClearableEvent\ClearableEvent.Variants3.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)SharedSource\Libs\ClearableEvent\EventBridge\EventBridge.Variants1.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)SharedSource\Libs\ClearableEvent\EventBridge\EventBridge.Variants2.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)SharedSource\Libs\ClearableEvent\EventBridge\EventBridge.Variants3.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)SharedSource\Libs\ClearableEvent\EventSubscription.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)SharedSource\Libs\Logger\Logger.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)SharedSource\Libs\Logger\Logger.Wrap.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)SharedSource\Mod.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)SharedSource\Patches\ConsoleInterface.Patches.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)SharedSource\ScriptLoader.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)SharedSource\Utils.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="$(MSBuildThisFileDirectory)SharedSource\Libs\ClearableEvent\ClearableEvent.Variants.tcs" />
+  </ItemGroup>
+</Project>
