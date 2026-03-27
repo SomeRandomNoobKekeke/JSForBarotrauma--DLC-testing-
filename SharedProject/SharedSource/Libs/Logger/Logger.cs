@@ -118,7 +118,7 @@ namespace BaroJunk
 
     private void _Print(object msg, Color color)
     {
-      JSForBarotrauma.Mod.DebugConsole.NewMessage(
+      JSForBarotrauma.Mod.DebugConsole?.NewMessage(
         Serializer.Serialize(msg), 
         color
       );
@@ -128,7 +128,7 @@ namespace BaroJunk
     private void _PrintFilePath(Color color, string source, int lineNumber)
     {
       var fi = new FileInfo(source);
-      JSForBarotrauma.Mod.DebugConsole.NewMessage(
+      JSForBarotrauma.Mod.DebugConsole?.NewMessage(
         $"{fi.Directory.Name}/{fi.Name}:{lineNumber}",
         color
       );
