@@ -19,7 +19,7 @@ namespace JSForBarotrauma
 {
   public partial class Mod : IBarotraumaPlugin
   {
-    public static  IDebugConsole DebugConsole = PluginServiceProvider.GetService<IDebugConsole>();
+    public static IDebugConsole DebugConsole = PluginServiceProvider.GetService<IDebugConsole>();
 
     /// <summary>
     /// Do it old fashioned way
@@ -30,8 +30,8 @@ namespace JSForBarotrauma
 
     public static Mod Instance { get; private set; }
     public static Logger Logger { get; private set; } = new();
-    public Harmony Harmony { get; private set; } = new Harmony("JSForBarotrauma");
 
+    public Harmony Harmony { get; private set; } = new Harmony("JSForBarotrauma");
     public static ConsoleInterface ConsoleInterface => Instance?._consoleInterface;
     public static EngineWrapper Engine => Instance?._engine;
 
