@@ -31,7 +31,7 @@ namespace JSForBarotrauma
         }
         catch (Exception e)
         {
-          Mod.Logger.Error($"Error in JS Postfix to [{__originalMethod}]:");
+          Mod.Logger.Error($"Error in JS Postfix to [{__originalMethod.DeclaringType}.{__originalMethod}]:");
           Mod.Logger.Error(e);
         }
       }
@@ -50,7 +50,7 @@ namespace JSForBarotrauma
           shouldRun = shouldRun && prefix.Invoke(__instance, __args);
         }
         catch (Exception e) {
-          Mod.Logger.Error($"Error in JS Prefix to [{__originalMethod}]:");
+          Mod.Logger.Error($"Error in JS Prefix to [{__originalMethod.DeclaringType}.{__originalMethod}]:");
           Mod.Logger.Error(e);
         }
       }

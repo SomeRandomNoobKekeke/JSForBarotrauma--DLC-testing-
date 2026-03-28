@@ -1,18 +1,19 @@
 ﻿
-using System;
-using System.Reflection;
-using System.Linq;
-using System.Collections.Generic;
+using BaroJunk;
 using Barotrauma;
+using Barotrauma.Items.Components;
 using Barotrauma.Plugins;
 using HarmonyLib;
-using Microsoft.Xna.Framework;
 using Microsoft.ClearScript;
 using Microsoft.ClearScript.JavaScript;
 using Microsoft.ClearScript.V8;
-using System.Runtime.CompilerServices;
+using Microsoft.Xna.Framework;
+using System;
+using System.Collections.Generic;
 using System.IO;
-using BaroJunk;
+using System.Linq;
+using System.Reflection;
+using System.Runtime.CompilerServices;
 
 
 namespace JSForBarotrauma
@@ -29,7 +30,7 @@ namespace JSForBarotrauma
     public static IGameNetwork GameNetwork = PluginServiceProvider.GetService<IGameNetwork>();
     public static IStatusEffectService StatusEffectService = PluginServiceProvider.GetService<IStatusEffectService>();
 
-    public static PluginServices PluginServices { get; private set;} = new();
+    public static PluginServices PluginServices { get; private set; } = new();
 
     /// <summary>
     /// Do it old fashioned way
@@ -38,35 +39,24 @@ namespace JSForBarotrauma
     public static ContentPackage JSForBarotraumaPackage
       => ContentPackageManager.EnabledPackages.All.First(p => p.Name == ModName);
 
-    public static Mod Instance { get; private set; }
+
     public static Logger Logger { get; private set; } = new();
-    //public static Harmony Harmony => Instance?._harmony;
-    public static ConsoleInterface ConsoleInterface => Instance?._consoleInterface;
-    public static EngineWrapper Engine => Instance?._engine;
-
-
-
-
-    private ConsoleInterface _consoleInterface;
-    private EngineWrapper _engine;
-    //private Harmony _harmony = new Harmony("JSForBarotrauma");
-
-    private DebuggerTracker DebuggerTracker { get; } = new();
+    public static ConsoleInterface ConsoleInterface { get; private set; }
+    public static EngineWrapper Engine { get; private set; }
+    public static Harmony Harmony { get; private set; }
+    public static DebuggerTracker DebuggerTracker { get; private set; } = new();
 
 
     public void Init()
     {
-      Instance = this;
+      Engine = new();
+      ConsoleInterface = new(Engine);
+      Harmony = HarmonyProvider.GetHarmony();
 
-      _engine = new();
-      _consoleInterface = new(_engine);
-
-      PatchAll();
-      _consoleInterface.AddCommands();
-
+      ConsoleInterface.AddCommands();
       DebuggerTracker.Track();
 
-      _engine.Start();
+      Engine.Start();
     }
 
 
@@ -80,12 +70,19 @@ namespace JSForBarotrauma
 
     public void Dispose()
     {
-      _consoleInterface.RemoveCommands();
-      //_harmony.UnpatchSelf();
-      _engine.Stop();
-      DebuggerTracker.Untrack();
-      Instance = null;
+      ConsoleInterface.RemoveCommands();
+      ConsoleInterface = null;
 
+      Engine.Stop();
+      Engine = null;
+
+      
+      Harmony.UnpatchSelf();
+      Harmony = null;
+
+
+      DebuggerTracker.Untrack();
+      DebuggerTracker = null;
 
       DebugConsole = null;
       SettingsService = null;

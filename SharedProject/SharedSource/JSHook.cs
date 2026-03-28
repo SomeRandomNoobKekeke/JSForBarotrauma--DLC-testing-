@@ -22,8 +22,6 @@ namespace JSForBarotrauma
     public delegate void JSPostfix(object __instance, object[] __args);
     public delegate bool JSPrefix(object __instance, object[] __args);
 
-    public static Harmony Harmony = new Harmony("JSForBarotraumaHook");
-
     public static HashSet<MethodBase> PatchedWithGenericPostfix { get; } = new();
     public static HashSet<MethodBase> PatchedWithGenericPrefix { get; } = new();
     public static Dictionary<MethodBase, Dictionary<string, JSPostfix>> Postfixes { get; } = new();
@@ -35,7 +33,7 @@ namespace JSForBarotrauma
       Prefixes.Clear();
       PatchedWithGenericPostfix.Clear();
       PatchedWithGenericPrefix.Clear();
-      Harmony.UnpatchSelf();
+      Mod.Harmony.UnpatchSelf();
     }
 
     public static void RemoveAll()=> Clear();
@@ -44,7 +42,7 @@ namespace JSForBarotrauma
     {
       if (!PatchedWithGenericPostfix.Contains(original))
       {
-        Harmony.Patch(original, postfix: new HarmonyMethod(GenericPostfix));
+        Mod.Harmony.Patch(original, postfix: new HarmonyMethod(GenericPostfix));
         PatchedWithGenericPostfix.Add(original);
       }
 
@@ -67,7 +65,7 @@ namespace JSForBarotrauma
     {
       if (!PatchedWithGenericPrefix.Contains(original))
       {
-        Harmony.Patch(original, prefix: new HarmonyMethod(GenericPrefix));
+        Mod.Harmony.Patch(original, prefix: new HarmonyMethod(GenericPrefix));
         PatchedWithGenericPrefix.Add(original);
       }
 

@@ -1,5 +1,6 @@
 <Project>
   <ItemGroup>
     <!-- Add misc references here -->
+	<PackageReference Include="System.Collections.Immutable" Version="9.0.0" />
   </ItemGroup>
 </Project>
