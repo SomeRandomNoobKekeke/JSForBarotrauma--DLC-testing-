@@ -1,4 +1,4 @@
-
+﻿
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -74,14 +74,16 @@ namespace JSForBarotrauma
     {
       if (Engine == null) return;
 
-      JS.StopEvent.Raise();
-      JS.StopEvent.Clear();
+      JS.OnStop.Raise();
+      JS.OnStop.Clear();
 
       Engine.Interrupt();
       Engine.Dispose();
       Engine = null;
 
       DocumentLoader.Default.DiscardCachedDocuments();
+
+      JSHook.Clear();
 
       Mod.Logger.Log(ConsoleInterface.WrapInBraces(Logger.WrapInColor("JS Stopped", "White")));
     }

@@ -1,4 +1,4 @@
-
+﻿
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,28 +21,6 @@ namespace JSForBarotrauma
 {
   public partial class EngineWrapper
   {
-    public class JS_Link
-    {
-      private EngineWrapper EngineWrapper { get; }
-      public V8ScriptEngine Engine => EngineWrapper.Engine;
-
-      public ClearableEvent StopEvent { get; } = new();
-
-      public ScriptObject Global => Engine?.Global;
-
-      public void Reload()
-      {
-        Utils.RunWithDelay(() => Mod.Engine.Reload());
-      }
-      public void Stop()
-      {
-        Utils.RunWithDelay(() => Mod.Engine.Stop());
-      }
-      public void Start() => EngineWrapper.Start();
-
-      public JS_Link(EngineWrapper engineWrapper) => EngineWrapper = engineWrapper;
-    }
-
     public JS_Link JS { get; private set; }
 
     private void ExposeStuff()
@@ -57,9 +35,12 @@ namespace JSForBarotrauma
 
       Engine.AddHostObject("JS", JS);
       Engine.AddHostObject("Logger", Mod.Logger);
+      Engine.AddHostObject("Services", Mod.PluginServices);
+
+      Engine.AddHostType("JSHook", typeof(JSHook));
       Engine.AddHostType("Console", typeof(UnifiedConsole));
       // Engine.AddHostObject("Hook", GameMain.LuaCs.Hook);
-      Engine.AddHostType("DebugConsole", HostItemFlags.PrivateAccess, typeof(DebugConsole));
+      //Engine.AddHostType("DebugConsole", HostItemFlags.PrivateAccess, typeof(DebugConsole));
 
       HostTypeCollection exposedAssemblies = new HostTypeCollection("mscorlib", "System", "System.Core", "Barotrauma");
       exposedAssemblies.AddAssembly(typeof(Mod).Assembly);

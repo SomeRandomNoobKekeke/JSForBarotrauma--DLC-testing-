@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Collections.Generic;
@@ -118,13 +118,21 @@ namespace BaroJunk
 
     private void _Print(object msg, Color color)
     {
-      LuaCsLogger.LogMessage(Serializer.Serialize(msg), color * 0.8f, color);
+      JSForBarotrauma.Mod.DebugConsole?.NewMessage(
+        Serializer.Serialize(msg), 
+        color
+      );
+      //LuaCsLogger.LogMessage(Serializer.Serialize(msg), color * 0.8f, color);
     }
 
     private void _PrintFilePath(Color color, string source, int lineNumber)
     {
       var fi = new FileInfo(source);
-      LuaCsLogger.LogMessage($"{fi.Directory.Name}/{fi.Name}:{lineNumber}", color * 0.8f, color);
+      JSForBarotrauma.Mod.DebugConsole?.NewMessage(
+        $"{fi.Directory.Name}/{fi.Name}:{lineNumber}",
+        color
+      );
+      //LuaCsLogger.LogMessage($"{fi.Directory.Name}/{fi.Name}:{lineNumber}", color * 0.8f, color);
     }
 
     public void LogVars(object arg1,
