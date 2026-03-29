@@ -22,8 +22,32 @@ namespace JSForBarotrauma
     Prefix, Postfix, Finalizer,
   }
 
+
   public class PatchTracker<DelegateT> where DelegateT : Delegate
   {
+    public class PatchInfo<DelegateT>
+    {
+      public Func<object[], Dictionary<string, object>> CreateParamDict { get; }
+      public Dictionary<int, DelegateT> Patches { get; } = new();
+
+      public PatchInfo(MethodBase original)
+      {
+        ParameterInfo[] parameters = original.GetParameters();
+
+        CreateParamDict = (args) =>
+        {
+          Dictionary<string, object> paramDict = new();
+
+          for (int i = 0; i < parameters.Length; i++)
+          {
+            paramDict[parameters[i].Name] = args[i];
+          }
+
+          return paramDict;
+        };
+      }
+    }
+
     public int MaxID { get; private set; } = 0;
 
     public HashSet<MethodBase> PatchedMethods { get; } = new();
