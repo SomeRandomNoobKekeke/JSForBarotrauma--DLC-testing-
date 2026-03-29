@@ -21,9 +21,9 @@ namespace JSForBarotrauma
   {
     public static void GenericPostfix(MethodBase __originalMethod, object __instance, object[] __args)
     {
-      if (!Postfixes.ContainsKey(__originalMethod)) return;
+      if (!Postfixes.Patches.ContainsKey(__originalMethod)) return;
 
-      foreach (JSPostfix postfix in Postfixes[__originalMethod].Values)
+      foreach (JSPostfix postfix in Postfixes.Patches[__originalMethod].Values)
       {
         try
         {
@@ -39,11 +39,11 @@ namespace JSForBarotrauma
 
     public static bool GenericPrefix(MethodBase __originalMethod, object __instance, object[] __args)
     {
-      if (!Postfixes.ContainsKey(__originalMethod)) return true;
+      if (!Prefixes.Patches.ContainsKey(__originalMethod)) return true;
 
       bool shouldRun = true;
 
-      foreach (JSPrefix prefix in Prefixes[__originalMethod].Values)
+      foreach (JSPrefix prefix in Prefixes.Patches[__originalMethod].Values)
       {
         try
         {

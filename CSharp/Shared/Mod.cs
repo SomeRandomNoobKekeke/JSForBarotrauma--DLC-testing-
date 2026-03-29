@@ -48,7 +48,6 @@ namespace JSForBarotrauma
     public static Harmony Harmony { get; private set; }
     public static DebuggerTracker DebuggerTracker { get; private set; } = new();
 
-
     public void Initialize() => Init();
     public void Init()
     {
@@ -83,7 +82,6 @@ namespace JSForBarotrauma
 
       Engine.Stop();
       Engine = null;
-
 
       Harmony.UnpatchSelf();
       Harmony = null;

@@ -3,6 +3,7 @@ using System;
 using System.Reflection;
 using System.Linq;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using Barotrauma;
 using HarmonyLib;
 using Microsoft.Xna.Framework;
@@ -19,6 +20,33 @@ namespace JSForBarotrauma
 {
   public static class Utils
   {
+    // Barotrauma.Plugins compatibility
+    public static IEnumerable<Assembly> GetPackageAssemblies(ContentPackage package)
+    {
+      CsPackageManager _ = GameMain.LuaCs.PluginPackageManager;
+
+      if (!_._loadedCompiledPackageAssemblies.Keys.Contains(package)) yield break;
+
+      Guid guid = _._loadedCompiledPackageAssemblies[package];
+
+      foreach (Type T in _._pluginTypes[guid])
+      {
+        yield return T.Assembly;
+      }
+    }
+
+    public static IEnumerable<Assembly> AllModAssemblies()
+    {
+      CsPackageManager _ = GameMain.LuaCs.PluginPackageManager;
+
+      foreach (ImmutableHashSet<Type> set in _._pluginTypes.Values)
+      {
+        foreach (Type T in set)
+        {
+          yield return T.Assembly;
+        }
+      }
+    }
 
     public static void RunWithDelay(Action action, int delay = 100)
     {

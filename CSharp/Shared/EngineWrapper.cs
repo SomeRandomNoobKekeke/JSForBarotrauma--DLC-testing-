@@ -84,7 +84,6 @@ namespace JSForBarotrauma
       DocumentLoader.Default.DiscardCachedDocuments();
 
       JSHook.Clear();
-
       Mod.Logger.Log(ConsoleInterface.WrapInBraces(Logger.WrapInColor("JS Stopped", "White")));
     }
 

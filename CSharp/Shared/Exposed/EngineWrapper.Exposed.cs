@@ -37,18 +37,27 @@ namespace JSForBarotrauma
       Engine.AddHostObject("Logger", Mod.Logger);
       Engine.AddHostObject("Services", Mod.PluginServices);
 
+
       Engine.AddHostType("JSHook", typeof(JSHook));
       Engine.AddHostType("Console", typeof(UnifiedConsole));
       // Engine.AddHostObject("Hook", GameMain.LuaCs.Hook);
       //Engine.AddHostType("DebugConsole", HostItemFlags.PrivateAccess, typeof(DebugConsole));
 
       HostTypeCollection exposedAssemblies = new HostTypeCollection("mscorlib", "System", "System.Core", "Barotrauma");
-      exposedAssemblies.AddAssembly(typeof(Mod).Assembly);
+      // exposedAssemblies.AddAssembly(typeof(Mod).Assembly);
       exposedAssemblies.AddAssembly(typeof(Harmony).Assembly);
       exposedAssemblies.AddAssembly(typeof(Vector2).Assembly);
       exposedAssemblies.AddAssembly(typeof(List<int>).Assembly);
 
       Engine.AddHostObject("lib", HostItemFlags.PrivateAccess, exposedAssemblies);
+
+
+      HostTypeCollection modAssemblies = new HostTypeCollection();
+      foreach (Assembly assembly in Utils.AllModAssemblies())
+      {
+        modAssemblies.AddAssembly(assembly);
+      }
+      Engine.AddHostObject("modlib", HostItemFlags.PrivateAccess, modAssemblies);
 
       // Engine.Execute("function Throw(e){ throw e }");
     }
