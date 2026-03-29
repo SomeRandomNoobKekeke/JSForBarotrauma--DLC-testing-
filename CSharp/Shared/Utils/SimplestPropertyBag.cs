@@ -17,7 +17,7 @@ using BaroJunk;
 
 namespace JSForBarotrauma
 {
-  public class TestTable : IPropertyBag
+  public class SimplestPropertyBag : IPropertyBag
   {
     public Dictionary<string, object> Dict { get; } = new();
 

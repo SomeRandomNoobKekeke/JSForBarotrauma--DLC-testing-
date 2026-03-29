@@ -20,16 +20,28 @@ namespace JSForBarotrauma
   public partial class JSHook
   {
 
-    public static void GenericPostfix(MethodBase __originalMethod, object __instance, object[] __args, ref object __result)
+    public static void GenericPostfix(
+      ref object __0, ref object __1,
+      MethodBase __originalMethod, object __instance, object[] __args, ref object __result
+    )
     {
-      foreach (JSPostfix postfix in Postfixes.PatchedMethods[__originalMethod].Patches.Values)
+      var info = Postfixes.PatchedMethods[__originalMethod];
+
+      foreach (JSPostfix postfix in info.Patches.Values)
       {
         try
         {
-          postfix.Invoke(__instance, __args, new TestTable()
-          {
-            ["bebebe"] = "jujuju"
-          });
+          info.PTable.Arg1.Init(__0);
+          info.PTable.Arg2.Init(__1);
+
+          info.PTable.Result.Init(__result);
+
+          postfix.Invoke(__instance, info.PTable);
+
+          info.PTable.Arg1.MapBack(ref __0);
+          info.PTable.Arg2.MapBack(ref __1);
+          info.PTable.Result.MapBack(ref __result);
+
         }
         catch (Exception e)
         {

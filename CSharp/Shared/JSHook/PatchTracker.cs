@@ -27,25 +27,12 @@ namespace JSForBarotrauma
   {
     public class PatchInfo<DelegateT>
     {
-      //TODO create reactive param dict
-      public Func<object[], Dictionary<string, object>> CreateParamDict { get; }
+      public ParamTableBase PTable { get; }
       public Dictionary<int, DelegateT> Patches { get; } = new();
 
       public PatchInfo(MethodBase original)
       {
-        ParameterInfo[] parameters = original.GetParameters();
-
-        CreateParamDict = (args) =>
-        {
-          Dictionary<string, object> paramDict = new();
-
-          for (int i = 0; i < parameters.Length; i++)
-          {
-            paramDict[parameters[i].Name] = args[i];
-          }
-
-          return paramDict;
-        };
+        PTable = new ParamTableBase(original.GetParameters());
       }
     }
 
