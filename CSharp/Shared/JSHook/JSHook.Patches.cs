@@ -22,20 +22,14 @@ namespace JSForBarotrauma
 
     public static void GenericPostfix(MethodBase __originalMethod, object __instance, object[] __args, ref object __result)
     {
-      if (!Postfixes.Patches.ContainsKey(__originalMethod)) return;
-
-      foreach (JSPostfix postfix in Postfixes.Patches[__originalMethod].Values)
+      foreach (JSPostfix postfix in Postfixes.PatchedMethods[__originalMethod].Patches.Values)
       {
         try
         {
-          PostfixParamTable table = new PostfixParamTable(__result);
-
-          postfix.Invoke(__instance, __args, table);
-
-          if (table.ResultWasModified)
+          postfix.Invoke(__instance, __args, new TestTable()
           {
-            __result = table.Result;
-          }
+            ["bebebe"] = "jujuju"
+          });
         }
         catch (Exception e)
         {
@@ -45,27 +39,27 @@ namespace JSForBarotrauma
       }
     }
 
-    public static bool GenericPrefix(MethodBase __originalMethod, object __instance, object[] __args)
-    {
-      if (!Prefixes.Patches.ContainsKey(__originalMethod)) return true;
+    // public static bool GenericPrefix(MethodBase __originalMethod, object __instance, object[] __args)
+    // {
+    //   if (!Prefixes.Patches.ContainsKey(__originalMethod)) return true;
 
-      bool shouldRun = true;
+    //   bool shouldRun = true;
 
-      foreach (JSPrefix prefix in Prefixes.Patches[__originalMethod].Values)
-      {
-        try
-        {
-          shouldRun = shouldRun && prefix.Invoke(__instance, __args);
-        }
-        catch (Exception e)
-        {
-          Mod.Logger.Error($"Error in JS Prefix to [{__originalMethod.DeclaringType}.{__originalMethod}]:");
-          Mod.Logger.Error(e);
-        }
-      }
+    //   foreach (JSPrefix prefix in Prefixes.Patches[__originalMethod].Values)
+    //   {
+    //     try
+    //     {
+    //       shouldRun = shouldRun && prefix.Invoke(__instance, __args);
+    //     }
+    //     catch (Exception e)
+    //     {
+    //       Mod.Logger.Error($"Error in JS Prefix to [{__originalMethod.DeclaringType}.{__originalMethod}]:");
+    //       Mod.Logger.Error(e);
+    //     }
+    //   }
 
-      return shouldRun;
-    }
+    //   return shouldRun;
+    // }
 
 
     // public static bool GenericFinalizer(MethodBase __originalMethod, object __instance, object[] __args)

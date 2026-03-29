@@ -27,6 +27,7 @@ namespace JSForBarotrauma
   {
     public class PatchInfo<DelegateT>
     {
+      //TODO create reactive param dict
       public Func<object[], Dictionary<string, object>> CreateParamDict { get; }
       public Dictionary<int, DelegateT> Patches { get; } = new();
 
@@ -50,59 +51,37 @@ namespace JSForBarotrauma
 
     public int MaxID { get; private set; } = 0;
 
-    public HashSet<MethodBase> PatchedMethods { get; } = new();
-    public Dictionary<MethodBase, Dictionary<int, DelegateT>> Patches { get; } = new();
 
-    public required Func<HarmonyMethod> HarmonyMethodFactory { get; init; }
-    public required PatchType PatchType { get; init; }
+    public Dictionary<MethodBase, PatchInfo<DelegateT>> PatchedMethods { get; } = new();
 
-    public bool WasPatched(MethodBase original) => PatchedMethods.Contains(original);
+    public required Action<MethodBase> PatchAction { get; init; }
+
+    public bool WasPatched(MethodBase original) => PatchedMethods.ContainsKey(original);
 
     public int Add(MethodBase original, DelegateT patch)
     {
-      if (!PatchedMethods.Contains(original))
+      if (!WasPatched(original))
       {
-        switch (PatchType)
-        {
-          case PatchType.Prefix:
-            Mod.Harmony.Patch(original, prefix: HarmonyMethodFactory());
-            break;
-
-          case PatchType.Postfix:
-            Mod.Harmony.Patch(original, postfix: HarmonyMethodFactory());
-            break;
-
-          case PatchType.Finalizer:
-            Mod.Harmony.Patch(original, finalizer: HarmonyMethodFactory());
-            break;
-        }
-
-        PatchedMethods.Add(original);
-      }
-
-      if (!Patches.ContainsKey(original))
-      {
-        Patches[original] = new();
+        PatchAction(original);
+        PatchedMethods[original] = new PatchInfo<DelegateT>(original);
       }
 
       int ID = MaxID++;
 
-      Patches[original][ID] = patch;
+      PatchedMethods[original].Patches[ID] = patch;
 
       return ID;
     }
 
     public void Remove(MethodBase original, int ID)
     {
-      if (!PatchedMethods.Contains(original)) return;
-      if (!Patches.ContainsKey(original)) return;
-
-      Patches[original].Remove(ID);
+      if (!WasPatched(original)) return;
+      PatchedMethods[original].Patches.Remove(ID);
     }
 
     public void Clear()
     {
-      Patches.Clear();
+      PatchedMethods.Clear();
     }
   }
 }
