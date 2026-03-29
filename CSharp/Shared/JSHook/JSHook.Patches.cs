@@ -19,7 +19,7 @@ namespace JSForBarotrauma
 {
   public partial class JSHook
   {
-    public static void GenericPostfix(MethodBase __originalMethod, object __instance, object[] __args)
+    public static void GenericPostfix(MethodBase __originalMethod, object __instance, object[] __args, ref object __result)
     {
       if (!Postfixes.Patches.ContainsKey(__originalMethod)) return;
 
@@ -27,7 +27,7 @@ namespace JSForBarotrauma
       {
         try
         {
-          postfix.Invoke(__instance, __args);
+          postfix.Invoke(__instance, __args, ref __result);
         }
         catch (Exception e)
         {

@@ -19,7 +19,7 @@ namespace JSForBarotrauma
 {
   public static partial class JSHook
   {
-    public delegate void JSPostfix(object __instance, object[] __args);
+    public delegate void JSPostfix(object __instance, object[] __args, ref object __result);
     public delegate bool JSPrefix(object __instance, object[] __args);
     public delegate bool JSFinalizer(object __instance, object[] __args, Exception __exception);
 
