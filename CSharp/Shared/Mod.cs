@@ -42,7 +42,10 @@ namespace JSForBarotrauma
       => ContentPackageManager.EnabledPackages.All.First(p => p.Name == ModName);
 
 
-    public static Logger Logger { get; private set; } = new();
+    public static Logger Logger { get; private set; } = new()
+    {
+      PrintFilePath = false
+    };
     public static ConsoleInterface ConsoleInterface { get; private set; }
     public static EngineWrapper Engine { get; private set; }
     public static Harmony Harmony { get; private set; }

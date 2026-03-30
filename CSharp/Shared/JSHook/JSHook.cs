@@ -22,7 +22,7 @@ namespace JSForBarotrauma
     //TODO move args to ptable
     public delegate void JSPostfix(object __instance, object[] __args, FakeRefObject __result);
     public delegate bool JSPrefix(object __instance, object[] __args, FakeRefObject __result);
-    public delegate bool JSFinalizer(object __instance, object[] __args, Exception __exception);
+    public delegate Exception JSFinalizer(object __instance, object[] __args, FakeRefObject __result, Exception __exception);
 
 
 
@@ -36,16 +36,17 @@ namespace JSForBarotrauma
       PatchAction = (original) => Mod.Harmony.Patch(original, postfix: new HarmonyMethod(GenericPostfix)),
     };
 
-    // public PatchTracker<JSPrefix> Prefixes { get; } = new()
-    // {
-    //   HarmonyMethodFactory = () => new HarmonyMethod(GenericPrefix),
-    //   PatchType = PatchType.Prefix,
-    // };
+    public static PatchTracker<JSFinalizer> Finalizers { get; } = new()
+    {
+      PatchAction = (original) => Mod.Harmony.Patch(original, finalizer: new HarmonyMethod(GenericFinalizer)),
+    };
+
 
     public static void Clear()
     {
-      // Prefixes.Clear();
+      Prefixes.Clear();
       Postfixes.Clear();
+      Finalizers.Clear();
 
       //TODO mb i should have separate harmony just for hooks
       Mod.Harmony.UnpatchSelf();
