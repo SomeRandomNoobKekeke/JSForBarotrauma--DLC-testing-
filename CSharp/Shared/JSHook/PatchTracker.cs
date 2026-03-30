@@ -49,7 +49,15 @@ namespace JSForBarotrauma
     {
       if (!WasPatched(original))
       {
-        PatchAction(original);
+        try
+        {
+          PatchAction(original);
+        }
+        catch (Exception e)
+        {
+          Mod.Logger.Error($"Harmony error:");
+          throw e;
+        }
         PatchedMethods[original] = new PatchInfo<DelegateT>(original);
       }
 

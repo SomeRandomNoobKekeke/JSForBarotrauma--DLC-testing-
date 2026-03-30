@@ -19,26 +19,55 @@ namespace JSForBarotrauma
 {
   public static partial class JSHook
   {
-    //TODO move args to ptable
     public delegate void JSPostfix(object __instance, LilParamTable __args, FakeRefObject __result);
     public delegate bool JSPrefix(object __instance, LilParamTable __args, FakeRefObject __result);
     public delegate Exception JSFinalizer(object __instance, LilParamTable __args, FakeRefObject __result, Exception __exception);
 
 
-
+    //BRUH it's spreading
     public static PatchTracker<JSPrefix> Prefixes { get; } = new()
     {
-      PatchAction = (original) => Mod.Harmony.Patch(original, prefix: new HarmonyMethod(GenericPrefix)),
+      PatchAction = (original) =>
+      {
+        if (original is MethodInfo method && method.ReturnType != typeof(void))
+        {
+          Mod.Harmony.Patch(original, prefix: new HarmonyMethod(GenericPrefix));
+        }
+        else
+        {
+          Mod.Harmony.Patch(original, prefix: new HarmonyMethod(GenericVoidPrefix));
+        }
+      },
     };
 
     public static PatchTracker<JSPostfix> Postfixes { get; } = new()
     {
-      PatchAction = (original) => Mod.Harmony.Patch(original, postfix: new HarmonyMethod(GenericPostfix)),
+      PatchAction = (original) =>
+      {
+        if (original is MethodInfo method && method.ReturnType != typeof(void))
+        {
+          Mod.Harmony.Patch(original, postfix: new HarmonyMethod(GenericPostfix));
+        }
+        else
+        {
+          Mod.Harmony.Patch(original, postfix: new HarmonyMethod(GenericVoidPostfix));
+        }
+      },
     };
 
     public static PatchTracker<JSFinalizer> Finalizers { get; } = new()
     {
-      PatchAction = (original) => Mod.Harmony.Patch(original, finalizer: new HarmonyMethod(GenericFinalizer)),
+      PatchAction = (original) =>
+      {
+        if (original is MethodInfo method && method.ReturnType != typeof(void))
+        {
+          Mod.Harmony.Patch(original, finalizer: new HarmonyMethod(GenericFinalizer));
+        }
+        else
+        {
+          Mod.Harmony.Patch(original, finalizer: new HarmonyMethod(GenericVoidFinalizer));
+        }
+      },
     };
 
 
