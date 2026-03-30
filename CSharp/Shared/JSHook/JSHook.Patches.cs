@@ -28,11 +28,12 @@ namespace JSForBarotrauma
       var info = Postfixes.PatchedMethods[__originalMethod];
 
       FakeRefObject Result = new FakeRefObject(__result);
+      info.PTable.Args = __args;
       foreach (JSPostfix postfix in info.Patches.Values)
       {
         try
         {
-          postfix.Invoke(__instance, __args, Result);
+          postfix.Invoke(__instance, info.PTable, Result);
         }
         catch (Exception e)
         {
@@ -40,7 +41,7 @@ namespace JSForBarotrauma
           Mod.Logger.Error(e.Message);
         }
       }
-
+      info.PTable.Args = null;
       Result.MapBack(ref __result);
     }
 
@@ -57,11 +58,12 @@ namespace JSForBarotrauma
       bool shouldRun = true;
 
       FakeRefObject Result = new FakeRefObject(__result);
+      info.PTable.Args = __args;
       foreach (JSPrefix prefix in info.Patches.Values)
       {
         try
         {
-          shouldRun = shouldRun && prefix.Invoke(__instance, __args, Result);
+          shouldRun = shouldRun && prefix.Invoke(__instance, info.PTable, Result);
         }
         catch (Exception e)
         {
@@ -69,6 +71,7 @@ namespace JSForBarotrauma
           Mod.Logger.Error(e.Message);
         }
       }
+      info.PTable.Args = null;
       Result.MapBack(ref __result);
 
       return shouldRun;
@@ -82,11 +85,12 @@ namespace JSForBarotrauma
       var info = Finalizers.PatchedMethods[__originalMethod];
 
       FakeRefObject Result = new FakeRefObject(__result);
+      info.PTable.Args = __args;
       foreach (JSFinalizer finalizer in info.Patches.Values)
       {
         try
         {
-          __exception = finalizer.Invoke(__instance, __args, Result, __exception);
+          __exception = finalizer.Invoke(__instance, info.PTable, Result, __exception);
         }
         catch (Exception e)
         {
@@ -94,6 +98,7 @@ namespace JSForBarotrauma
           Mod.Logger.Error(e.Message);
         }
       }
+      info.PTable.Args = null;
       Result.MapBack(ref __result);
 
       return __exception;

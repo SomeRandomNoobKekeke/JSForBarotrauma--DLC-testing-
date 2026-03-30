@@ -17,52 +17,49 @@ using BaroJunk;
 
 namespace JSForBarotrauma
 {
-  /// <summary>
-  /// not used yet
-  /// </summary>
-  public class ParamTableBase : IPropertyBag
+  public class LilParamTable : IPropertyBag
   {
-    public FakeRefObject Arg1 { get; } = new();
-    public FakeRefObject Arg2 { get; } = new();
-    public FakeRefObject Arg3 { get; } = new();
-    public FakeRefObject Arg4 { get; } = new();
+    public object[] Args { get; set; }
 
-    public FakeRefObject Result { get; } = new();
-
-    public Dictionary<string, FakeRefObject> Mapping { get; } = new();
+    public Dictionary<string, int> Mapping { get; } = new();
 
     public object this[string key]
     {
-      get => Mapping[key].Value;
-      set => Mapping[key].Value = value;
+      get => Args[Mapping[key]];
+      set => Args[Mapping[key]] = value;
     }
 
-    public ParamTableBase(ParameterInfo[] parameters)
+    public LilParamTable(ParameterInfo[] parameters)
     {
-      Mapping["Result"] = Result;
-
-      if (parameters.Length > 0) Mapping[parameters[0].Name] = Arg1;
-      if (parameters.Length > 1) Mapping[parameters[1].Name] = Arg2;
-      if (parameters.Length > 2) Mapping[parameters[2].Name] = Arg3;
-      if (parameters.Length > 3) Mapping[parameters[3].Name] = Arg4;
-      if (parameters.Length > 4) throw new Exception("need more params");
+      for (int i = 0; i < parameters.Length; i++)
+      {
+        Mapping[parameters[i].Name] = i;
+        Mapping[i.ToString()] = i;
+      }
     }
 
 
     #region IDictionary<string, object>
     public ICollection<string> Keys => Mapping.Keys;
-    public ICollection<object> Values => Mapping.Values.Select(o => o.Value).ToList();
+    public ICollection<object> Values => Args;
     public bool ContainsKey(string key) => Mapping.ContainsKey(key);
     public void Add(string key, object value)
     {
-      if (Mapping.ContainsKey(key)) Mapping[key].Value = value;
+      if (Mapping.ContainsKey(key)) Args[Mapping[key]] = value;
     }
-    public bool Remove(string key) => Mapping.Remove(key);
+    public bool Remove(string key) => throw new NotImplementedException();
     public bool TryGetValue(string key, out object value)
     {
-      bool result = Mapping.TryGetValue(key, out FakeRefObject o);
-      value = o?.Value;
-      return result;
+      if (Mapping.ContainsKey(key))
+      {
+        value = Args[Mapping[key]];
+      }
+      else
+      {
+        value = null;
+      }
+
+      return Mapping.ContainsKey(key);
     }
     #endregion
 
@@ -77,10 +74,10 @@ namespace JSForBarotrauma
     void ICollection<KeyValuePair<string, object>>.CopyTo(KeyValuePair<string, object>[] array, int index)
       => throw new Exception("too lazy to implement");
 
-    public void Clear() => Mapping.Clear();
-    public int Count => Mapping.Count();
+    public void Clear() => throw new NotImplementedException();
+    public int Count => Args.Count();
 
-    bool ICollection<KeyValuePair<string, object>>.IsReadOnly => false;
+    bool ICollection<KeyValuePair<string, object>>.IsReadOnly => false; // eh
     #endregion
 
 
@@ -88,25 +85,35 @@ namespace JSForBarotrauma
 
     public struct ProxyEnumerator : IEnumerator<KeyValuePair<string, object>>, IEnumerator
     {
-      private IEnumerator<KeyValuePair<string, FakeRefObject>> Enumerator;
+      private LilParamTable Table;
+      private IEnumerator<KeyValuePair<string, int>> Enumerator;
 
       public bool MoveNext() => Enumerator.MoveNext();
       public KeyValuePair<string, object> Current
-        => new KeyValuePair<string, object>(Enumerator.Current.Key, Enumerator.Current.Value.Value);
-      object? IEnumerator.Current => Enumerator.Current;
+        => new KeyValuePair<string, object>(Enumerator.Current.Key, Table.Args[Enumerator.Current.Value]);
+      object? IEnumerator.Current => Current;
       void IEnumerator.Reset() => Enumerator.Reset();
 
-      public ProxyEnumerator(IEnumerator<KeyValuePair<string, FakeRefObject>> enumerator) => Enumerator = enumerator;
-      public void Dispose() { }
+      public ProxyEnumerator(LilParamTable table)
+      {
+        Table = table;
+        Enumerator = table.Mapping.GetEnumerator();
+      }
+
+      public void Dispose()
+      {
+        Table = null;
+        Enumerator = null;
+      }
     }
 
 
 
     #region IEnumerable
     IEnumerator<KeyValuePair<string, object>> IEnumerable<KeyValuePair<string, object>>.GetEnumerator()
-      => new ProxyEnumerator(Mapping.GetEnumerator());
+      => new ProxyEnumerator(this);
 
-    IEnumerator IEnumerable.GetEnumerator() => new ProxyEnumerator(Mapping.GetEnumerator());
+    IEnumerator IEnumerable.GetEnumerator() => new ProxyEnumerator(this);
     #endregion
 
 

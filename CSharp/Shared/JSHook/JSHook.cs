@@ -20,9 +20,9 @@ namespace JSForBarotrauma
   public static partial class JSHook
   {
     //TODO move args to ptable
-    public delegate void JSPostfix(object __instance, object[] __args, FakeRefObject __result);
-    public delegate bool JSPrefix(object __instance, object[] __args, FakeRefObject __result);
-    public delegate Exception JSFinalizer(object __instance, object[] __args, FakeRefObject __result, Exception __exception);
+    public delegate void JSPostfix(object __instance, LilParamTable __args, FakeRefObject __result);
+    public delegate bool JSPrefix(object __instance, LilParamTable __args, FakeRefObject __result);
+    public delegate Exception JSFinalizer(object __instance, LilParamTable __args, FakeRefObject __result, Exception __exception);
 
 
 
