@@ -43,6 +43,8 @@ namespace JSForBarotrauma
     {
       if (WasModified) param = _value;
     }
+    public FakeRefObject() { }
+    public FakeRefObject(object value) => _value = value;
   }
 }
 

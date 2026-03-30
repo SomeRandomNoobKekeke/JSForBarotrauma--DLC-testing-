@@ -21,7 +21,6 @@ namespace JSForBarotrauma
   {
 
     public static void GenericPostfix(
-      ref object __0, ref object __1,
       MethodBase __originalMethod, object __instance, object[] __args, ref object __result
     )
     {
@@ -31,17 +30,9 @@ namespace JSForBarotrauma
       {
         try
         {
-          info.PTable.Arg1.Init(__0);
-          info.PTable.Arg2.Init(__1);
-
-          info.PTable.Result.Init(__result);
-
-          postfix.Invoke(__instance, info.PTable);
-
-          info.PTable.Arg1.MapBack(ref __0);
-          info.PTable.Arg2.MapBack(ref __1);
-          info.PTable.Result.MapBack(ref __result);
-
+          FakeRefObject Result = new FakeRefObject(__result);
+          postfix.Invoke(__instance, __args, Result);
+          Result.MapBack(ref __result);
         }
         catch (Exception e)
         {
@@ -51,27 +42,31 @@ namespace JSForBarotrauma
       }
     }
 
-    // public static bool GenericPrefix(MethodBase __originalMethod, object __instance, object[] __args)
-    // {
-    //   if (!Prefixes.Patches.ContainsKey(__originalMethod)) return true;
+    public static bool GenericPrefix(
+      MethodBase __originalMethod, object __instance, object[] __args, ref object __result
+    )
+    {
+      var info = Prefixes.PatchedMethods[__originalMethod];
 
-    //   bool shouldRun = true;
+      bool shouldRun = true;
 
-    //   foreach (JSPrefix prefix in Prefixes.Patches[__originalMethod].Values)
-    //   {
-    //     try
-    //     {
-    //       shouldRun = shouldRun && prefix.Invoke(__instance, __args);
-    //     }
-    //     catch (Exception e)
-    //     {
-    //       Mod.Logger.Error($"Error in JS Prefix to [{__originalMethod.DeclaringType}.{__originalMethod}]:");
-    //       Mod.Logger.Error(e);
-    //     }
-    //   }
+      foreach (JSPrefix prefix in info.Patches.Values)
+      {
+        try
+        {
+          FakeRefObject Result = new FakeRefObject(__result);
+          shouldRun = shouldRun && prefix.Invoke(__instance, __args, Result);
+          Result.MapBack(ref __result);
+        }
+        catch (Exception e)
+        {
+          Mod.Logger.Error($"Error in JS Prefix to [{__originalMethod.DeclaringType}.{__originalMethod}]:");
+          Mod.Logger.Error(e);
+        }
+      }
 
-    //   return shouldRun;
-    // }
+      return shouldRun;
+    }
 
 
     // public static bool GenericFinalizer(MethodBase __originalMethod, object __instance, object[] __args)

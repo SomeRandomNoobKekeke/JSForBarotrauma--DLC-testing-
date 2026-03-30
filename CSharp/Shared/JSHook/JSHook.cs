@@ -20,16 +20,16 @@ namespace JSForBarotrauma
   public static partial class JSHook
   {
     //TODO move args to ptable
-    public delegate void JSPostfix(object __instance, ParamTableBase ptable);
-    public delegate bool JSPrefix(object __instance, object[] __args);
+    public delegate void JSPostfix(object __instance, object[] __args, FakeRefObject __result);
+    public delegate bool JSPrefix(object __instance, object[] __args, FakeRefObject __result);
     public delegate bool JSFinalizer(object __instance, object[] __args, Exception __exception);
 
 
 
-    // public static PatchTracker<JSPrefix> Prefixes { get; } = new()
-    // {
-    //   PatchAction = (original) => Mod.Harmony.Patch(original, prefix: new HarmonyMethod(GenericPrefix)),
-    // };
+    public static PatchTracker<JSPrefix> Prefixes { get; } = new()
+    {
+      PatchAction = (original) => Mod.Harmony.Patch(original, prefix: new HarmonyMethod(GenericPrefix)),
+    };
 
     public static PatchTracker<JSPostfix> Postfixes { get; } = new()
     {

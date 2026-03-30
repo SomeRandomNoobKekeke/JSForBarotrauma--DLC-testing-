@@ -17,6 +17,9 @@ using BaroJunk;
 
 namespace JSForBarotrauma
 {
+  /// <summary>
+  /// IPropertyBag objects can be used as native js objects inside scripts
+  /// </summary>
   public class SimplestPropertyBag : IPropertyBag
   {
     public Dictionary<string, object> Dict { get; } = new();

@@ -27,12 +27,12 @@ namespace JSForBarotrauma
   {
     public class PatchInfo<DelegateT>
     {
-      public ParamTableBase PTable { get; }
+      // public ParamTableBase PTable { get; }
       public Dictionary<int, DelegateT> Patches { get; } = new();
 
       public PatchInfo(MethodBase original)
       {
-        PTable = new ParamTableBase(original.GetParameters());
+        // PTable = new ParamTableBase(original.GetParameters());
       }
     }
 

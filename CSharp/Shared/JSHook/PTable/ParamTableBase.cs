@@ -17,6 +17,9 @@ using BaroJunk;
 
 namespace JSForBarotrauma
 {
+  /// <summary>
+  /// not used yet
+  /// </summary>
   public class ParamTableBase : IPropertyBag
   {
     public FakeRefObject Arg1 { get; } = new();
