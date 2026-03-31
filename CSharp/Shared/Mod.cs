@@ -80,15 +80,17 @@ namespace JSForBarotrauma
 
     public void Dispose()
     {
+
       ConsoleInterface.RemoveCommands();
       ConsoleInterface = null;
 
       Engine.Stop();
       Engine = null;
 
-      Harmony.UnpatchSelf();
+      //Backup Harmony.UnpatchSelf, there's another UnpatchSelf inside Engine.Stop JSHook.Clear()
+      //TODO make it less cringe
+      Harmony?.UnpatchSelf();
       Harmony = null;
-
 
       DebuggerTracker.Untrack();
       DebuggerTracker = null;

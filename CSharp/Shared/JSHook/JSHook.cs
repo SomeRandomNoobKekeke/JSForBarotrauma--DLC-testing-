@@ -73,12 +73,12 @@ namespace JSForBarotrauma
 
     public static void Clear()
     {
+      //TODO mb i should have separate harmony just for hooks
+      Mod.Harmony.UnpatchSelf();
+
       Prefixes.Clear();
       Postfixes.Clear();
       Finalizers.Clear();
-
-      //TODO mb i should have separate harmony just for hooks
-      Mod.Harmony.UnpatchSelf();
     }
   }
 }
