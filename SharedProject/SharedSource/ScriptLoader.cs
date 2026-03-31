@@ -50,6 +50,10 @@ namespace JSForBarotrauma
       }
     }
 
+    //public void LoadScriptsFromMod(ContentPackage package)
+    //  => LoadScriptsFromMod(package.Dir);
+
+    // Barotrauma.Plugins compatibility
     public void LoadScriptsFromMod(ContentPackage package)
       => LoadScriptsFromMod(Path.Combine(Directory.GetCurrentDirectory(), package.Dir)); //HACK
 

@@ -36,17 +36,22 @@ namespace JSForBarotrauma
     /// Do it old fashioned way
     /// </summary>
     public static string ModName = "JS for Barotrauma (DLC testing)";
+    // Barotrauma.Plugins compatibility
+    //public static string ModName = "JS for Barotrauma [code]";
     public static ContentPackage JSForBarotraumaPackage
       => ContentPackageManager.EnabledPackages.All.First(p => p.Name == ModName);
 
 
-    public static Logger Logger { get; private set; } = new();
+    public static Logger Logger { get; private set; } = new()
+    {
+      PrintFilePath = false
+    };
     public static ConsoleInterface ConsoleInterface { get; private set; }
     public static EngineWrapper Engine { get; private set; }
     public static Harmony Harmony { get; private set; }
     public static DebuggerTracker DebuggerTracker { get; private set; } = new();
 
-
+    public void Initialize() => Init();
     public void Init()
     {
       Engine = new();
@@ -60,6 +65,8 @@ namespace JSForBarotrauma
     }
 
 
+
+
     public void PatchAll()
     {
       //_consoleInterface.AddPatches(Harmony);
@@ -67,19 +74,22 @@ namespace JSForBarotrauma
 
 
     public void OnContentLoaded() { }
+    public void OnLoadCompleted() { }
+    public void PreInitPatching() { }
+
 
     public void Dispose()
     {
+
+
       ConsoleInterface.RemoveCommands();
       ConsoleInterface = null;
 
       Engine.Stop();
       Engine = null;
 
-      
-      Harmony.UnpatchSelf();
+      Harmony?.UnpatchSelf();
       Harmony = null;
-
 
       DebuggerTracker.Untrack();
       DebuggerTracker = null;

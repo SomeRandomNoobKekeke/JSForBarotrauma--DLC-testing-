@@ -29,6 +29,10 @@ namespace JSForBarotrauma
       public ClearableEvent OnStop { get; } = new();
       public ScriptObject Global => Engine?.Global;
 
+      public void Throw(Exception exception)
+      {
+        throw exception;
+      }
       public void Reload()
       {
         Utils.RunWithDelay(() => Mod.Engine.Reload());
