@@ -20,7 +20,13 @@ namespace JSForBarotrauma
   public partial class EngineWrapper
   {
     public V8ScriptEngine Engine { get; private set; }
+
+#if CLIENT
     public int DebugPort { get; } = 9222;
+#elif SERVER
+    public int DebugPort { get; } = 9223;
+#endif
+
     public bool DebuggerAttached { get; set; }
 
     public bool IsRunning => Engine != null;
@@ -77,13 +83,14 @@ namespace JSForBarotrauma
       JS.OnStop.Raise();
       JS.OnStop.Clear();
 
+      JSHook.Clear();
+
       Engine.Interrupt();
       Engine.Dispose();
       Engine = null;
 
       DocumentLoader.Default.DiscardCachedDocuments();
 
-      JSHook.Clear();
       Mod.Logger.Log(ConsoleInterface.WrapInBraces(Logger.WrapInColor("JS Stopped", "White")));
     }
 
