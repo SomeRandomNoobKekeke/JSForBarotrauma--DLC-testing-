@@ -49,6 +49,8 @@ namespace JSForBarotrauma
     {
       if (!WasPatched(original))
       {
+        PatchedMethods[original] = new PatchInfo<DelegateT>(original);
+
         try
         {
           PatchAction(original);
@@ -58,7 +60,6 @@ namespace JSForBarotrauma
           Mod.Logger.Error($"Harmony error:");
           throw e;
         }
-        PatchedMethods[original] = new PatchInfo<DelegateT>(original);
       }
 
       int ID = MaxID++;
