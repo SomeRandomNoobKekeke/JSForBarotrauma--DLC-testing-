@@ -27,7 +27,7 @@ namespace JSForBarotrauma
     {
       try
       {
-        var info = Postfixes.PatchedMethods[__originalMethod];
+        var info = Postfixes.PatchInfos[__originalMethod];
 
         FakeRefObject Result = new FakeRefObject(__result);
         info.PTable.Args = __args;
@@ -51,7 +51,7 @@ namespace JSForBarotrauma
     {
       try
       {
-        var info = Postfixes.PatchedMethods[__originalMethod];
+        var info = Postfixes.PatchInfos[__originalMethod];
 
         FakeRefObject Result = new FakeRefObject(null);
         info.PTable.Args = __args;
@@ -78,7 +78,7 @@ namespace JSForBarotrauma
     {
       try
       {
-        var info = Prefixes.PatchedMethods[__originalMethod];
+        var info = Prefixes.PatchInfos[__originalMethod];
 
         bool shouldRun = true;
 
@@ -106,7 +106,7 @@ namespace JSForBarotrauma
     {
       try
       {
-        var info = Prefixes.PatchedMethods[__originalMethod];
+        var info = Prefixes.PatchInfos[__originalMethod];
 
         bool shouldRun = true;
 
@@ -135,7 +135,7 @@ namespace JSForBarotrauma
     {
       try
       {
-        var info = Finalizers.PatchedMethods[__originalMethod];
+        var info = Finalizers.PatchInfos[__originalMethod];
 
         FakeRefObject Result = new FakeRefObject(__result);
         info.PTable.Args = __args;
@@ -161,7 +161,7 @@ namespace JSForBarotrauma
     {
       try
       {
-        var info = Finalizers.PatchedMethods[__originalMethod];
+        var info = Finalizers.PatchInfos[__originalMethod];
 
         FakeRefObject Result = new FakeRefObject(null);
         info.PTable.Args = __args;

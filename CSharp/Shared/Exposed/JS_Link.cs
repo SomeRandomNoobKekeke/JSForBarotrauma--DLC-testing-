@@ -29,6 +29,12 @@ namespace JSForBarotrauma
       public ClearableEvent OnStop { get; } = new();
       public ScriptObject Global => Engine?.Global;
 
+      public bool REPL
+      {
+        get => Mod.ConsoleInterface.REPL;
+        set => Mod.ConsoleInterface.REPL = value;
+      }
+
       public void Throw(Exception exception)
       {
         throw exception;

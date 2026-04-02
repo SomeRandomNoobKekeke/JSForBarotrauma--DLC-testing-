@@ -45,17 +45,19 @@ namespace JSForBarotrauma
     public int MaxID { get; private set; } = 0;
 
 
-    public Dictionary<MethodBase, PatchInfo<DelegateT>> PatchedMethods { get; } = new();
+    public Dictionary<MethodBase, PatchInfo<DelegateT>> PatchInfos { get; } = new();
+    public HashSet<MethodBase> PatchedMethods { get; } = new();
 
     public required Action<MethodBase> PatchAction { get; init; }
 
-    public bool WasPatched(MethodBase original) => PatchedMethods.ContainsKey(original);
+    public bool WasPatched(MethodBase original) => PatchedMethods.Contains(original);
 
     public int Add(MethodBase original, DelegateT patch)
     {
       if (!WasPatched(original))
       {
-        PatchedMethods[original] = new PatchInfo<DelegateT>(original);
+        PatchInfos[original] = new PatchInfo<DelegateT>(original);
+        PatchedMethods.Add(original);
 
         try
         {
@@ -70,7 +72,7 @@ namespace JSForBarotrauma
 
       int ID = MaxID++;
 
-      PatchedMethods[original].Patches[ID] = patch;
+      PatchInfos[original].Patches[ID] = patch;
 
       return ID;
     }
@@ -78,15 +80,17 @@ namespace JSForBarotrauma
     public void Remove(MethodBase original, int ID)
     {
       if (!WasPatched(original)) return;
-      PatchedMethods[original].Patches.Remove(ID);
+      PatchInfos[original].Patches.Remove(ID);
     }
 
     public void Clear()
     {
-      foreach (var info in PatchedMethods.Values)
+      foreach (var info in PatchInfos.Values)
       {
         info.Clear();
       }
+
+      PatchedMethods.Clear();
     }
   }
 }

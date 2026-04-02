@@ -1,19 +1,19 @@
 ﻿
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Diagnostics;
-using System.IO;
-
+using BaroJunk;
 using Barotrauma;
-using Microsoft.Xna.Framework;
+using Barotrauma.Networking;
 using HarmonyLib;
 using Microsoft.ClearScript;
 using Microsoft.ClearScript.JavaScript;
 using Microsoft.ClearScript.V8;
-using BaroJunk;
-using Barotrauma.Networking;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Input;
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
+using System.Linq;
+using System.Reflection;
 
 namespace JSForBarotrauma
 {
@@ -26,14 +26,16 @@ namespace JSForBarotrauma
        original: typeof(DebugConsole).GetMethod("IsCommandPermitted", AccessTools.all),
        postfix: new HarmonyMethod(typeof(ConsoleInterface).GetMethod("PermitCommands"))
       );
-#endif 
+
 
       harmony.Patch(
        original: typeof(DebugConsole).GetMethod("ExecuteCommand", AccessTools.all),
        prefix: new HarmonyMethod(typeof(ConsoleInterface).GetMethod("InterceptJSREPL"))
       );
+#endif 
     }
 
+#if CLIENT
     public static void InterceptJSREPL(string inputtedCommands, ref bool __runOriginal)
     {
       if (Mod.ConsoleInterface is null) return;
@@ -58,14 +60,21 @@ namespace JSForBarotrauma
         Mod.Logger.Error(e);
       }
     }
-
+#endif
 
     public EngineWrapper EngineWrapper { get; }
-    public bool REPL { get; set; }
+    private bool repl; public bool REPL
+    {
+      get => repl;
+      set
+      {
+        repl = value;
+        Mod.Logger.Log(WrapInBraces($"JS REPL mode [{Logger.WrapInColor(REPL ? " Enabled " : " Disabled ", "white")}]"));
+      }
+    }
     public void ToggleRepl()
     {
       REPL = !REPL;
-      Mod.Logger.Log(WrapInBraces($"JS REPL mode [{Logger.WrapInColor(REPL ? " Enabled " : " Disabled ", "white")}]"));
     }
 
     public void ExecuteJSCommand(string command)

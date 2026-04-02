@@ -20,11 +20,11 @@ namespace JSForBarotrauma
   public partial class ConsoleInterface
   {
 #if CLIENT
-    public static void PermitCommands(Identifier command, GameClient client, ref bool __result)
-    {
-      if (Mod.ConsoleInterface is null) return;
-      if (Mod.ConsoleInterface.AddedCommands.Any(c => c.Names.Contains(command.Value))) __result = true;
-    }
+   public static void PermitCommands(Identifier command, GameClient client, ref bool __result)
+   {
+     if (Mod.ConsoleInterface is null) return;
+     if (Mod.ConsoleInterface.AddedCommands.Any(c => c.Names.Contains(command.Value))) __result = true;
+   }
 #endif
   }
 
