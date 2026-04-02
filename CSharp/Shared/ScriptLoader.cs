@@ -17,7 +17,7 @@ using BaroJunk;
 
 namespace JSForBarotrauma
 {
-  public class ScriptLoader
+  public partial class ScriptLoader
   {
     public static string AutorunPath = Path.Combine("JS", "Autorun");
     public static string JSPath = "JS";
@@ -49,13 +49,6 @@ namespace JSForBarotrauma
         return null;
       }
     }
-
-    public void LoadScriptsFromMod(ContentPackage package)
-      => LoadScriptsFromMod(package.Dir);
-
-    // Barotrauma.Plugins compatibility
-    // public void LoadScriptsFromMod(ContentPackage package)
-    //   => LoadScriptsFromMod(Path.Combine(Directory.GetCurrentDirectory(), package.Dir)); //HACK
 
     public void LoadScriptsFromMod(string path)
     {
