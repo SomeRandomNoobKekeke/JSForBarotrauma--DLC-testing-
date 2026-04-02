@@ -118,17 +118,14 @@ namespace BaroJunk
 
     private void _Print(object msg, Color color)
     {
-      JSForBarotrauma.Mod.DebugConsole?.NewMessage(
-        Serializer.Serialize(msg), 
-        color
-      );
+      DebugConsole.NewMessage(Serializer.Serialize(msg), color);
       //LuaCsLogger.LogMessage(Serializer.Serialize(msg), color * 0.8f, color);
     }
 
     private void _PrintFilePath(Color color, string source, int lineNumber)
     {
       var fi = new FileInfo(source);
-      JSForBarotrauma.Mod.DebugConsole?.NewMessage(
+      DebugConsole.NewMessage(
         $"{fi.Directory.Name}/{fi.Name}:{lineNumber}",
         color
       );
