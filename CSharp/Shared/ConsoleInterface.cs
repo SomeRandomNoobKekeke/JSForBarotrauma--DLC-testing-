@@ -7,7 +7,6 @@ using System.Diagnostics;
 using System.IO;
 
 using Barotrauma;
-using Barotrauma.Plugins;
 using Microsoft.Xna.Framework;
 using HarmonyLib;
 using Microsoft.ClearScript;
@@ -45,40 +44,27 @@ namespace JSForBarotrauma
       => $"------------------------<<< {msg} >>>------------------------";
 
 
-    //public List<DebugConsole.Command> AddedCommands = new List<DebugConsole.Command>();
+    public List<DebugConsole.Command> AddedCommands = new List<DebugConsole.Command>();
     public void AddCommands()
     {
-      Mod.DebugConsole.RegisterCommand("js", "", CommandFlags.None, JS_Command,
-        getValidArgs: () => new string[][] { EngineWrapper.Engine.Global.PropertyNames.ToArray() });
+      AddedCommands.Add(new DebugConsole.Command("js", "", JS_Command,
+      () => new string[][] { EngineWrapper.Engine.Global.PropertyNames.ToArray() }));
+      AddedCommands.Add(new DebugConsole.Command("js_reload", "", JSReloadCommand));
+      AddedCommands.Add(new DebugConsole.Command("js_stop", "", JSStopCommand));
+      AddedCommands.Add(new DebugConsole.Command("js_start", "", JSStartCommand));
 
-      Mod.DebugConsole.RegisterCommand("js_reload", "", CommandFlags.None, JSReloadCommand);
-      Mod.DebugConsole.RegisterCommand("js_stop", "", CommandFlags.None, JSStopCommand);
-      Mod.DebugConsole.RegisterCommand("js_start", "", CommandFlags.None, JSStartCommand);
+      DebugConsole.Commands.InsertRange(0, AddedCommands);
     }
 
     public void RemoveCommands()
     {
-      Mod.DebugConsole.DeregisterCommand("js");
-      Mod.DebugConsole.DeregisterCommand("js_reload");
-      Mod.DebugConsole.DeregisterCommand("js_stop");
-      Mod.DebugConsole.DeregisterCommand("js_start");
-
-      //AddedCommands.ForEach(c => DebugConsole.Commands.Remove(c));
-      //AddedCommands.Clear();
+      AddedCommands.ForEach(c => DebugConsole.Commands.Remove(c));
+      AddedCommands.Clear();
     }
 
-    public void JSReloadCommand(object[] args)
-    {
-      Mod.Engine?.Reload();
-    }
-    public void JSStopCommand(object[] args)
-    {
-      Mod.Engine?.Stop();
-    }
-    public void JSStartCommand(object[] args)
-    {
-      Mod.Engine?.Start();
-    }
+    public void JSReloadCommand(object[] args) => Mod.Engine?.Reload();
+    public void JSStopCommand(object[] args) => Mod.Engine?.Stop();
+    public void JSStartCommand(object[] args) => Mod.Engine?.Start();
 
     public void JS_Command(object[] args)
     {
