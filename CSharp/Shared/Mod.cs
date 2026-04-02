@@ -59,6 +59,7 @@ namespace JSForBarotrauma
       Instance = new();
       Engine = new();
       ConsoleInterface = new(Engine);
+      ConsoleInterface.AddPatches(Harmony);
 
       ConsoleInterface.AddCommands();
       DebuggerTracker.Track();
@@ -68,11 +69,6 @@ namespace JSForBarotrauma
 
 
 
-
-    public void PatchAll()
-    {
-      ConsoleInterface.AddPatches(Harmony);
-    }
 
 
     public void OnContentLoaded() { }
