@@ -21,21 +21,17 @@ namespace JSForBarotrauma
   {
     public void AddPatches(Harmony harmony)
     {
+#if CLIENT
       harmony.Patch(
        original: typeof(DebugConsole).GetMethod("IsCommandPermitted", AccessTools.all),
        postfix: new HarmonyMethod(typeof(ConsoleInterface).GetMethod("PermitCommands"))
       );
+#endif 
 
       harmony.Patch(
        original: typeof(DebugConsole).GetMethod("ExecuteCommand", AccessTools.all),
        prefix: new HarmonyMethod(typeof(ConsoleInterface).GetMethod("InterceptJSREPL"))
       );
-    }
-
-    public static void PermitCommands(Identifier command, GameClient client, ref bool __result)
-    {
-      if (Mod.ConsoleInterface is null) return;
-      if (Mod.ConsoleInterface.AddedCommands.Any(c => c.Names.Contains(command.Value))) __result = true;
     }
 
     public static void InterceptJSREPL(string inputtedCommands, ref bool __runOriginal)
