@@ -118,6 +118,7 @@ namespace BaroJunk
 
     private void _Print(object msg, Color color)
     {
+      //TODO it doesn't relay messages to clients and IDebugConsole adds stupid amount of metadata to the messages, find something better
       DebugConsole.NewMessage(Serializer.Serialize(msg), color);
       //LuaCsLogger.LogMessage(Serializer.Serialize(msg), color * 0.8f, color);
     }

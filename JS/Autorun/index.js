@@ -4,4 +4,3 @@ JS.Global["runWith"] = function (expression, context) {
   const func = new Function(...keys, expression);
   return func(...values);
 }
-

@@ -34,16 +34,6 @@ namespace JSForBarotrauma
 
 
     public static Mod Instance { get; private set; }
-    /// <summary>
-    /// Do it old fashioned way
-    /// </summary>
-    // public static string ModName = "JS for Barotrauma (DLC testing)";
-    // Barotrauma.Plugins compatibility
-    public static string ModName = "JS for Barotrauma [code]";
-    public static ContentPackage JSForBarotraumaPackage
-      => ContentPackageManager.EnabledPackages.All.First(p => p.Name == ModName);
-
-
     public static Logger Logger { get; private set; } = new()
     {
       PrintFilePath = false
@@ -74,7 +64,6 @@ namespace JSForBarotrauma
     public void OnContentLoaded() { }
     public void OnLoadCompleted() { }
     public void PreInitPatching() { }
-
 
     public void Dispose()
     {
