@@ -19,17 +19,18 @@ namespace JSForBarotrauma
   public class PluginServices
   {
     public IDebugConsole DebugConsole { get; }
-    public ISettingsService SettingsService { get;  }
-    public IItemComponentRegistrar ItemComponentRegistrar { get;}
-    public ISimpleHookService HookService { get;  }
+    public ISettingsService SettingsService { get; }
+    public IItemComponentRegistrar ItemComponentRegistrar { get; }
+    public ISimpleHookService HookService { get; }
     public IHarmonyProvider HarmonyProvider { get; }
-    public IContentFileRegistrar ContentFileRegistrar { get;  }
-    public IGameNetwork GameNetwork { get;  }
+    public IContentFileRegistrar ContentFileRegistrar { get; }
+    public IGameNetwork GameNetwork { get; }
     public IStatusEffectService StatusEffectService { get; }
 
 
     // Cursed initialization
-    public PluginServices() {
+    public PluginServices()
+    {
       DebugConsole = Mod.DebugConsole;
       SettingsService = Mod.SettingsService;
       ItemComponentRegistrar = Mod.ItemComponentRegistrar;

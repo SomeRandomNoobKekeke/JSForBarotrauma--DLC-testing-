@@ -32,6 +32,8 @@ namespace JSForBarotrauma
 
     public static PluginServices PluginServices { get; private set; } = new();
 
+
+    public static Mod Instance { get; private set; }
     /// <summary>
     /// Do it old fashioned way
     /// </summary>
@@ -54,6 +56,7 @@ namespace JSForBarotrauma
     public void Initialize() => Init();
     public void Init()
     {
+      Instance = new();
       Engine = new();
       ConsoleInterface = new(Engine);
 
@@ -102,6 +105,8 @@ namespace JSForBarotrauma
       StatusEffectService = null;
 
       PluginServices = null;
+
+      Instance = null;
     }
 
 

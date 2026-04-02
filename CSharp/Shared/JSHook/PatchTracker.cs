@@ -34,6 +34,12 @@ namespace JSForBarotrauma
       {
         PTable = new LilParamTable(original.GetParameters());
       }
+
+      public void Clear()
+      {
+        PTable.Args = null;
+        Patches.Clear();
+      }
     }
 
     public int MaxID { get; private set; } = 0;
@@ -77,7 +83,10 @@ namespace JSForBarotrauma
 
     public void Clear()
     {
-      PatchedMethods.Clear();
+      foreach (var info in PatchedMethods.Values)
+      {
+        info.Clear();
+      }
     }
   }
 }
