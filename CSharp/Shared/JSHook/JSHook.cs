@@ -19,6 +19,8 @@ namespace JSForBarotrauma
 {
   public static partial class JSHook
   {
+    public static Harmony Harmony { get; private set; } = new Harmony("JSForBarotraumaHook");
+
     public delegate void JSPostfix(object __instance, LilParamTable __args, FakeRefObject __result);
     public delegate bool JSPrefix(object __instance, LilParamTable __args, FakeRefObject __result);
     public delegate Exception JSFinalizer(object __instance, LilParamTable __args, FakeRefObject __result, Exception __exception);
@@ -31,11 +33,11 @@ namespace JSForBarotrauma
       {
         if (original is MethodInfo method && method.ReturnType != typeof(void))
         {
-          Mod.Harmony.Patch(original, prefix: new HarmonyMethod(GenericPrefix));
+          Harmony.Patch(original, prefix: new HarmonyMethod(GenericPrefix));
         }
         else
         {
-          Mod.Harmony.Patch(original, prefix: new HarmonyMethod(GenericVoidPrefix));
+          Harmony.Patch(original, prefix: new HarmonyMethod(GenericVoidPrefix));
         }
       },
     };
@@ -46,11 +48,11 @@ namespace JSForBarotrauma
       {
         if (original is MethodInfo method && method.ReturnType != typeof(void))
         {
-          Mod.Harmony.Patch(original, postfix: new HarmonyMethod(GenericPostfix));
+          Harmony.Patch(original, postfix: new HarmonyMethod(GenericPostfix));
         }
         else
         {
-          Mod.Harmony.Patch(original, postfix: new HarmonyMethod(GenericVoidPostfix));
+          Harmony.Patch(original, postfix: new HarmonyMethod(GenericVoidPostfix));
         }
       },
     };
@@ -61,11 +63,11 @@ namespace JSForBarotrauma
       {
         if (original is MethodInfo method && method.ReturnType != typeof(void))
         {
-          Mod.Harmony.Patch(original, finalizer: new HarmonyMethod(GenericFinalizer));
+          Harmony.Patch(original, finalizer: new HarmonyMethod(GenericFinalizer));
         }
         else
         {
-          Mod.Harmony.Patch(original, finalizer: new HarmonyMethod(GenericVoidFinalizer));
+          Harmony.Patch(original, finalizer: new HarmonyMethod(GenericVoidFinalizer));
         }
       },
     };
@@ -73,9 +75,11 @@ namespace JSForBarotrauma
 
     public static void Clear()
     {
-      //TODO mb i should have separate harmony just for hooks
-      Mod.Harmony.UnpatchSelf();
+      Mod.Logger.Log($"Harmony unpatched");
+      Harmony.UnpatchSelf();
+      Harmony = null;
 
+      Mod.Logger.Log($"hooks cleared");
       Prefixes.Clear();
       Postfixes.Clear();
       Finalizers.Clear();
