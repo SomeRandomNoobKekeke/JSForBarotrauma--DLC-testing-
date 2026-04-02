@@ -77,7 +77,6 @@ namespace JSForBarotrauma
     {
       //Note: it seems that Harmony.UnpatchSelf() is not instantaneous, so it doesn't matter if i unpatch first, some dead patches might be invoked one more time at least
       Harmony.UnpatchSelf();
-      Harmony = null;
 
       Prefixes.Clear();
       Postfixes.Clear();

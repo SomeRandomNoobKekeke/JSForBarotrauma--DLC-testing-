@@ -43,5 +43,39 @@ namespace JSForBarotrauma
     //     action();
     //   }, 100);
     // }
+
+    public static void PrintAllPatchedMethods()
+    {
+      foreach (MethodBase mb in Harmony.GetAllPatchedMethods())
+      {
+        Mod.Logger.Log($"{mb.DeclaringType}.{mb.Name}");
+
+        Patches patches = Harmony.GetPatchInfo(mb);
+
+        if (patches.Prefixes.Count() > 0 || patches.Postfixes.Count() > 0 || patches.Finalizers.Count() > 0)
+        {
+          Mod.Logger.Log($"{mb.DeclaringType}.{mb.Name}:");
+          if (patches.Prefixes.Count() > 0)
+          {
+            Mod.Logger.Log($"    Prefixes:");
+            foreach (Patch patch in patches.Prefixes) { Mod.Logger.Log($"        {patch.owner}"); }
+          }
+
+          if (patches.Postfixes.Count() > 0)
+          {
+            Mod.Logger.Log($"    Postfixes:");
+            foreach (Patch patch in patches.Postfixes) { Mod.Logger.Log($"        {patch.owner}"); }
+          }
+
+          if (patches.Finalizers.Count() > 0)
+          {
+            Mod.Logger.Log($"    Finalizers:");
+            foreach (Patch patch in patches.Finalizers) { Mod.Logger.Log($"        {patch.owner}"); }
+          }
+        }
+      }
+    }
+
+
   }
 }

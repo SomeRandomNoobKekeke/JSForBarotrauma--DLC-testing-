@@ -46,7 +46,8 @@ namespace JSForBarotrauma
     public void Initialize() => Init();
     public void Init()
     {
-      Instance = new();
+      Instance = this;
+
       Engine = new();
       ConsoleInterface = new(Engine);
       ConsoleInterface.AddPatches(Harmony);
@@ -55,6 +56,7 @@ namespace JSForBarotrauma
       DebuggerTracker.Track();
 
       Engine.Start();
+      // Utils.PrintAllPatchedMethods();
     }
 
 
@@ -75,7 +77,6 @@ namespace JSForBarotrauma
       Engine = null;
 
       Harmony.UnpatchSelf();
-      Harmony = null;
 
       DebuggerTracker.Untrack();
       DebuggerTracker = null;
