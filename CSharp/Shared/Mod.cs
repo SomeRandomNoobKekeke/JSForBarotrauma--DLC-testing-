@@ -48,7 +48,7 @@ namespace JSForBarotrauma
     };
     public static ConsoleInterface ConsoleInterface { get; private set; }
     public static EngineWrapper Engine { get; private set; }
-    public static Harmony Harmony { get; private set; }
+    public static Harmony Harmony { get; private set; } = new Harmony("JSForBarotrauma");
     public static DebuggerTracker DebuggerTracker { get; private set; } = new();
 
     public void Initialize() => Init();
@@ -56,7 +56,6 @@ namespace JSForBarotrauma
     {
       Engine = new();
       ConsoleInterface = new(Engine);
-      Harmony = HarmonyProvider.GetHarmony();
 
       ConsoleInterface.AddCommands();
       DebuggerTracker.Track();
@@ -69,7 +68,7 @@ namespace JSForBarotrauma
 
     public void PatchAll()
     {
-      //_consoleInterface.AddPatches(Harmony);
+      ConsoleInterface.AddPatches(Harmony);
     }
 
 
@@ -87,9 +86,7 @@ namespace JSForBarotrauma
       Engine.Stop();
       Engine = null;
 
-      //Backup Harmony.UnpatchSelf, there's another UnpatchSelf inside Engine.Stop JSHook.Clear()
-      //TODO make it less cringe
-      Harmony?.UnpatchSelf();
+      Harmony.UnpatchSelf();
       Harmony = null;
 
       DebuggerTracker.Untrack();
