@@ -50,10 +50,18 @@ namespace JSForBarotrauma
       Engine.AddHostObject("lib", HostItemFlags.PrivateAccess, exposedAssemblies);
 
 
+      //FIXME it's borked, if two mods have same namespace it won't be added
       HostTypeCollection modAssemblies = new HostTypeCollection();
       foreach (Assembly assembly in Utils.AllModAssemblies())
       {
-        modAssemblies.AddAssembly(assembly);
+        try
+        {
+          modAssemblies.AddAssembly(assembly);
+        }
+        catch (InvalidOperationException e)
+        {
+          Mod.Logger.Warning($"Couldn't add [{assembly}] to modAssemblies");
+        }
       }
       Engine.AddHostObject("modlib", HostItemFlags.PrivateAccess, modAssemblies);
 

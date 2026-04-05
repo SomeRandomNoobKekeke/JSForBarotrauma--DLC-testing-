@@ -103,6 +103,7 @@ namespace JSForBarotrauma
       AddedCommands.Add(new DebugConsole.Command("js_reload", "", JSReloadCommand));
       AddedCommands.Add(new DebugConsole.Command("js_stop", "", JSStopCommand));
       AddedCommands.Add(new DebugConsole.Command("js_start", "", JSStartCommand));
+      AddedCommands.Add(new DebugConsole.Command("printallharmonypatches", "", PrintAllHarmonyPatches));
 
       DebugConsole.Commands.InsertRange(0, AddedCommands);
     }
@@ -116,6 +117,7 @@ namespace JSForBarotrauma
     public void JSReloadCommand(object[] args) => Mod.Engine?.Reload();
     public void JSStopCommand(object[] args) => Mod.Engine?.Stop();
     public void JSStartCommand(object[] args) => Mod.Engine?.Start();
+    public void PrintAllHarmonyPatches(object[] args) => Utils.PrintAllPatchedMethods();
 
     public void JS_Command(object[] args)
     {

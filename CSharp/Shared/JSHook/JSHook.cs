@@ -41,11 +41,11 @@ namespace JSForBarotrauma
       {
         if (original is MethodInfo method && method.ReturnType != typeof(void))
         {
-          Mod.Harmony.Patch(original, prefix: new HarmonyMethod(GenericPrefix));
+          Harmony.Patch(original, prefix: new HarmonyMethod(GenericPrefix));
         }
         else
         {
-          Mod.Harmony.Patch(original, prefix: new HarmonyMethod(GenericVoidPrefix));
+          Harmony.Patch(original, prefix: new HarmonyMethod(GenericVoidPrefix));
         }
       },
     };
@@ -56,11 +56,11 @@ namespace JSForBarotrauma
       {
         if (original is MethodInfo method && method.ReturnType != typeof(void))
         {
-          Mod.Harmony.Patch(original, postfix: new HarmonyMethod(GenericPostfix));
+          Harmony.Patch(original, postfix: new HarmonyMethod(GenericPostfix));
         }
         else
         {
-          Mod.Harmony.Patch(original, postfix: new HarmonyMethod(GenericVoidPostfix));
+          Harmony.Patch(original, postfix: new HarmonyMethod(GenericVoidPostfix));
         }
       },
     };
@@ -71,11 +71,11 @@ namespace JSForBarotrauma
       {
         if (original is MethodInfo method && method.ReturnType != typeof(void))
         {
-          Mod.Harmony.Patch(original, finalizer: new HarmonyMethod(GenericFinalizer));
+          Harmony.Patch(original, finalizer: new HarmonyMethod(GenericFinalizer));
         }
         else
         {
-          Mod.Harmony.Patch(original, finalizer: new HarmonyMethod(GenericVoidFinalizer));
+          Harmony.Patch(original, finalizer: new HarmonyMethod(GenericVoidFinalizer));
         }
       },
     };
@@ -84,7 +84,7 @@ namespace JSForBarotrauma
     public static void Clear()
     {
       //Note: it seems that Harmony.UnpatchSelf() is not instantaneous, so it doesn't matter if i unpatch first, some dead patches might be invoked one more time at least
-      //Harmony.UnpatchSelf();
+      Harmony.UnpatchSelf();
 
       Prefixes.Clear();
       Postfixes.Clear();
