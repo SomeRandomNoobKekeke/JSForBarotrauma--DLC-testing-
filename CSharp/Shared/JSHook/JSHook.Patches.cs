@@ -19,21 +19,19 @@ namespace JSForBarotrauma
 {
   public partial class JSHook
   {
-
-
     public static void GenericPostfix(
       MethodBase __originalMethod, object __instance, object[] __args, ref object __result
     )
     {
       try
       {
-        var info = Postfixes.PatchInfos[__originalMethod];
+        var info = Postfixes.PatchedMethodInfos[__originalMethod];
 
         FakeRefObject Result = new FakeRefObject(__result);
         info.PTable.Args = __args;
-        foreach (JSPostfix postfix in info.Patches.Values)
+        foreach (var postfix in info.Patches.Values)
         {
-          postfix.Invoke(__instance, info.PTable, Result);
+          postfix.Delegate.Invoke(__instance, info.PTable, Result);
         }
         info.PTable.Args = null;
         Result.MapBack(ref __result);
@@ -51,13 +49,13 @@ namespace JSForBarotrauma
     {
       try
       {
-        var info = Postfixes.PatchInfos[__originalMethod];
+        var info = Postfixes.PatchedMethodInfos[__originalMethod];
 
         FakeRefObject Result = new FakeRefObject(null);
         info.PTable.Args = __args;
-        foreach (JSPostfix postfix in info.Patches.Values)
+        foreach (var postfix in info.Patches.Values)
         {
-          postfix.Invoke(__instance, info.PTable, Result);
+          postfix.Delegate.Invoke(__instance, info.PTable, Result);
         }
         info.PTable.Args = null;
       }
@@ -78,15 +76,15 @@ namespace JSForBarotrauma
     {
       try
       {
-        var info = Prefixes.PatchInfos[__originalMethod];
+        var info = Prefixes.PatchedMethodInfos[__originalMethod];
 
         bool shouldRun = true;
 
         FakeRefObject Result = new FakeRefObject(__result);
         info.PTable.Args = __args;
-        foreach (JSPrefix prefix in info.Patches.Values)
+        foreach (var prefix in info.Patches.Values)
         {
-          shouldRun = shouldRun && prefix.Invoke(__instance, info.PTable, Result);
+          shouldRun = shouldRun && prefix.Delegate.Invoke(__instance, info.PTable, Result);
         }
         info.PTable.Args = null;
         Result.MapBack(ref __result);
@@ -106,15 +104,15 @@ namespace JSForBarotrauma
     {
       try
       {
-        var info = Prefixes.PatchInfos[__originalMethod];
+        var info = Prefixes.PatchedMethodInfos[__originalMethod];
 
         bool shouldRun = true;
 
         FakeRefObject Result = new FakeRefObject(null);
         info.PTable.Args = __args;
-        foreach (JSPrefix prefix in info.Patches.Values)
+        foreach (var prefix in info.Patches.Values)
         {
-          shouldRun = shouldRun && prefix.Invoke(__instance, info.PTable, Result);
+          shouldRun = shouldRun && prefix.Delegate.Invoke(__instance, info.PTable, Result);
         }
         info.PTable.Args = null;
 
@@ -135,13 +133,13 @@ namespace JSForBarotrauma
     {
       try
       {
-        var info = Finalizers.PatchInfos[__originalMethod];
+        var info = Finalizers.PatchedMethodInfos[__originalMethod];
 
         FakeRefObject Result = new FakeRefObject(__result);
         info.PTable.Args = __args;
-        foreach (JSFinalizer finalizer in info.Patches.Values)
+        foreach (var finalizer in info.Patches.Values)
         {
-          __exception = finalizer.Invoke(__instance, info.PTable, Result, __exception);
+          __exception = finalizer.Delegate.Invoke(__instance, info.PTable, Result, __exception);
         }
         info.PTable.Args = null;
         Result.MapBack(ref __result);
@@ -161,13 +159,13 @@ namespace JSForBarotrauma
     {
       try
       {
-        var info = Finalizers.PatchInfos[__originalMethod];
+        var info = Finalizers.PatchedMethodInfos[__originalMethod];
 
         FakeRefObject Result = new FakeRefObject(null);
         info.PTable.Args = __args;
-        foreach (JSFinalizer finalizer in info.Patches.Values)
+        foreach (var finalizer in info.Patches.Values)
         {
-          __exception = finalizer.Invoke(__instance, info.PTable, Result, __exception);
+          __exception = finalizer.Delegate.Invoke(__instance, info.PTable, Result, __exception);
         }
         info.PTable.Args = null;
       }

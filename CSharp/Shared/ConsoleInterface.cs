@@ -79,7 +79,7 @@ namespace JSForBarotrauma
 
     public void ExecuteJSCommand(string command)
     {
-      Mod.Logger.Print($">> {command}", Color.White);
+      //Mod.Logger.Print($">> {command}", Color.White);
 
       try
       {
@@ -103,6 +103,7 @@ namespace JSForBarotrauma
       AddedCommands.Add(new DebugConsole.Command("js_reload", "", JSReloadCommand));
       AddedCommands.Add(new DebugConsole.Command("js_stop", "", JSStopCommand));
       AddedCommands.Add(new DebugConsole.Command("js_start", "", JSStartCommand));
+      AddedCommands.Add(new DebugConsole.Command("crash", "", Crash_Command));
       AddedCommands.Add(new DebugConsole.Command("printallharmonypatches", "", PrintAllHarmonyPatches));
 
       DebugConsole.Commands.InsertRange(0, AddedCommands);
@@ -124,6 +125,8 @@ namespace JSForBarotrauma
       if (args.Length == 0) return;
       ExecuteJSCommand(string.Join(" ", args));
     }
+
+    public void Crash_Command(object[] args) => throw new ExecutionEngineException("You Died!");
 
     public ConsoleInterface(EngineWrapper engineWrapper) => EngineWrapper = engineWrapper;
   }

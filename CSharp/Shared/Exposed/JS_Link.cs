@@ -35,9 +35,11 @@ namespace JSForBarotrauma
         set => Mod.ConsoleInterface.REPL = value;
       }
 
-      public void Throw(Exception exception)
+
+
+      public void Throw(string msg)
       {
-        throw exception;
+        throw new JSException(msg);
       }
 
       public void Reload()
