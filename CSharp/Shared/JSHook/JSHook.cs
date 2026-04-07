@@ -22,9 +22,12 @@ namespace JSForBarotrauma
   {
     public static Harmony Harmony { get; private set; } = new Harmony("JSForBarotraumaHook");
 
-    public delegate void JSPostfix(object __instance, LilParamTable __args, FakeRefObject __result);
-    public delegate bool JSPrefix(object __instance, LilParamTable __args, FakeRefObject __result);
-    public delegate Exception JSFinalizer(object __instance, LilParamTable __args, FakeRefObject __result, Exception __exception);
+    //HACK whatever i throw from js gets converted to ScriptEngineException, only the message remains
+
+    //BRUH i can't declare same delegates in two places and this class should be secret
+    // public delegate void JSPostfix(object __instance, LilParamTable __args, FakeRefObject __result);
+    // public delegate bool JSPrefix(object __instance, LilParamTable __args, FakeRefObject __result);
+    // public delegate Exception JSFinalizer(object __instance, LilParamTable __args, FakeRefObject __result, Exception __exception);
 
     public static StackTrace GetStackTrace()
     {
@@ -35,7 +38,7 @@ namespace JSForBarotrauma
     }
 
     //BRUH it's spreading
-    public static PatchTracker<JSPrefix> Prefixes { get; } = new()
+    public static PatchTracker<JSHookExposed.JSPrefix> Prefixes { get; } = new()
     {
       PatchAction = (original) =>
       {
@@ -50,7 +53,7 @@ namespace JSForBarotrauma
       },
     };
 
-    public static PatchTracker<JSPostfix> Postfixes { get; } = new()
+    public static PatchTracker<JSHookExposed.JSPostfix> Postfixes { get; } = new()
     {
       PatchAction = (original) =>
       {
@@ -65,7 +68,7 @@ namespace JSForBarotrauma
       },
     };
 
-    public static PatchTracker<JSFinalizer> Finalizers { get; } = new()
+    public static PatchTracker<JSHookExposed.JSFinalizer> Finalizers { get; } = new()
     {
       PatchAction = (original) =>
       {

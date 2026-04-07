@@ -29,16 +29,22 @@ namespace JSForBarotrauma
 
         FakeRefObject Result = new FakeRefObject(__result);
         info.PTable.Args = __args;
-        foreach (var postfix in info.Patches.Values)
+        foreach (JSHookExposed.JSPostfix postfix in info.Patches)
         {
-          postfix.Delegate.Invoke(__instance, info.PTable, Result);
+          postfix.Invoke(__instance, info.PTable, Result);
         }
         info.PTable.Args = null;
         Result.MapBack(ref __result);
       }
+      catch (ScriptEngineException e)
+      {
+        if (e.ScriptExceptionAsObject is Exception) throw e.ScriptExceptionAsObject as Exception;
+        Mod.Logger.Error($"JS Error in JS Postfix to [{__originalMethod.DeclaringType}.{__originalMethod}]:");
+        Mod.Logger.Error(e.ErrorDetails);
+      }
       catch (Exception e)
       {
-        Mod.Logger.Error($"Error in JS Postfix to [{__originalMethod.DeclaringType}.{__originalMethod}]:");
+        Mod.Logger.Error($"C# Exception in JS Postfix to [{__originalMethod.DeclaringType}.{__originalMethod}]:");
         Mod.Logger.Error(e.Message);
       }
     }
@@ -53,15 +59,21 @@ namespace JSForBarotrauma
 
         FakeRefObject Result = new FakeRefObject(null);
         info.PTable.Args = __args;
-        foreach (var postfix in info.Patches.Values)
+        foreach (JSHookExposed.JSPostfix postfix in info.Patches)
         {
-          postfix.Delegate.Invoke(__instance, info.PTable, Result);
+          postfix.Invoke(__instance, info.PTable, Result);
         }
         info.PTable.Args = null;
       }
+      catch (ScriptEngineException e)
+      {
+        if (e.ScriptExceptionAsObject is Exception) throw e.ScriptExceptionAsObject as Exception;
+        Mod.Logger.Error($"JS Error in JS Postfix to [{__originalMethod.DeclaringType}.{__originalMethod}]:");
+        Mod.Logger.Error(e.ErrorDetails);
+      }
       catch (Exception e)
       {
-        Mod.Logger.Error($"Error in JS Postfix to [{__originalMethod.DeclaringType}.{__originalMethod}]:");
+        Mod.Logger.Error($"C# Exception in JS Postfix to [{__originalMethod.DeclaringType}.{__originalMethod}]:");
         Mod.Logger.Error(e.Message);
       }
     }
@@ -82,18 +94,24 @@ namespace JSForBarotrauma
 
         FakeRefObject Result = new FakeRefObject(__result);
         info.PTable.Args = __args;
-        foreach (var prefix in info.Patches.Values)
+        foreach (JSHookExposed.JSPrefix prefix in info.Patches)
         {
-          shouldRun = shouldRun && prefix.Delegate.Invoke(__instance, info.PTable, Result);
+          shouldRun = shouldRun && prefix.Invoke(__instance, info.PTable, Result);
         }
         info.PTable.Args = null;
         Result.MapBack(ref __result);
 
         return shouldRun;
       }
+      catch (ScriptEngineException e)
+      {
+        if (e.ScriptExceptionAsObject is Exception) throw e.ScriptExceptionAsObject as Exception;
+        Mod.Logger.Error($"JS Error in JS Prefix to [{__originalMethod.DeclaringType}.{__originalMethod}]:");
+        Mod.Logger.Error(e.ErrorDetails);
+      }
       catch (Exception e)
       {
-        Mod.Logger.Error($"Error in JS Prefix to [{__originalMethod.DeclaringType}.{__originalMethod}]:");
+        Mod.Logger.Error($"C# Exception in JS Prefix to [{__originalMethod.DeclaringType}.{__originalMethod}]:");
         Mod.Logger.Error(e.Message);
       }
       return true;
@@ -110,17 +128,23 @@ namespace JSForBarotrauma
 
         FakeRefObject Result = new FakeRefObject(null);
         info.PTable.Args = __args;
-        foreach (var prefix in info.Patches.Values)
+        foreach (JSHookExposed.JSPrefix prefix in info.Patches)
         {
-          shouldRun = shouldRun && prefix.Delegate.Invoke(__instance, info.PTable, Result);
+          shouldRun = shouldRun && prefix.Invoke(__instance, info.PTable, Result);
         }
         info.PTable.Args = null;
 
         return shouldRun;
       }
+      catch (ScriptEngineException e)
+      {
+        if (e.ScriptExceptionAsObject is Exception) throw e.ScriptExceptionAsObject as Exception;
+        Mod.Logger.Error($"JS Error in JS Prefix to [{__originalMethod.DeclaringType}.{__originalMethod}]:");
+        Mod.Logger.Error(e.ErrorDetails);
+      }
       catch (Exception e)
       {
-        Mod.Logger.Error($"Error in JS Prefix to [{__originalMethod.DeclaringType}.{__originalMethod}]:");
+        Mod.Logger.Error($"C# Exception in JS Prefix to [{__originalMethod.DeclaringType}.{__originalMethod}]:");
         Mod.Logger.Error(e.Message);
       }
       return true;
@@ -137,16 +161,22 @@ namespace JSForBarotrauma
 
         FakeRefObject Result = new FakeRefObject(__result);
         info.PTable.Args = __args;
-        foreach (var finalizer in info.Patches.Values)
+        foreach (JSHookExposed.JSFinalizer finalizer in info.Patches)
         {
-          __exception = finalizer.Delegate.Invoke(__instance, info.PTable, Result, __exception);
+          __exception = finalizer.Invoke(__instance, info.PTable, Result, __exception);
         }
         info.PTable.Args = null;
         Result.MapBack(ref __result);
       }
+      catch (ScriptEngineException e)
+      {
+        if (e.ScriptExceptionAsObject is Exception) throw e.ScriptExceptionAsObject as Exception;
+        Mod.Logger.Error($"JS Error in JS Finalizer to [{__originalMethod.DeclaringType}.{__originalMethod}]:");
+        Mod.Logger.Error(e.ErrorDetails);
+      }
       catch (Exception e)
       {
-        Mod.Logger.Error($"Error in JS Finalizer to [{__originalMethod.DeclaringType}.{__originalMethod}]:");
+        Mod.Logger.Error($"C# Exception in JS Finalizer to [{__originalMethod.DeclaringType}.{__originalMethod}]:");
         Mod.Logger.Error(e.Message);
       }
 
@@ -163,15 +193,21 @@ namespace JSForBarotrauma
 
         FakeRefObject Result = new FakeRefObject(null);
         info.PTable.Args = __args;
-        foreach (var finalizer in info.Patches.Values)
+        foreach (JSHookExposed.JSFinalizer finalizer in info.Patches)
         {
-          __exception = finalizer.Delegate.Invoke(__instance, info.PTable, Result, __exception);
+          __exception = finalizer.Invoke(__instance, info.PTable, Result, __exception);
         }
         info.PTable.Args = null;
       }
+      catch (ScriptEngineException e)
+      {
+        if (e.ScriptExceptionAsObject is Exception) throw e.ScriptExceptionAsObject as Exception;
+        Mod.Logger.Error($"JS Error in JS Finalizer to [{__originalMethod.DeclaringType}.{__originalMethod}]:");
+        Mod.Logger.Error(e.ErrorDetails);
+      }
       catch (Exception e)
       {
-        Mod.Logger.Error($"Error in JS Finalizer to [{__originalMethod.DeclaringType}.{__originalMethod}]:");
+        Mod.Logger.Error($"C# Exception in JS Finalizer to [{__originalMethod.DeclaringType}.{__originalMethod}]:");
         Mod.Logger.Error(e.Message);
       }
 

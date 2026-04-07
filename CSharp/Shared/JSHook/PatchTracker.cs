@@ -24,13 +24,14 @@ namespace JSForBarotrauma
   }
 
 
-  public class PatchTracker<DelegateT> where DelegateT : Delegate
+  public partial class PatchTracker<DelegateT> where DelegateT : Delegate
   {
     public record PatchInfo<DelegateT>(DelegateT Delegate, int ID, int Priority);
     public class PatchedMethodInfo<DelegateT>
     {
       public LilParamTable PTable { get; }
-      public SortedList<int, PatchInfo<DelegateT>> Patches { get; } = new();
+
+      public PatchInfoCollection<DelegateT> Patches { get; } = new();
 
       public PatchedMethodInfo(MethodBase original)
       {
@@ -44,16 +45,12 @@ namespace JSForBarotrauma
       }
     }
 
-
-
-    public int MaxID { get; private set; } = 0;
-
+    public required Action<MethodBase> PatchAction { get; init; }
 
     public Dictionary<MethodBase, PatchedMethodInfo<DelegateT>> PatchedMethodInfos { get; } = new();
-
+    //HACK i track it separately to avoid crashes or if(PatchedMethodInfos.ContainsKey) checks in dead patches
     public HashSet<MethodBase> PatchedMethods { get; } = new();
 
-    public required Action<MethodBase> PatchAction { get; init; }
 
     public bool WasPatched(MethodBase original) => PatchedMethods.Contains(original);
 
@@ -75,30 +72,14 @@ namespace JSForBarotrauma
         }
       }
 
-      int ID = MaxID++;
-
-      PatchedMethodInfos[original].Patches.Add(priority, new PatchInfo<DelegateT>(patch, ID, priority));
-
-      foreach (var item in PatchedMethodInfos[original].Patches)
-      {
-        Mod.Logger.Log(item);
-      }
-
-      return ID;
+      return PatchedMethodInfos[original].Patches.Add(patch, priority);
     }
 
     public void Remove(MethodBase original, int ID)
     {
       if (!WasPatched(original)) return;
 
-      //no RemoveAll? bruh
-      for (int i = 0; i < PatchedMethodInfos[original].Patches.Count; i++)
-      {
-        if (PatchedMethodInfos[original].Patches.Values[i].ID == ID)
-        {
-          PatchedMethodInfos[original].Patches.RemoveAt(i);
-        }
-      }
+      PatchedMethodInfos[original].Patches.Remove(ID);
     }
 
     public void Clear()

@@ -36,12 +36,6 @@ namespace JSForBarotrauma
       }
 
 
-
-      public void Throw(string msg)
-      {
-        throw new JSException(msg);
-      }
-
       public void Reload()
       {
         Utils.RunWithDelay(() => Mod.Engine.Reload());
