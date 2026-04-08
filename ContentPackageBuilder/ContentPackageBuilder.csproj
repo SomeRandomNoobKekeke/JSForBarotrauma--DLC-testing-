@@ -26,7 +26,8 @@
 
   <Target Name="CopyModFiles" AfterTargets="CopyFilesToOutputDirectory">
     <ItemGroup>
-      <ModFiles Include="$(MSBuildThisFileDirectory)filelist.xml" />
+      <!--It overwrites the steam id and version-->
+      <!--<ModFiles Include="$(MSBuildThisFileDirectory)filelist.xml" />-->
       <ModFiles Include="$(MSBuildThisFileDirectory)PluginInfo.xml" />
       <ModContentFiles Include="$(MSBuildThisFileDirectory)Content\**\*" />
 

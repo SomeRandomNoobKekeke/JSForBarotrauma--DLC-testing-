@@ -1,18 +1,19 @@
 ﻿
-using System;
-using System.Reflection;
-using System.Linq;
-using System.Collections.Generic;
+using BaroJunk;
 using Barotrauma;
 using Barotrauma.Plugins;
 using HarmonyLib;
-using Microsoft.Xna.Framework;
 using Microsoft.ClearScript;
 using Microsoft.ClearScript.JavaScript;
 using Microsoft.ClearScript.V8;
-using System.Runtime.CompilerServices;
+using Microsoft.Xna.Framework;
+using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.IO;
-using BaroJunk;
+using System.Linq;
+using System.Reflection;
+using System.Runtime.CompilerServices;
 
 
 namespace JSForBarotrauma
@@ -23,33 +24,42 @@ namespace JSForBarotrauma
   }
 
 
-  public class PatchTracker<DelegateT> where DelegateT : Delegate
+  public partial class PatchTracker<DelegateT> where DelegateT : Delegate
   {
-    public class PatchInfo<DelegateT>
+    public record PatchInfo<DelegateT>(DelegateT Delegate, int ID, int Priority);
+    public class PatchedMethodInfo<DelegateT>
     {
       public LilParamTable PTable { get; }
-      public Dictionary<int, DelegateT> Patches { get; } = new();
 
-      public PatchInfo(MethodBase original)
+      public PatchInfoCollection<DelegateT> Patches { get; } = new();
+
+      public PatchedMethodInfo(MethodBase original)
       {
         PTable = new LilParamTable(original.GetParameters());
       }
+
+      public void Clear()
+      {
+        PTable.Args = null;
+        Patches.Clear();
+      }
     }
-
-    public int MaxID { get; private set; } = 0;
-
-
-    public Dictionary<MethodBase, PatchInfo<DelegateT>> PatchedMethods { get; } = new();
 
     public required Action<MethodBase> PatchAction { get; init; }
 
-    public bool WasPatched(MethodBase original) => PatchedMethods.ContainsKey(original);
+    public Dictionary<MethodBase, PatchedMethodInfo<DelegateT>> PatchedMethodInfos { get; } = new();
+    //HACK i track it separately to avoid crashes or if(PatchedMethodInfos.ContainsKey) checks in dead patches
+    public HashSet<MethodBase> PatchedMethods { get; } = new();
 
-    public int Add(MethodBase original, DelegateT patch)
+
+    public bool WasPatched(MethodBase original) => PatchedMethods.Contains(original);
+
+    public int Add(MethodBase original, DelegateT patch, int priority = Priority.Normal)
     {
       if (!WasPatched(original))
       {
-        PatchedMethods[original] = new PatchInfo<DelegateT>(original);
+        PatchedMethodInfos[original] = new PatchedMethodInfo<DelegateT>(original);
+        PatchedMethods.Add(original);
 
         try
         {
@@ -62,21 +72,23 @@ namespace JSForBarotrauma
         }
       }
 
-      int ID = MaxID++;
-
-      PatchedMethods[original].Patches[ID] = patch;
-
-      return ID;
+      return PatchedMethodInfos[original].Patches.Add(patch, priority);
     }
 
     public void Remove(MethodBase original, int ID)
     {
       if (!WasPatched(original)) return;
-      PatchedMethods[original].Patches.Remove(ID);
+
+      PatchedMethodInfos[original].Patches.Remove(ID);
     }
 
     public void Clear()
     {
+      foreach (var info in PatchedMethodInfos.Values)
+      {
+        info.Clear();
+      }
+
       PatchedMethods.Clear();
     }
   }

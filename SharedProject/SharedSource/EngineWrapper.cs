@@ -26,6 +26,7 @@ namespace JSForBarotrauma
 #elif SERVER
     public int DebugPort { get; } = 9223;
 #endif
+
     public bool DebuggerAttached { get; set; }
 
     public bool IsRunning => Engine != null;

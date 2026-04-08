@@ -12,19 +12,28 @@
     <Content Include="$(MSBuildThisFileDirectory)SharedItems.props" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="$(MSBuildThisFileDirectory)sharedsource\CompilePls.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)SharedSource\BuildSpecific\DLCTesting\ConsoleInterface.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)SharedSource\BuildSpecific\DLCTesting\ScriptLoader.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)SharedSource\BuildSpecific\DLCTesting\Utils.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)SharedSource\BuildSpecific\Luatrauma\ConsoleInterface.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)SharedSource\BuildSpecific\Luatrauma\ScriptLoader.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)SharedSource\BuildSpecific\Luatrauma\Utils.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)SharedSource\CompilePls.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SharedSource\ConsoleInterface.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SharedSource\DebuggerTracker.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SharedSource\EngineWrapper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SharedSource\Exposed\EngineWrapper.Exposed.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)SharedSource\Exposed\JSException.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)SharedSource\Exposed\JSHookExposed.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SharedSource\Exposed\JS_Link.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SharedSource\Exposed\PluginServices.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SharedSource\Exposed\UnifiedConsole.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SharedSource\JSHook\FakeRefObject.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SharedSource\JSHook\JSHook.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SharedSource\JSHook\JSHook.Patches.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)SharedSource\JSHook\PatchCollection.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SharedSource\JSHook\PatchTracker.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)SharedSource\JSHook\PTable\ParamTableBase.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)SharedSource\JSHook\PTable\LilParamTable.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SharedSource\Libs\ClearableEvent\ClearableEvent.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SharedSource\Libs\ClearableEvent\ClearableEvent.Variants1.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SharedSource\Libs\ClearableEvent\ClearableEvent.Variants2.cs" />
@@ -36,7 +45,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)SharedSource\Libs\Logger\Logger.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SharedSource\Libs\Logger\Logger.Wrap.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SharedSource\Mod.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)SharedSource\Patches\ConsoleInterface.Patches.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SharedSource\ScriptLoader.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SharedSource\Utils\SimplestPropertyBag.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SharedSource\Utils\Utils.cs" />

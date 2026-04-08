@@ -17,7 +17,7 @@ using BaroJunk;
 
 namespace JSForBarotrauma
 {
-  public class ScriptLoader
+  public partial class ScriptLoader
   {
     public static string AutorunPath = Path.Combine("JS", "Autorun");
     public static string JSPath = "JS";
@@ -39,6 +39,8 @@ namespace JSForBarotrauma
       }
       catch (ScriptEngineException e)
       {
+        if (e.ScriptExceptionAsObject is Exception) throw e.ScriptExceptionAsObject as Exception;
+
         Mod.Logger.Error($"JS | >> {path}");
         Mod.Logger.Error(e.ErrorDetails);
 
@@ -49,13 +51,6 @@ namespace JSForBarotrauma
         return null;
       }
     }
-
-    //public void LoadScriptsFromMod(ContentPackage package)
-    //  => LoadScriptsFromMod(package.Dir);
-
-    // Barotrauma.Plugins compatibility
-    public void LoadScriptsFromMod(ContentPackage package)
-      => LoadScriptsFromMod(Path.Combine(Directory.GetCurrentDirectory(), package.Dir)); //HACK
 
     public void LoadScriptsFromMod(string path)
     {
@@ -71,11 +66,11 @@ namespace JSForBarotrauma
 
     public void LoadScripts()
     {
-      LoadScriptsFromMod(Mod.JSForBarotraumaPackage);
+      LoadScriptsFromMod(Utils.JSForBarotraumaPackage);
 
       foreach (ContentPackage package in ContentPackageManager.EnabledPackages.All)
       {
-        if (package == Mod.JSForBarotraumaPackage) continue;
+        if (package == Utils.JSForBarotraumaPackage) continue;
         if (ModUsesJS(package)) LoadScriptsFromMod(package);
       }
     }

@@ -32,55 +32,43 @@ namespace JSForBarotrauma
 
     public static PluginServices PluginServices { get; private set; } = new();
 
-    /// <summary>
-    /// Do it old fashioned way
-    /// </summary>
-    public static string ModName = "JS for Barotrauma (DLC testing)";
-    // Barotrauma.Plugins compatibility
-    //public static string ModName = "JS for Barotrauma [code]";
-    public static ContentPackage JSForBarotraumaPackage
-      => ContentPackageManager.EnabledPackages.All.First(p => p.Name == ModName);
 
-
+    public static Mod Instance { get; private set; }
     public static Logger Logger { get; private set; } = new()
     {
       PrintFilePath = false
     };
     public static ConsoleInterface ConsoleInterface { get; private set; }
     public static EngineWrapper Engine { get; private set; }
-    public static Harmony Harmony { get; private set; }
+    public static Harmony Harmony { get; private set; } = new Harmony("JSForBarotrauma");
     public static DebuggerTracker DebuggerTracker { get; private set; } = new();
 
     public void Initialize() => Init();
     public void Init()
     {
+      Instance = this;
+
       Engine = new();
       ConsoleInterface = new(Engine);
-      Harmony = HarmonyProvider.GetHarmony();
+      ConsoleInterface.AddPatches(Harmony);
 
       ConsoleInterface.AddCommands();
       DebuggerTracker.Track();
 
       Engine.Start();
+      // Utils.PrintAllPatchedMethods();
     }
 
 
 
-
-    public void PatchAll()
-    {
-      //_consoleInterface.AddPatches(Harmony);
-    }
 
 
     public void OnContentLoaded() { }
     public void OnLoadCompleted() { }
     public void PreInitPatching() { }
 
-
     public void Dispose()
     {
-
 
       ConsoleInterface.RemoveCommands();
       ConsoleInterface = null;
@@ -88,8 +76,7 @@ namespace JSForBarotrauma
       Engine.Stop();
       Engine = null;
 
-      Harmony?.UnpatchSelf();
-      Harmony = null;
+      Harmony.UnpatchSelf();
 
       DebuggerTracker.Untrack();
       DebuggerTracker = null;
@@ -104,6 +91,8 @@ namespace JSForBarotrauma
       StatusEffectService = null;
 
       PluginServices = null;
+
+      Instance = null;
     }
 
 

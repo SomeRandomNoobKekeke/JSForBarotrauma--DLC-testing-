@@ -36,7 +36,7 @@ namespace JSForBarotrauma
       Engine.AddHostObject("JS", JS);
       Engine.AddHostObject("Services", Mod.PluginServices);
 
-      Engine.AddHostType("JSHook", typeof(JSHook));
+      Engine.AddHostType("JSHook", typeof(JSHookExposed));
       Engine.AddHostType("Console", typeof(UnifiedConsole));
       // Engine.AddHostObject("Hook", GameMain.LuaCs.Hook);
       //Engine.AddHostType("DebugConsole", HostItemFlags.PrivateAccess, typeof(DebugConsole));
@@ -50,12 +50,22 @@ namespace JSForBarotrauma
       Engine.AddHostObject("lib", HostItemFlags.PrivateAccess, exposedAssemblies);
 
 
+      //FIXME it's borked, if two mods have same namespace it won't be added
       HostTypeCollection modAssemblies = new HostTypeCollection();
       foreach (Assembly assembly in Utils.AllModAssemblies())
       {
-        modAssemblies.AddAssembly(assembly);
+        try
+        {
+          modAssemblies.AddAssembly(assembly);
+        }
+        catch (InvalidOperationException e)
+        {
+          Mod.Logger.Warning($"Couldn't add [{assembly}] to modAssemblies");
+        }
       }
       Engine.AddHostObject("modlib", HostItemFlags.PrivateAccess, modAssemblies);
+
+      // Engine.Execute("function Throw(e){ throw e }");
     }
   }
 
