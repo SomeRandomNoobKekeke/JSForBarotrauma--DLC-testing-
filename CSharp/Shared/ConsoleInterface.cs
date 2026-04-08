@@ -78,9 +78,11 @@ namespace JSForBarotrauma
           Mod.ConsoleInterface.ExecuteJSCommand(inputtedCommands);
         }
       }
-      catch (Exception e)
+      catch (ScriptEngineException e)
       {
-        Mod.Logger.Error(e);
+        if (e.ScriptExceptionAsObject is Exception) throw e.ScriptExceptionAsObject as Exception;
+
+        Mod.Logger.Error(e.ErrorDetails);
       }
     }
 #endif
@@ -110,6 +112,8 @@ namespace JSForBarotrauma
       }
       catch (ScriptEngineException e)
       {
+        if (e.ScriptExceptionAsObject is Exception) throw e.ScriptExceptionAsObject as Exception;
+
         Mod.Logger.Error(e.ErrorDetails);
       }
     }

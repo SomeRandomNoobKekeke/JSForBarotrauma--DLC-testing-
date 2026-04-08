@@ -39,6 +39,8 @@ namespace JSForBarotrauma
       }
       catch (ScriptEngineException e)
       {
+        if (e.ScriptExceptionAsObject is Exception) throw e.ScriptExceptionAsObject as Exception;
+
         Mod.Logger.Error($"JS | >> {path}");
         Mod.Logger.Error(e.ErrorDetails);
 
