@@ -23,22 +23,45 @@ namespace JSForBarotrauma
     {
 #if CLIENT
       harmony.Patch(
-       original: typeof(DebugConsole).GetMethod("IsCommandPermitted", AccessTools.all),
-       postfix: new HarmonyMethod(typeof(ConsoleInterface).GetMethod("PermitCommands"))
+        original: typeof(DebugConsole).GetMethod("IsCommandPermitted", AccessTools.all),
+        postfix: new HarmonyMethod(typeof(ConsoleInterface).GetMethod("PermitCommands"))
       );
 
 
       harmony.Patch(
-       original: typeof(DebugConsole).GetMethod("ExecuteCommand", AccessTools.all),
-       prefix: new HarmonyMethod(typeof(ConsoleInterface).GetMethod("InterceptJSREPL"))
+        original: typeof(DebugConsole).GetMethod("ExecuteCommand", AccessTools.all),
+        prefix: new HarmonyMethod(typeof(ConsoleInterface).GetMethod("InterceptJSREPL"))
+      );
+
+      harmony.Patch(
+        original: typeof(DebugConsole).GetMethod("Update", AccessTools.all),
+        prefix: new HarmonyMethod(typeof(ConsoleInterface).GetMethod("DebugConsole_Update_Enter"))
+      );
+
+      harmony.Patch(
+        original: typeof(DebugConsole).GetMethod("Update", AccessTools.all),
+        postfix: new HarmonyMethod(typeof(ConsoleInterface).GetMethod("DebugConsole_Update_Exit"))
       );
 #endif 
+    }
+
+
+    public static bool FromDebugConsole = false;
+    public static void DebugConsole_Update_Enter(float deltaTime)
+    {
+      FromDebugConsole = true;
+    }
+
+    public static void DebugConsole_Update_Exit(float deltaTime)
+    {
+      FromDebugConsole = false;
     }
 
 #if CLIENT
     public static void InterceptJSREPL(string inputtedCommands, ref bool __runOriginal)
     {
       if (Mod.ConsoleInterface is null) return;
+      if(!FromDebugConsole) return;
 
       try
       {
