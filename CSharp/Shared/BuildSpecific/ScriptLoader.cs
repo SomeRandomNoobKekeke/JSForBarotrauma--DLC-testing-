@@ -20,7 +20,7 @@ namespace JSForBarotrauma
   public partial class ScriptLoader
   {
     public void LoadScriptsFromMod(ContentPackage package)
-      => LoadScriptsFromMod(package.Dir);
+      => LoadScriptsFromMod(Path.Combine(Directory.GetCurrentDirectory(), package.Dir));
   }
 
 }
