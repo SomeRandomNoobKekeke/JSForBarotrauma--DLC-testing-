@@ -35,6 +35,8 @@ namespace JSForBarotrauma
         set => Mod.ConsoleInterface.REPL = value;
       }
 
+      public void SetTimeout(Action action, int delay) => Utils.RunWithDelay(action, delay);
+
 
       public void Reload()
       {
@@ -44,7 +46,7 @@ namespace JSForBarotrauma
       {
         Utils.RunWithDelay(() => Mod.Engine.Stop());
       }
-      public void Start() => EngineWrapper.Start(); // xd
+      public void Start() => EngineWrapper.Start();
 
       public JS_Link(EngineWrapper engineWrapper) => EngineWrapper = engineWrapper;
     }
