@@ -34,7 +34,6 @@ namespace JSForBarotrauma
       Engine.AddHostObject("xHost", new ExtendedHostFunctions());
 
       Engine.AddHostObject("JS", JS);
-      Engine.AddHostObject("Services", Mod.PluginServices);
 
       Engine.AddHostType("JSHook", typeof(JSHookExposed));
       Engine.AddHostType("Console", typeof(UnifiedConsole));

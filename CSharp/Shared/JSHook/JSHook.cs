@@ -1,7 +1,6 @@
 ﻿
 using BaroJunk;
 using Barotrauma;
-using Barotrauma.Plugins;
 using HarmonyLib;
 using Microsoft.ClearScript;
 using Microsoft.ClearScript.JavaScript;

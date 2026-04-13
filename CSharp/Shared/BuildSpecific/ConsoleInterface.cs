@@ -23,7 +23,7 @@ namespace JSForBarotrauma
    public static void PermitCommands(Identifier command, GameClient client, ref bool __result)
    {
      if (Mod.ConsoleInterface is null) return;
-     if (Mod.ConsoleInterface.AddedCommands.Any(c => c.Names.Contains(command.Value))) __result = true;
+     if (Mod.ConsoleInterface.AddedCommands.Any(c => c.Names.Contains(command))) __result = true;
    }
 #endif
   }

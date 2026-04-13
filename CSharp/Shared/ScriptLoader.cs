@@ -68,11 +68,13 @@ namespace JSForBarotrauma
     {
       LoadScriptsFromMod(Utils.JSForBarotraumaPackage);
 
+
       foreach (ContentPackage package in ContentPackageManager.EnabledPackages.All)
       {
         if (package == Utils.JSForBarotraumaPackage) continue;
         if (ModUsesJS(package)) LoadScriptsFromMod(package);
       }
+
     }
 
     public bool ModUsesJS(ContentPackage package)

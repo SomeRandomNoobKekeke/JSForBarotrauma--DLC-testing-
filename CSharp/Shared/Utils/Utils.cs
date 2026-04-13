@@ -29,21 +29,6 @@ namespace JSForBarotrauma
       Task.Delay(delay).ContinueWith((t) => action());
     }
 
-    // i don't get how to use it
-    // public static void RunWithDelay(Action action, float delay = 100)
-    // {
-    //   CoroutineManager.Invoke(action, delay);
-    // }
-
-    // rip
-    // public static void RunWithDelay(Action action, double delay = 100)
-    // {
-    //   GameMain.LuaCs.Timer.Wait((args) =>
-    //   {
-    //     action();
-    //   }, 100);
-    // }
-
     public static void PrintAllPatchedMethods()
     {
       foreach (MethodBase mb in Harmony.GetAllPatchedMethods())

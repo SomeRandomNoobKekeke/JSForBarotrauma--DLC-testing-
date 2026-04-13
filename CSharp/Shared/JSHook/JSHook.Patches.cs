@@ -4,7 +4,6 @@ using System.Reflection;
 using System.Linq;
 using System.Collections.Generic;
 using Barotrauma;
-using Barotrauma.Plugins;
 using HarmonyLib;
 using Microsoft.Xna.Framework;
 using Microsoft.ClearScript;

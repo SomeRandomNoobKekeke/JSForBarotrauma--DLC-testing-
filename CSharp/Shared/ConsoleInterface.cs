@@ -27,7 +27,6 @@ namespace JSForBarotrauma
         postfix: new HarmonyMethod(typeof(ConsoleInterface).GetMethod("PermitCommands"))
       );
 
-
       harmony.Patch(
         original: typeof(DebugConsole).GetMethod("ExecuteCommand", AccessTools.all),
         prefix: new HarmonyMethod(typeof(ConsoleInterface).GetMethod("InterceptJSREPL"))
