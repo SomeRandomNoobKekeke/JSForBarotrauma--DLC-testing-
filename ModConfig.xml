@@ -1,0 +1,11 @@
+<ModConfig>
+  <Assembly Folder="%ModDir%/CSharp/Shared" Target="Any" IsScript="true" UseInternalAccessName="true" />
+
+  <Assembly File="%ModDir%/ClearScript/Windows/ClearScript.Core.dll" Target="Any" Platform="Windows" />
+  <Assembly File="%ModDir%/ClearScript/Windows/ClearScript.V8.dll" Target="Any" Platform="Windows" />
+  <Assembly File="%ModDir%/ClearScript/Windows/ClearScript.V8.ICUData.dll" Target="Any" Platform="Windows" />
+  <Assembly File="%ModDir%/ClearScript/Windows/ClearScript.Windows.dll" Target="Any" Platform="Windows" />
+  <Assembly File="%ModDir%/ClearScript/Windows/ClearScript.Windows.Core.dll" Target="Any" Platform="Windows" />
+  <Assembly File="%ModDir%/ClearScript/Windows/Newtonsoft.Json.dll" Target="Any" Platform="Windows" />
+  <!-- <Assembly File="%ModDir%/ClearScript/Windows/ClearScriptV8.win-x64.dll" Target="Any" Platform="Windows" /> -->
+</ModConfig>

@@ -1,78 +1,97 @@
-
-using System;
-using System.Reflection;
-using System.Linq;
-using System.Collections.Generic;
+﻿
+using BaroJunk;
 using Barotrauma;
+using Barotrauma.Items.Components;
+using Barotrauma.Plugins;
 using HarmonyLib;
-using Microsoft.Xna.Framework;
 using Microsoft.ClearScript;
 using Microsoft.ClearScript.JavaScript;
 using Microsoft.ClearScript.V8;
-using System.Runtime.CompilerServices;
+using Microsoft.Xna.Framework;
+using System;
+using System.Collections.Generic;
 using System.IO;
-using BaroJunk;
-using FluentResults;
+using System.Linq;
+using System.Reflection;
+using System.Runtime.CompilerServices;
+
 
 namespace JSForBarotrauma
 {
-  public partial class Mod : IAssemblyPlugin
+  public partial class Mod : IBarotraumaPlugin
   {
+    // if i get this correctly they are injected only into static var on IBarotraumaPlugin, for whatever reason
+    public static IDebugConsole DebugConsole = PluginServiceProvider.GetService<IDebugConsole>();
+    public static ISettingsService SettingsService = PluginServiceProvider.GetService<ISettingsService>();
+    public static IItemComponentRegistrar ItemComponentRegistrar = PluginServiceProvider.GetService<IItemComponentRegistrar>();
+    public static ISimpleHookService HookService = PluginServiceProvider.GetService<ISimpleHookService>();
+    public static IHarmonyProvider HarmonyProvider = PluginServiceProvider.GetService<IHarmonyProvider>();
+    public static IContentFileRegistrar ContentFileRegistrar = PluginServiceProvider.GetService<IContentFileRegistrar>();
+    public static IGameNetwork GameNetwork = PluginServiceProvider.GetService<IGameNetwork>();
+    public static IStatusEffectService StatusEffectService = PluginServiceProvider.GetService<IStatusEffectService>();
+
+    public static PluginServices PluginServices { get; private set; } = new();
+
+
     public static Mod Instance { get; private set; }
-    //BRUH mb use actual package?
-    public static string PackageName;
-    public static Logger Logger { get; } = new();
-    public Harmony Harmony { get; } = new Harmony("JSForBarotrauma");
+    public static Logger Logger { get; private set; } = new()
+    {
+      PrintFilePath = false
+    };
+    public static ConsoleInterface ConsoleInterface { get; private set; }
+    public static EngineWrapper Engine { get; private set; }
+    public static Harmony Harmony { get; private set; } = new Harmony("JSForBarotrauma");
+    public static DebuggerTracker DebuggerTracker { get; private set; } = new();
 
-    public static ConsoleInterface ConsoleInterface => Instance?._consoleInterface;
-    public static EngineWrapper Engine => Instance?._engine;
-    public static ScriptLoader ScriptLoader => Instance?._scriptLoader;
-    public static JS JS => Instance?._js;
-
-    private JS _js;
-    private ScriptLoader _scriptLoader;
-    private ConsoleInterface _consoleInterface;
-    private EngineWrapper _engine;
-
-
-
-    public void Initialize()
+    public void Initialize() => Init();
+    public void Init()
     {
       Instance = this;
-      PackageName = ModInfo.ModName<Mod>();
 
-      _js = new JS();
-      _engine = new();
-      _consoleInterface = new(_engine);
-      _scriptLoader = new ScriptLoader(_engine);
-
-      V8Runtime.DebuggerConnected += (sender, args) => { };
-      V8Runtime.DebuggerDisconnected += (sender, args) => JS.Reload();
-
-      Engine.Start();
-
-
-      PatchAll();
+      Engine = new();
+      ConsoleInterface = new(Engine);
+      ConsoleInterface.AddPatches(Harmony);
 
       ConsoleInterface.AddCommands();
-      ScriptLoader.LoadScripts();
+      DebuggerTracker.Track();
+
+      Engine.Start();
+      // Utils.PrintAllPatchedMethods();
     }
 
 
-    public void PatchAll()
-    {
-      ConsoleInterface.AddPatches(Harmony);
-    }
 
 
+
+    public void OnContentLoaded() { }
     public void OnLoadCompleted() { }
     public void PreInitPatching() { }
 
     public void Dispose()
     {
+
       ConsoleInterface.RemoveCommands();
-      Harmony.UnpatchSelf();
+      ConsoleInterface = null;
+
       Engine.Stop();
+      Engine = null;
+
+      Harmony.UnpatchSelf();
+
+      DebuggerTracker.Untrack();
+      DebuggerTracker = null;
+
+      DebugConsole = null;
+      SettingsService = null;
+      ItemComponentRegistrar = null;
+      HookService = null;
+      HarmonyProvider = null;
+      ContentFileRegistrar = null;
+      GameNetwork = null;
+      StatusEffectService = null;
+
+      PluginServices = null;
+
       Instance = null;
     }
 
