@@ -32,7 +32,7 @@ namespace JSForBarotrauma
     }
     public partial void DisposeBuildSpecific()
     {
-
+      Package = null;
     }
   }
 }
