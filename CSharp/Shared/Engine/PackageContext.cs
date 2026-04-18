@@ -16,9 +16,9 @@ using System.Threading;
 using BaroJunk;
 namespace JSForBarotrauma
 {
-  public class PackageContext
+  //Why context, i thought mb also expose settings, permissions other metadata here
+  public static class PackageContext
   {
-
+    public static ContentPackage Package => Mod.Engine?.ScriptLoader.CurrentPackage;
   }
-
 }

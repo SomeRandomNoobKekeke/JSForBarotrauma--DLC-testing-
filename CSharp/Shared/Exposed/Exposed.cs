@@ -34,7 +34,7 @@ namespace JSForBarotrauma
       Engine.AddHostType("Game", typeof(JS_Game));
       Engine.AddHostType("JSHook", typeof(JSHookExposed));
       Engine.AddHostType("Console", typeof(UnifiedConsole));
-
+      Engine.AddHostType("ModInfo", typeof(PackageContext));
 
       Engine.AddHostObject("API", API.ToBag());
       // HostTypeCollection APICollection = new HostTypeCollection();

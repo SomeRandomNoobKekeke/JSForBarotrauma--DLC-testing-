@@ -27,6 +27,9 @@ namespace JSForBarotrauma
 
     public void SetRootPath(string path) => EngineWrapper.SearchPath = path;
 
+    // When it loads scripts from package it also temporarily sets this value to the package
+    public ContentPackage CurrentPackage { get; private set; }
+
 
     public object LoadModuleFromPath(string path)
     {
@@ -72,7 +75,9 @@ namespace JSForBarotrauma
       foreach (ContentPackage package in ContentPackageManager.EnabledPackages.All)
       {
         if (package == Utils.JSForBarotraumaPackage) continue;
+        CurrentPackage = package;
         if (ModUsesJS(package)) LoadScriptsFromMod(package);
+        CurrentPackage = null;
       }
 
     }
