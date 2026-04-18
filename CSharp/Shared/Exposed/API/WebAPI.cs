@@ -23,8 +23,10 @@ namespace JSForBarotrauma
     public static PropertyBag ToBag() => new PropertyBag()
     {
       ["IsValidURL"] = (string url) => IsValidURL(url),
+#if CLIENT
       ["OpenURLInSteam"] = (string url) => OpenURLInSteam(url),
       ["OpenURL"] = (string url) => OpenURL(url),
+#endif
     };
 
     public static FluentResults.Result IsValidURL(string url)
@@ -41,6 +43,7 @@ namespace JSForBarotrauma
       //   FluentResults.Result.Fail($"it should be http or https scheme: [{url}]");
     }
 
+#if CLIENT
     public static void OpenURLInSteam(string url)
     {
       if (IsValidURL(url).IsFailed)
@@ -52,6 +55,7 @@ namespace JSForBarotrauma
       SteamManager.OverlayCustomUrl(url);
     }
 
+
     public static void OpenURL(string url)
     {
       if (IsValidURL(url).IsFailed)
@@ -62,12 +66,14 @@ namespace JSForBarotrauma
 
       try
       {
-        ToolBox.OpenFileWithShell(url);
+        ToolBox.OpenFileWithShell(url);//BRUH why is this client only?
       }
       catch (Exception e)
       {
-        UnifiedConsole.Error(e.Message);
+        UnifiedConsole.Error(e.Message); 
       }
     }
+#endif
+
   }
 }

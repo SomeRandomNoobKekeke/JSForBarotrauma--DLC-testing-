@@ -26,6 +26,7 @@ namespace JSForBarotrauma
         original: typeof(DebugConsole).GetMethod("IsCommandPermitted", AccessTools.all),
         postfix: new HarmonyMethod(typeof(ConsoleInterface).GetMethod("PermitCommands"))
       );
+#endif
 
       harmony.Patch(
         original: typeof(DebugConsole).GetMethod("ExecuteCommand", AccessTools.all),
@@ -41,20 +42,12 @@ namespace JSForBarotrauma
         original: typeof(DebugConsole).GetMethod("Update", AccessTools.all),
         postfix: new HarmonyMethod(typeof(ConsoleInterface).GetMethod("DebugConsole_Update_Exit"))
       );
-#endif
     }
 
 
     public static bool FromDebugConsole = false;
-    public static void DebugConsole_Update_Enter(float deltaTime)
-    {
-      FromDebugConsole = true;
-    }
-
-    public static void DebugConsole_Update_Exit(float deltaTime)
-    {
-      FromDebugConsole = false;
-    }
+    public static void DebugConsole_Update_Enter() { FromDebugConsole = true; }
+    public static void DebugConsole_Update_Exit() { FromDebugConsole = false; }
 
 
     public static void InterceptJSREPL(string inputtedCommands, ref bool __runOriginal)
