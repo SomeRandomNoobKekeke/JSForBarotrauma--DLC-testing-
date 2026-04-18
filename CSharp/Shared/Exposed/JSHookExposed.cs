@@ -23,14 +23,6 @@ namespace JSForBarotrauma
     public delegate bool JSPrefix(object __instance, LilParamTable __args, FakeRefObject __result);
     public delegate Exception JSFinalizer(object __instance, LilParamTable __args, FakeRefObject __result, Exception __exception);
 
-    public static StackTrace GetStackTrace()
-    {
-      return new StackTrace(new StackTrace(1, true).GetFrames().SkipWhile(
-          frame => frame.GetMethod().DeclaringType?.Assembly != typeof(JSHook).Assembly
-        )//.Skip(1)
-      );
-    }
-
     public static PatchTracker<JSPrefix> Prefixes => JSHook.Prefixes;
     public static PatchTracker<JSPostfix> Postfixes => JSHook.Postfixes;
     public static PatchTracker<JSFinalizer> Finalizers => JSHook.Finalizers;

@@ -20,8 +20,6 @@ namespace JSForBarotrauma
 {
   public partial class EngineWrapper
   {
-    public JS JS { get; private set; }
-
     private void ExposeStuff()
     {
       AddExtraObjects();
@@ -32,8 +30,7 @@ namespace JSForBarotrauma
       Engine.AddHostObject("host", new HostFunctions());
       Engine.AddHostObject("xHost", new ExtendedHostFunctions());
 
-      Engine.AddHostObject("JS", JS);
-
+      Engine.AddHostType("JS", typeof(JS));
       Engine.AddHostType("Game", typeof(JS_Game));
       Engine.AddHostType("JSHook", typeof(JSHookExposed));
       Engine.AddHostType("Console", typeof(UnifiedConsole));

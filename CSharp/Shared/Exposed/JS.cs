@@ -18,37 +18,48 @@ using BaroJunk;
 
 namespace JSForBarotrauma
 {
-  public class JS
+  public static class JS
   {
-    private EngineWrapper EngineWrapper { get; }
-    public V8ScriptEngine Engine => EngineWrapper.Engine;
+    public static V8ScriptEngine Engine => Mod.Engine?.Engine;
+    public static ScriptObject Global => Engine?.Global;
+    public static event Action OnStop
+    {
+      add => Mod.Engine.OnStop.Add(value);
+      remove => Mod.Engine.OnStop.Remove(value);
+    }
 
-    public ClearableEvent OnStop { get; } = new();
-    public ScriptObject Global => Engine?.Global;
 
-    public bool REPL
+    public static bool REPL
     {
       get => Mod.ConsoleInterface.REPL;
       set => Mod.ConsoleInterface.REPL = value;
     }
 
-    public void SetTimeout(Action action, int delay) => Utils.RunWithDelay(action, delay);
+    public static void SetTimeout(Action action, int delay) => Utils.RunWithDelay(action, delay);
 
-    public void ReloadLua()
+    public static StackTrace GetStackTrace()
+    {
+      return new StackTrace(new StackTrace(1, true).GetFrames().SkipWhile(
+          frame => frame.GetMethod().DeclaringType?.Assembly != typeof(JSHook).Assembly
+        )//.Skip(1)
+      );
+    }
+
+    public static void ReloadLua()
     {
       DebugConsole.ExecuteCommand("cl_reloadlua");
     }
-    public void Reload()
+    public static void Reload()
     {
-      Utils.RunWithDelay(() => Mod.Engine.Reload());
+      Utils.RunWithDelay(() => Mod.Engine?.Reload());
     }
-    public void Stop()
+    public static void Stop()
     {
-      Utils.RunWithDelay(() => Mod.Engine.Stop());
+      Utils.RunWithDelay(() => Mod.Engine?.Stop());
     }
-    public void Start() => EngineWrapper.Start();
-
-
-    public JS(EngineWrapper engineWrapper) => EngineWrapper = engineWrapper;
+    public static void Start()
+    {
+      Mod.Engine?.Start();
+    }
   }
 }

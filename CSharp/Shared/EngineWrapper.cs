@@ -30,6 +30,8 @@ namespace JSForBarotrauma
 
     public bool IsRunning => Engine != null;
 
+    public ClearableEvent OnStop { get; } = new();
+
     public string SearchPath
     {
       get => Engine.DocumentSettings.SearchPath;
@@ -79,8 +81,8 @@ namespace JSForBarotrauma
     {
       if (Engine == null) return;
 
-      JS.OnStop.Raise();
-      JS.OnStop.Clear();
+      OnStop.Raise();
+      OnStop.Clear();
 
       JSHook.Clear();
 
