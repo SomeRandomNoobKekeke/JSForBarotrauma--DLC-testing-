@@ -20,8 +20,8 @@ namespace JSForBarotrauma
 {
   public static class JS_Game
   {
-    public static bool IsClient => GameMain.NetworkMember.IsClient;
-    public static bool IsServer => GameMain.NetworkMember.IsServer;
+    public static bool IsClient => IsSingleplayer || GameMain.NetworkMember.IsClient;
+    public static bool IsServer => IsMultiplayer && GameMain.NetworkMember.IsServer;
     public static bool IsSingleplayer => GameMain.IsSingleplayer;
     public static bool IsMultiplayer => GameMain.IsMultiplayer;
   }

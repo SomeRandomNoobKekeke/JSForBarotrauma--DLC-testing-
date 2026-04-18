@@ -55,7 +55,6 @@ namespace JSForBarotrauma
 
     public void Dispose()
     {
-
       ConsoleInterface.RemoveCommands();
       ConsoleInterface = null;
 
