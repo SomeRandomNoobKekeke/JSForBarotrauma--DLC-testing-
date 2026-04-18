@@ -37,7 +37,7 @@ namespace JSForBarotrauma
       Engine.AddHostType("Game", typeof(JS_Game));
       Engine.AddHostType("JSHook", typeof(JSHookExposed));
       Engine.AddHostType("Console", typeof(UnifiedConsole));
-
+      Engine.AddHostType("WebAPI", typeof(WebAPI));
 
       HostTypeCollection exposedAssemblies = new HostTypeCollection("mscorlib", "System", "System.Core");
 

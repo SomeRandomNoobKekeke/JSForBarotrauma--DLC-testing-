@@ -34,7 +34,10 @@ namespace JSForBarotrauma
 
     public void SetTimeout(Action action, int delay) => Utils.RunWithDelay(action, delay);
 
-
+    public void ReloadLua()
+    {
+      DebugConsole.ExecuteCommand("cl_reloadlua");
+    }
     public void Reload()
     {
       Utils.RunWithDelay(() => Mod.Engine.Reload());
