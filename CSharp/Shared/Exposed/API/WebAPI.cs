@@ -20,6 +20,13 @@ namespace JSForBarotrauma
 {
   public static class WebAPI
   {
+    public static PropertyBag ToBag() => new PropertyBag()
+    {
+      ["IsValidURL"] = (string url) => IsValidURL(url),
+      ["OpenURLInSteam"] = (string url) => OpenURLInSteam(url),
+      ["OpenURL"] = (string url) => OpenURL(url),
+    };
+
     public static FluentResults.Result IsValidURL(string url)
     {
       Uri uriResult;

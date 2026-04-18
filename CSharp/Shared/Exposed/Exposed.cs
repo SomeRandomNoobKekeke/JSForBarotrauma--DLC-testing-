@@ -36,7 +36,7 @@ namespace JSForBarotrauma
       Engine.AddHostType("Console", typeof(UnifiedConsole));
 
 
-      Engine.AddHostType("API.Web", typeof(WebAPI));
+      Engine.AddHostObject("API", API.ToBag());
       // HostTypeCollection APICollection = new HostTypeCollection();
       // APICollection.AddType(typeof(WebAPI));
       // Engine.AddHostObject("API", HostItemFlags.PrivateAccess, APICollection);
