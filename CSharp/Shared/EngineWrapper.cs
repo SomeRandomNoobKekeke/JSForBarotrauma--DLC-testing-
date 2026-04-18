@@ -102,7 +102,6 @@ namespace JSForBarotrauma
 
     public EngineWrapper()
     {
-      JS = new(this);
       ScriptLoader = new(this);
     }
   }
