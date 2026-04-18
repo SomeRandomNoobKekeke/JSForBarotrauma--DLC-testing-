@@ -41,7 +41,7 @@ namespace JSForBarotrauma
         original: typeof(DebugConsole).GetMethod("Update", AccessTools.all),
         postfix: new HarmonyMethod(typeof(ConsoleInterface).GetMethod("DebugConsole_Update_Exit"))
       );
-#endif 
+#endif
     }
 
 
@@ -56,11 +56,11 @@ namespace JSForBarotrauma
       FromDebugConsole = false;
     }
 
-#if CLIENT
+
     public static void InterceptJSREPL(string inputtedCommands, ref bool __runOriginal)
     {
       if (Mod.ConsoleInterface is null) return;
-      if(!FromDebugConsole) return;
+      if (!FromDebugConsole) return;
 
       try
       {
@@ -84,7 +84,7 @@ namespace JSForBarotrauma
         Mod.Logger.Error(e.ErrorDetails);
       }
     }
-#endif
+
 
     public EngineWrapper EngineWrapper { get; }
     private bool repl; public bool REPL
@@ -131,6 +131,13 @@ namespace JSForBarotrauma
       AddedCommands.Add(new DebugConsole.Command("js_start", "", JSStartCommand));
       AddedCommands.Add(new DebugConsole.Command("crash", "", Crash_Command));
       AddedCommands.Add(new DebugConsole.Command("printallharmonypatches", "", PrintAllHarmonyPatches));
+
+#if CLIENT
+      foreach (DebugConsole.Command command in AddedCommands)
+      {
+        command.RelayToServer = false;
+      }
+#endif
 
       DebugConsole.Commands.InsertRange(0, AddedCommands);
     }
