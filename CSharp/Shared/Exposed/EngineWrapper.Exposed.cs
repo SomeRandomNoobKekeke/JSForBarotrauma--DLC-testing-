@@ -8,7 +8,6 @@ using System.IO;
 
 using Barotrauma;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using HarmonyLib;
 using Microsoft.ClearScript;
 using Microsoft.ClearScript.JavaScript;
@@ -37,11 +36,15 @@ namespace JSForBarotrauma
 
       Engine.AddHostType("JSHook", typeof(JSHookExposed));
       Engine.AddHostType("Console", typeof(UnifiedConsole));
-      // Engine.AddHostObject("Hook", GameMain.LuaCs.Hook);
-      //Engine.AddHostType("DebugConsole", HostItemFlags.PrivateAccess, typeof(DebugConsole));
 
-      HostTypeCollection exposedAssemblies = new HostTypeCollection("mscorlib", "System", "System.Core", "Barotrauma");
-      // exposedAssemblies.AddAssembly(typeof(Mod).Assembly);
+
+      HostTypeCollection exposedAssemblies = new HostTypeCollection("mscorlib", "System", "System.Core");
+
+#if CLIENT
+      exposedAssemblies.AddAssembly("Barotrauma");
+#elif SERVER
+      exposedAssemblies.AddAssembly("DedicatedServer");
+#endif
       exposedAssemblies.AddAssembly(typeof(Harmony).Assembly);
       exposedAssemblies.AddAssembly(typeof(Vector2).Assembly);
       exposedAssemblies.AddAssembly(typeof(List<int>).Assembly);

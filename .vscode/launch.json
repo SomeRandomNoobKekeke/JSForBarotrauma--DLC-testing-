@@ -5,12 +5,20 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "Attach to ClearScript V8 on port 9222",
+      "name": "Attach to Client ClearScript V8 on port 9222",
       "type": "node",
       "request": "attach",
       "protocol": "inspector",
       "address": "localhost",
       "port": 9222
+    },
+    {
+      "name": "Attach to Server ClearScript V8 on port 9223",
+      "type": "node",
+      "request": "attach",
+      "protocol": "inspector",
+      "address": "localhost",
+      "port": 9223
     }
   ]
 }

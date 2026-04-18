@@ -1,4 +1,6 @@
 <ModConfig>
+  <Assembly Folder="%ModDir%/CSharp/Client" Target="Client" IsScript="true" UseInternalAccessName="true" />
+  <Assembly Folder="%ModDir%/CSharp/Server" Target="Server" IsScript="true" UseInternalAccessName="true" />
   <Assembly Folder="%ModDir%/CSharp/Shared" Target="Any" IsScript="true" UseInternalAccessName="true" />
 
   <Assembly File="%ModDir%/ClearScript/Windows/ClearScript.Core.dll" Target="Any" Platform="Windows" />
