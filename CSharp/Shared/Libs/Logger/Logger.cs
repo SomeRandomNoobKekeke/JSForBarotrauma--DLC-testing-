@@ -118,19 +118,13 @@ namespace BaroJunk
 
     private void _Print(object msg, Color color)
     {
-      //TODO it doesn't relay messages to clients and IDebugConsole adds stupid amount of metadata to the messages, find something better
-      DebugConsole.NewMessage(Serializer.Serialize(msg), color);
-      //LuaCsLogger.LogMessage(Serializer.Serialize(msg), color * 0.8f, color);
+      LuaCsLogger.LogMessage(Serializer.Serialize(msg), color * 0.8f, color);
     }
 
     private void _PrintFilePath(Color color, string source, int lineNumber)
     {
       var fi = new FileInfo(source);
-      DebugConsole.NewMessage(
-        $"{fi.Directory.Name}/{fi.Name}:{lineNumber}",
-        color
-      );
-      //LuaCsLogger.LogMessage($"{fi.Directory.Name}/{fi.Name}:{lineNumber}", color * 0.8f, color);
+      LuaCsLogger.LogMessage($"{fi.Directory.Name}/{fi.Name}:{lineNumber}", color * 0.8f, color);
     }
 
     public void LogVars(object arg1,
