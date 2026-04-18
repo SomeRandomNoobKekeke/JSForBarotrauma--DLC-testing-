@@ -14,11 +14,17 @@ using Microsoft.ClearScript.JavaScript;
 using Microsoft.ClearScript.V8;
 using System.Threading;
 using BaroJunk;
+using System.IO;
 namespace JSForBarotrauma
 {
   //Why context, i thought mb also expose settings, permissions other metadata here
   public static class PackageContext
   {
+    public static string FullPath => Path.Combine(
+      Path.GetDirectoryName(Environment.ProcessPath),
+      Package.Dir
+    );
+
     public static ContentPackage Package => Mod.Engine?.ScriptLoader.CurrentPackage;
   }
 }
