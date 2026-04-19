@@ -23,6 +23,7 @@ namespace JSForBarotrauma
     public static PropertyBag ToBag() => new PropertyBag()
     {
       ["Web"] = WebAPI.ToBag(),
+      ["Console"] = ConsoleAPI.ToBag(),
     };
   }
 }

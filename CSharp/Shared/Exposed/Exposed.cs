@@ -25,10 +25,17 @@ namespace JSForBarotrauma
       AddExtraObjects();
     }
 
+    public HostFunctions HostFunctions { get; private set; }
+    public ExtendedHostFunctions ExtendedHostFunctions { get; private set; }
+
     private void AddExtraObjects()
     {
-      Engine.AddHostObject("host", new HostFunctions());
-      Engine.AddHostObject("xHost", new ExtendedHostFunctions());
+      HostFunctions = new();
+      ExtendedHostFunctions = new();
+
+
+      Engine.AddHostObject("host", HostFunctions);
+      Engine.AddHostObject("xHost", ExtendedHostFunctions);
 
       Engine.AddHostType("JS", typeof(JS));
       Engine.AddHostType("Game", typeof(JS_Game));
@@ -36,10 +43,11 @@ namespace JSForBarotrauma
       Engine.AddHostType("Console", typeof(UnifiedConsole));
       Engine.AddHostType("ModInfo", typeof(PackageContext));
 
+
+      // Engine.AddHostType("ConsoleAPI", typeof(ConsoleAPI));
+      // Engine.AddHostType("WebAPI", typeof(WebAPI));
       Engine.AddHostObject("API", API.ToBag());
-      // HostTypeCollection APICollection = new HostTypeCollection();
-      // APICollection.AddType(typeof(WebAPI));
-      // Engine.AddHostObject("API", HostItemFlags.PrivateAccess, APICollection);
+
 
       HostTypeCollection exposedAssemblies = new HostTypeCollection("mscorlib", "System", "System.Core");
 

@@ -28,6 +28,8 @@ namespace JSForBarotrauma
     public static Harmony Harmony { get; private set; } = new Harmony("JSForBarotrauma");
     public static DebuggerTracker DebuggerTracker { get; private set; } = new();
     public static ServerManager ServerManager { get; private set; } = new();
+    public static JSCommandManager JSCommandManager { get; private set; } = new();
+
 
     public void Init()
     {
@@ -68,6 +70,9 @@ namespace JSForBarotrauma
 
       ServerManager.Dispose();
       ServerManager = null;
+
+      JSCommandManager.Dispose();
+      JSCommandManager = null;
 
       DisposeBuildSpecific();
 

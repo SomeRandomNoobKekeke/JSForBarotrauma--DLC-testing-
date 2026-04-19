@@ -141,18 +141,18 @@ namespace JSForBarotrauma
       AddedCommands.Clear();
     }
 
-    public void JSReloadCommand(object[] args) => Mod.Engine?.Reload();
-    public void JSStopCommand(object[] args) => Mod.Engine?.Stop();
-    public void JSStartCommand(object[] args) => Mod.Engine?.Start();
-    public void PrintAllHarmonyPatches(object[] args) => Utils.PrintAllPatchedMethods();
+    public void JSReloadCommand(string[] args) => Mod.Engine?.Reload();
+    public void JSStopCommand(string[] args) => Mod.Engine?.Stop();
+    public void JSStartCommand(string[] args) => Mod.Engine?.Start();
+    public void PrintAllHarmonyPatches(string[] args) => Utils.PrintAllPatchedMethods();
 
-    public void JS_Command(object[] args)
+    public void JS_Command(string[] args)
     {
       if (args.Length == 0) return;
       ExecuteJSCommand(string.Join(" ", args));
     }
 
-    public void Crash_Command(object[] args) => throw new ExecutionEngineException("You Died!");
+    public void Crash_Command(string[] args) => throw new ExecutionEngineException("You Died!");
 
     public ConsoleInterface(EngineWrapper engineWrapper) => EngineWrapper = engineWrapper;
   }

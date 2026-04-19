@@ -21,13 +21,13 @@ namespace JSForBarotrauma
 {
   public class ServerManager : IDisposable
   {
-    public Dictionary<int, JSServer> RunningServers { get; } = new();
+    public Dictionary<int, JSServer> RunningHttpServers { get; } = new();
 
-    public JSServer Start(string root, int port)
+    public JSServer StartHttpServer(string root, int port)
     {
-      if (RunningServers.ContainsKey(port))
+      if (RunningHttpServers.ContainsKey(port))
       {
-        throw new Exception($"JSServer at [{port}] is already running");
+        throw new Exception($"Http server at [{port}] is already running");
       }
 
       if (!Directory.Exists(root))
@@ -37,27 +37,27 @@ namespace JSForBarotrauma
 
       var server = new JSServer(root, port);
       server.Run();
-      RunningServers[port] = server;
+      RunningHttpServers[port] = server;
       return server;
     }
 
-    public void Close(int port)
+    public void StopHttpServer(int port)
     {
-      if (!RunningServers.ContainsKey(port))
+      if (!RunningHttpServers.ContainsKey(port))
       {
-        throw new Exception($"no server running at [{port}]");
+        throw new Exception($"No server running at [{port}]");
       }
 
-      RunningServers[port].Stop();
+      RunningHttpServers[port].Stop();
     }
 
     public void Dispose()
     {
-      foreach (var server in RunningServers.Values)
+      foreach (var server in RunningHttpServers.Values)
       {
         server.Stop();
       }
-      RunningServers.Clear();
+      RunningHttpServers.Clear();
     }
   }
 }
