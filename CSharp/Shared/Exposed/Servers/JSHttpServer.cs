@@ -20,11 +20,11 @@ using System.Threading.Tasks;
 
 namespace JSForBarotrauma
 {
-  public class JSServer : Qoollo.Net.Http.HttpServer
+  public class JSHttpServer : Qoollo.Net.Http.HttpServer
   {
     public int Port { get; }
     public string Root { get; }
-    public JSServer(string root, int port) : base(port)
+    public JSHttpServer(string root, int port) : base(port)
     {
       Root = root;
       Port = port;

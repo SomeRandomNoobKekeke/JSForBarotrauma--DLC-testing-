@@ -16,14 +16,18 @@ using BaroJunk;
 
 using System.Threading;
 using System.Threading.Tasks;
+using WebSocketSharp.Server;
+using System.Security.Cryptography.X509Certificates;
 
 namespace JSForBarotrauma
 {
   public class ServerManager : IDisposable
   {
-    public Dictionary<int, JSServer> RunningHttpServers { get; } = new();
+    public Dictionary<int, JSHttpServer> RunningHttpServers { get; } = new();
+    public Dictionary<int, WebSocketServer> RunningWSServers { get; } = new();
 
-    public JSServer StartHttpServer(string root, int port)
+
+    public JSHttpServer StartHttpServer(string root, int port)
     {
       if (RunningHttpServers.ContainsKey(port))
       {
@@ -35,7 +39,7 @@ namespace JSForBarotrauma
         throw new Exception($"No such directory -> can't serve it: [{root}]");
       }
 
-      var server = new JSServer(root, port);
+      var server = new JSHttpServer(root, port);
       server.Run();
       RunningHttpServers[port] = server;
       return server;
@@ -49,7 +53,40 @@ namespace JSForBarotrauma
       }
 
       RunningHttpServers[port].Stop();
+      RunningHttpServers.Remove(port);
     }
+
+
+
+    public WebSocketServer StartWSServer(int port)
+    {
+      if (RunningWSServers.ContainsKey(port))
+      {
+        throw new Exception($"WS server at [{port}] is already running");
+      }
+
+      var wssv = new WebSocketServer($"ws://localhost:{port}/");
+
+      // CURSED
+      // wssv.SslConfiguration.ServerCertificate = Utils.buildSelfSignedServerCertificate();
+
+      wssv.AddWebSocketService<Echo>("/");
+      RunningWSServers[port] = wssv;
+      wssv.Start();
+      return wssv;
+    }
+
+    public void StopWSServer(int port)
+    {
+      if (!RunningWSServers.ContainsKey(port))
+      {
+        throw new Exception($"No WS server running at [{port}]");
+      }
+
+      RunningWSServers[port].Stop();
+      RunningWSServers.Remove(port);
+    }
+
 
     public void Dispose()
     {
@@ -58,6 +95,12 @@ namespace JSForBarotrauma
         server.Stop();
       }
       RunningHttpServers.Clear();
+
+      foreach (var server in RunningWSServers.Values)
+      {
+        server.Stop();
+      }
+      RunningWSServers.Clear();
     }
   }
 }

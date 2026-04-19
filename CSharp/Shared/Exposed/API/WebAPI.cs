@@ -15,7 +15,7 @@ using Microsoft.ClearScript.V8;
 using System.Threading;
 using BaroJunk;
 using Barotrauma.Steam;
-
+using WebSocketSharp.Server;
 namespace JSForBarotrauma
 {
   public static class WebAPI
@@ -23,19 +23,23 @@ namespace JSForBarotrauma
     public static PropertyBag ToBag() => new PropertyBag()
     {
       ["IsValidURL"] = (string url) => IsValidURL(url),
-      ["StartHttpServer"] = (string root, int port = 7000) => StartHttpServer(root, port),
-      ["StopHttpServer"] = (int port = 7000) => StopHttpServer(port),
+      ["StartHttpServer"] = (string root, int port) => StartHttpServer(root, port),
+      ["StopHttpServer"] = (int port) => StopHttpServer(port),
+      ["StartWSServer"] = (int port) => StartWSServer(port),
 #if CLIENT
       ["OpenURLInSteam"] = (string url) => OpenURLInSteam(url),
       ["OpenURL"] = (string url) => OpenURL(url),
 #endif
     };
 
-    public static JSServer StartHttpServer(string root, int port = 7000)
+    public static JSHttpServer StartHttpServer(string root, int port)
       => Mod.ServerManager.StartHttpServer(root, port);
 
-    public static void StopHttpServer(int port = 7000)
+    public static void StopHttpServer(int port)
       => Mod.ServerManager.StopHttpServer(port);
+
+    public static WebSocketServer StartWSServer(int port)
+      => Mod.ServerManager.StartWSServer(port);
 
     public static bool IsValidURL(string url) => Utils.IsValidURL(url).IsFailed;
 
@@ -44,7 +48,7 @@ namespace JSForBarotrauma
     {
       if (Utils.IsValidURL(url).IsFailed)
       {
-        UnifiedConsole.Error(IsValidURL(url).Errors.First().Message);
+        UnifiedConsole.Error(Utils.IsValidURL(url).Errors.First().Message);
         return;
       }
 
@@ -56,7 +60,7 @@ namespace JSForBarotrauma
     {
       if (Utils.IsValidURL(url).IsFailed)
       {
-        UnifiedConsole.Error(IsValidURL(url).Errors.First().Message);
+        UnifiedConsole.Error(Utils.IsValidURL(url).Errors.First().Message);
         return;
       }
 
