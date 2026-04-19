@@ -22,11 +22,13 @@ namespace JSForBarotrauma
 {
   public class JSServer : Qoollo.Net.Http.HttpServer
   {
+    public int Port { get; }
+    public string Root { get; }
     public JSServer(string root, int port) : base(port)
     {
-      Get["/"] = _ => "Hello world!";
-
-      ServeStatic(new DirectoryInfo(root), "static");
+      Root = root;
+      Port = port;
+      ServeStatic(new DirectoryInfo(root), "/");
     }
   }
 }
