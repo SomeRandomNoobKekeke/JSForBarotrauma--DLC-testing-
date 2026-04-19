@@ -14,6 +14,7 @@ namespace Qoollo.Net.Http
 
     private readonly HttpListener listener = new HttpListener();
 
+    public int Port => port;
     private readonly int port;
 
     public string Hostname { get; set; } = "localhost";

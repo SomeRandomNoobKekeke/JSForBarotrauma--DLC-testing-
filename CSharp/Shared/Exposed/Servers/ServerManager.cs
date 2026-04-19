@@ -22,44 +22,35 @@ namespace JSForBarotrauma
 {
   public class ServerManager
   {
-    public Dictionary<int, JSHttpServer> RunningHttpServers { get; } = new();
-    public Dictionary<int, WebSocketServer> RunningWSServers { get; } = new();
+    public Dictionary<int, Qoollo.Net.Http.HttpServer> HttpServers { get; } = new();
+    public Dictionary<int, WebSocketServer> WSServers { get; } = new();
 
 
-    public JSHttpServer StartHttpServer(string root, int port)
+    public bool HasHttpServer(int port) => HttpServers.ContainsKey(port);
+    public HttpServerBag CreateHttpServer(int port)
     {
-      if (RunningHttpServers.ContainsKey(port))
+      if (HttpServers.ContainsKey(port))
       {
         throw new Exception($"Http server at [{port}] is already running");
       }
 
-      if (!Directory.Exists(root))
-      {
-        throw new Exception($"No such directory -> can't serve it: [{root}]");
-      }
-
-      var server = new JSHttpServer(root, port);
-      server.Run();
-      RunningHttpServers[port] = server;
-      return server;
+      HttpServers[port] = new Qoollo.Net.Http.HttpServer(port);
+      return new HttpServerBag(HttpServers[port]);
     }
-
-    public void StopHttpServer(int port)
+    public bool RemoveHttpServer(int port)
     {
-      if (!RunningHttpServers.ContainsKey(port))
+      if (HttpServers.ContainsKey(port))
       {
-        throw new Exception($"No server running at [{port}]");
+        HttpServers.Remove(port);
+        return true;
       }
 
-      RunningHttpServers[port].Stop();
-      RunningHttpServers.Remove(port);
+      return false;
     }
-
-
 
     public WebSocketServer StartWSServer(int port)
     {
-      if (RunningWSServers.ContainsKey(port))
+      if (WSServers.ContainsKey(port))
       {
         throw new Exception($"WS server at [{port}] is already running");
       }
@@ -68,36 +59,37 @@ namespace JSForBarotrauma
 
 
       wssv.AddWebSocketService<EchoWS>("/");
-      RunningWSServers[port] = wssv;
+      WSServers[port] = wssv;
       wssv.Start();
       return wssv;
     }
 
-    public void StopWSServer(int port)
+    public bool StopWSServer(int port)
     {
-      if (!RunningWSServers.ContainsKey(port))
+      if (!WSServers.ContainsKey(port))
       {
-        throw new Exception($"No WS server running at [{port}]");
+        return false;
       }
 
-      RunningWSServers[port].Stop();
-      RunningWSServers.Remove(port);
+      WSServers[port].Stop();
+      WSServers.Remove(port);
+      return true;
     }
 
 
     public void Clear()
     {
-      foreach (var server in RunningHttpServers.Values)
+      foreach (var server in HttpServers.Values)
       {
         server.Stop();
       }
-      RunningHttpServers.Clear();
+      HttpServers.Clear();
 
-      foreach (var server in RunningWSServers.Values)
+      foreach (var server in WSServers.Values)
       {
         server.Stop();
       }
-      RunningWSServers.Clear();
+      WSServers.Clear();
     }
   }
 }

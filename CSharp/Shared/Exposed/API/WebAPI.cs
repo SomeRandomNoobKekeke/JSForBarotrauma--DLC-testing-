@@ -22,24 +22,32 @@ namespace JSForBarotrauma
   {
     public static PropertyBag ToBag() => new PropertyBag()
     {
-      ["IsValidURL"] = (string url) => IsValidURL(url),
-      ["StartHttpServer"] = (string root, int port) => StartHttpServer(root, port),
-      ["StopHttpServer"] = (int port) => StopHttpServer(port),
+      ["HasHttpServer"] = (int port) => HasHttpServer(port),
+      ["CreateHttpServer"] = (int port) => CreateHttpServer(port),
+      ["RemoveHttpServer"] = (int port) => RemoveHttpServer(port),
       ["StartWSServer"] = (int port) => StartWSServer(port),
+      ["StopWSServer"] = (int port) => StopWSServer(port),
+      ["IsValidURL"] = (string url) => IsValidURL(url),
 #if CLIENT
       ["OpenURLInSteam"] = (string url) => OpenURLInSteam(url),
       ["OpenURL"] = (string url) => OpenURL(url),
 #endif
     };
 
-    public static JSHttpServer StartHttpServer(string root, int port)
-      => Mod.Engine.ServerManager.StartHttpServer(root, port);
+    public static bool HasHttpServer(int port)
+      => Mod.Engine.ServerManager.HasHttpServer(port);
 
-    public static void StopHttpServer(int port)
-      => Mod.Engine.ServerManager.StopHttpServer(port);
+    public static HttpServerBag CreateHttpServer(int port)
+      => Mod.Engine.ServerManager.CreateHttpServer(port);
+
+    public static bool RemoveHttpServer(int port)
+      => Mod.Engine.ServerManager.RemoveHttpServer(port);
 
     public static WebSocketServer StartWSServer(int port)
       => Mod.Engine.ServerManager.StartWSServer(port);
+
+    public static bool StopWSServer(int port)
+      => Mod.Engine.ServerManager.StopWSServer(port);
 
     public static bool IsValidURL(string url) => Utils.IsValidURL(url).IsFailed;
 
