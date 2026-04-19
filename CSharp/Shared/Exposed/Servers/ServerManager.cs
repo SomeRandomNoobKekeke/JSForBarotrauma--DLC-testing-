@@ -58,7 +58,7 @@ namespace JSForBarotrauma
       var wssv = new WebSocketServer($"ws://localhost:{port}/");
 
 
-      wssv.AddWebSocketService<EchoWS>("/");
+      // wssv.AddWebSocketService<EchoWS>("/");
       WSServers[port] = wssv;
       wssv.Start();
       return wssv;
