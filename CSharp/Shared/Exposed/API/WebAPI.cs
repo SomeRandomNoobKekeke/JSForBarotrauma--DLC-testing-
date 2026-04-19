@@ -23,11 +23,19 @@ namespace JSForBarotrauma
     public static PropertyBag ToBag() => new PropertyBag()
     {
       ["IsValidURL"] = (string url) => IsValidURL(url),
+      ["StartServer"] = (string root, int port = 7000) => StartServer(root, port),
 #if CLIENT
       ["OpenURLInSteam"] = (string url) => OpenURLInSteam(url),
       ["OpenURL"] = (string url) => OpenURL(url),
 #endif
     };
+
+    public static JSServer StartServer(string root, int port = 7000)
+    {
+      return Mod.ServerManager.Start(root, port);
+    }
+
+
 
     public static FluentResults.Result IsValidURL(string url)
     {
