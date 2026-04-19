@@ -42,7 +42,7 @@ namespace JSForBarotrauma
       Engine.AddHostType("JSHook", typeof(JSHookExposed));
       Engine.AddHostType("Console", typeof(UnifiedConsole));
       Engine.AddHostType("ModInfo", typeof(PackageContext));
-
+      Engine.AddHostType("HttpServer", typeof(Qoollo.Net.Http.HttpServer));
 
       // Engine.AddHostType("ConsoleAPI", typeof(ConsoleAPI));
       // Engine.AddHostType("WebAPI", typeof(WebAPI));
