@@ -39,6 +39,8 @@ namespace JSForBarotrauma
     }
 
     public ScriptLoader ScriptLoader { get; private set; }
+    public ServerManager ServerManager { get; private set; } = new();
+    public JSCommandManager JSCommandManager { get; private set; } = new();
 
     public void Start()
     {
@@ -85,6 +87,8 @@ namespace JSForBarotrauma
       OnStop.Clear();
 
       JSHook.Clear();
+      ServerManager.Clear();
+      JSCommandManager.Clear();
 
       Engine.Interrupt();
       Engine.Dispose();
@@ -93,11 +97,6 @@ namespace JSForBarotrauma
       DocumentLoader.Default.DiscardCachedDocuments();
 
       Mod.Logger.Log(ConsoleInterface.WrapInBraces(Logger.WrapInColor("JS Stopped", "White")));
-    }
-
-    public void PrintProps()
-    {
-      Mod.Logger.Log(Logger.Wrap.IEnumerable(Engine.Global.PropertyNames));
     }
 
     public EngineWrapper()

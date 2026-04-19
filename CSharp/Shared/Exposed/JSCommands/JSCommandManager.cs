@@ -19,7 +19,7 @@ using System.Threading.Tasks;
 
 namespace JSForBarotrauma
 {
-  public class JSCommandManager : IDisposable
+  public class JSCommandManager
   {
     public Dictionary<string, DebugConsole.Command> AddedCommands = new();
 
@@ -56,7 +56,7 @@ namespace JSForBarotrauma
       AddedCommands.Remove(name);
     }
 
-    public void Dispose()
+    public void Clear()
     {
       foreach (DebugConsole.Command command in AddedCommands.Values)
       {

@@ -33,13 +33,13 @@ namespace JSForBarotrauma
     };
 
     public static JSHttpServer StartHttpServer(string root, int port)
-      => Mod.ServerManager.StartHttpServer(root, port);
+      => Mod.Engine.ServerManager.StartHttpServer(root, port);
 
     public static void StopHttpServer(int port)
-      => Mod.ServerManager.StopHttpServer(port);
+      => Mod.Engine.ServerManager.StopHttpServer(port);
 
     public static WebSocketServer StartWSServer(int port)
-      => Mod.ServerManager.StartWSServer(port);
+      => Mod.Engine.ServerManager.StartWSServer(port);
 
     public static bool IsValidURL(string url) => Utils.IsValidURL(url).IsFailed;
 

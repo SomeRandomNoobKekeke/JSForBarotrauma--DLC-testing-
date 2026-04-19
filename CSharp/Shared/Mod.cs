@@ -27,8 +27,6 @@ namespace JSForBarotrauma
     public static EngineWrapper Engine { get; private set; }
     public static Harmony Harmony { get; private set; } = new Harmony("JSForBarotrauma");
     public static DebuggerTracker DebuggerTracker { get; private set; } = new();
-    public static ServerManager ServerManager { get; private set; } = new();
-    public static JSCommandManager JSCommandManager { get; private set; } = new();
 
 
     public void Init()
@@ -67,12 +65,6 @@ namespace JSForBarotrauma
 
       DebuggerTracker.Untrack();
       DebuggerTracker = null;
-
-      ServerManager.Dispose();
-      ServerManager = null;
-
-      JSCommandManager.Dispose();
-      JSCommandManager = null;
 
       DisposeBuildSpecific();
 

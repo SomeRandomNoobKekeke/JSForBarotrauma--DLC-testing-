@@ -20,7 +20,7 @@ using WebSocketSharp.Server;
 
 namespace JSForBarotrauma
 {
-  public class ServerManager : IDisposable
+  public class ServerManager
   {
     public Dictionary<int, JSHttpServer> RunningHttpServers { get; } = new();
     public Dictionary<int, WebSocketServer> RunningWSServers { get; } = new();
@@ -85,7 +85,7 @@ namespace JSForBarotrauma
     }
 
 
-    public void Dispose()
+    public void Clear()
     {
       foreach (var server in RunningHttpServers.Values)
       {

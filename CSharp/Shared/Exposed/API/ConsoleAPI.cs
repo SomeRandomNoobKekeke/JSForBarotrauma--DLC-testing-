@@ -28,12 +28,12 @@ namespace JSForBarotrauma
     };
 
     public static void AddCommand(string name, object scriptFunc)
-      => Mod.JSCommandManager.AddCommand(name, scriptFunc);
+      => Mod.Engine.JSCommandManager.AddCommand(name, scriptFunc);
 
     public static bool CommandExists(string name)
-      => Mod.JSCommandManager.CommandExists(name);
+      => Mod.Engine.JSCommandManager.CommandExists(name);
 
     public static void RemoveCommand(string name)
-      => Mod.JSCommandManager.RemoveCommand(name);
+      => Mod.Engine.JSCommandManager.RemoveCommand(name);
   }
 }
