@@ -22,7 +22,34 @@ using WebSocketSharp.Server;
 
 namespace JSForBarotrauma
 {
-  public class Echo : WebSocketBehavior
+
+
+  public class CustomWSBehaviour : WebSocketBehavior
+  {
+    protected override void OnMessage(MessageEventArgs e)
+    {
+      UnifiedConsole.Log($"WS: Recieved [{e.Data}]");
+      Send($"Echo: {e.Data}");
+    }
+
+    protected override void OnOpen()
+    {
+      UnifiedConsole.Log($"WS: Open");
+    }
+
+    protected override void OnError(WebSocketSharp.ErrorEventArgs e)
+    {
+      UnifiedConsole.Log($"WS: Error [{e}]");
+    }
+
+    protected override void OnClose(WebSocketSharp.CloseEventArgs e)
+    {
+      UnifiedConsole.Log($"WS: Closed [{e}]");
+    }
+
+  }
+
+  public class EchoWS : WebSocketBehavior
   {
     protected override void OnMessage(MessageEventArgs e)
     {

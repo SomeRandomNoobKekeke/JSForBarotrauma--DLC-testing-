@@ -17,7 +17,6 @@ using BaroJunk;
 using System.Threading;
 using System.Threading.Tasks;
 using WebSocketSharp.Server;
-using System.Security.Cryptography.X509Certificates;
 
 namespace JSForBarotrauma
 {
@@ -67,10 +66,8 @@ namespace JSForBarotrauma
 
       var wssv = new WebSocketServer($"ws://localhost:{port}/");
 
-      // CURSED
-      // wssv.SslConfiguration.ServerCertificate = Utils.buildSelfSignedServerCertificate();
 
-      wssv.AddWebSocketService<Echo>("/");
+      wssv.AddWebSocketService<EchoWS>("/");
       RunningWSServers[port] = wssv;
       wssv.Start();
       return wssv;
