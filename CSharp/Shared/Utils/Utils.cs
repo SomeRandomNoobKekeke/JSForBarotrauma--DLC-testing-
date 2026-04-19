@@ -29,6 +29,20 @@ namespace JSForBarotrauma
       Task.Delay(delay).ContinueWith((t) => action());
     }
 
+    public static FluentResults.Result IsValidURL(string url)
+    {
+      Uri uriResult;
+      if (!Uri.TryCreate(url, UriKind.Absolute, out uriResult))
+      {
+        return FluentResults.Result.Fail($"it's not a valid url: [{url}]");
+      }
+
+      return FluentResults.Result.Ok();
+      // return (uriResult.Scheme == Uri.UriSchemeHttp || uriResult.Scheme == Uri.UriSchemeHttps) ?
+      //   FluentResults.Result.Ok() :
+      //   FluentResults.Result.Fail($"it should be http or https scheme: [{url}]");
+    }
+
     public static void PrintAllPatchedMethods()
     {
       foreach (MethodBase mb in Harmony.GetAllPatchedMethods())
