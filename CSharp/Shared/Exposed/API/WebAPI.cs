@@ -25,8 +25,9 @@ namespace JSForBarotrauma
       ["HasHttpServer"] = (int port) => HasHttpServer(port),
       ["CreateHttpServer"] = (int port) => CreateHttpServer(port),
       ["RemoveHttpServer"] = (int port) => RemoveHttpServer(port),
-      ["StartWSServer"] = (int port) => StartWSServer(port),
-      ["StopWSServer"] = (int port) => StopWSServer(port),
+      ["HasWSServer"] = (int port) => HasWSServer(port),
+      ["CreateWSServer"] = (int port, string route = "/") => CreateWSServer(port, route),
+      ["RemoveWSServer"] = (int port) => RemoveWSServer(port),
       ["IsValidURL"] = (string url) => IsValidURL(url),
 #if CLIENT
       ["OpenURLInSteam"] = (string url) => OpenURLInSteam(url),
@@ -43,11 +44,13 @@ namespace JSForBarotrauma
     public static bool RemoveHttpServer(int port)
       => Mod.Engine.ServerManager.RemoveHttpServer(port);
 
-    public static WebSocketServer StartWSServer(int port)
-      => Mod.Engine.ServerManager.StartWSServer(port);
+    public static bool HasWSServer(int port)
+      => Mod.Engine.ServerManager.HasWSServer(port);
+    public static CustomWSBehaviourBag CreateWSServer(int port, string route = "/")
+      => Mod.Engine.ServerManager.CreateWSServer(port, route);
 
-    public static bool StopWSServer(int port)
-      => Mod.Engine.ServerManager.StopWSServer(port);
+    public static bool RemoveWSServer(int port)
+      => Mod.Engine.ServerManager.RemoveWSServer(port);
 
     public static bool IsValidURL(string url) => Utils.IsValidURL(url).IsFailed;
 
