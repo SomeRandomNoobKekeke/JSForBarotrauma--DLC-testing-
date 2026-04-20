@@ -17,6 +17,7 @@ using BaroJunk;
 using System.Threading;
 using System.Threading.Tasks;
 using WatsonWebsocket;
+using System.Text;
 
 namespace JSForBarotrauma
 {
@@ -65,19 +66,34 @@ namespace JSForBarotrauma
         ["ClientConnected"] = new ProxyProp(
           set: (value) =>
           {
-            Server.ClientConnected += Mod.Engine.HostFunctions.del<EventHandler<ConnectionEventArgs>>(value);
+            Action<Guid> callback = Mod.Engine.HostFunctions.del<Action<Guid>>(value);
+            if (callback is null) return;
+            Server.ClientConnected += (object sender, ConnectionEventArgs args) =>
+            {
+              callback(args.Client.Guid);
+            };
           }
         ),
         ["ClientDisconnected"] = new ProxyProp(
           set: (value) =>
           {
-            Server.ClientDisconnected += Mod.Engine.HostFunctions.del<EventHandler<DisconnectionEventArgs>>(value);
+            Action<Guid> callback = Mod.Engine.HostFunctions.del<Action<Guid>>(value);
+            if (callback is null) return;
+            Server.ClientDisconnected += (object sender, DisconnectionEventArgs args) =>
+            {
+              callback(args.Client.Guid);
+            };
           }
         ),
         ["MessageReceived"] = new ProxyProp(
           set: (value) =>
           {
-            Server.MessageReceived += Mod.Engine.HostFunctions.del<EventHandler<MessageReceivedEventArgs>>(value);
+            Action<Guid, string> callback = Mod.Engine.HostFunctions.del<Action<Guid, string>>(value);
+            if (callback is null) return;
+            Server.MessageReceived += (object sender, MessageReceivedEventArgs args) =>
+            {
+              callback(args.Client.Guid, Encoding.UTF8.GetString(args.Data));
+            };
           }
         ),
         ["Stop"] = new ProxyProp(
@@ -85,6 +101,9 @@ namespace JSForBarotrauma
         ),
         ["Start"] = new ProxyProp(
           () => () => Server.Start()
+        ),
+        ["Send"] = new ProxyProp(
+          () => (Guid clientId, string data) => Server.SendAsync(clientId, data)
         ),
       };
 
