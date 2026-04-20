@@ -15,7 +15,7 @@ using Microsoft.ClearScript.V8;
 using System.Threading;
 using BaroJunk;
 using Barotrauma.Steam;
-using WebSocketSharp.Server;
+
 namespace JSForBarotrauma
 {
   public static class WebAPI
@@ -26,7 +26,7 @@ namespace JSForBarotrauma
       ["CreateHttpServer"] = (int port) => CreateHttpServer(port),
       ["RemoveHttpServer"] = (int port) => RemoveHttpServer(port),
       ["HasWSServer"] = (int port) => HasWSServer(port),
-      ["CreateWSServer"] = (int port, string route = "/") => CreateWSServer(port, route),
+      ["CreateWSServer"] = (int port) => CreateWSServer(port),
       ["RemoveWSServer"] = (int port) => RemoveWSServer(port),
       ["IsValidURL"] = (string url) => IsValidURL(url),
 #if CLIENT
@@ -46,8 +46,8 @@ namespace JSForBarotrauma
 
     public static bool HasWSServer(int port)
       => Mod.Engine.ServerManager.HasWSServer(port);
-    public static CustomWSBehaviourBag CreateWSServer(int port, string route = "/")
-      => Mod.Engine.ServerManager.CreateWSServer(port, route);
+    public static WSBag CreateWSServer(int port)
+      => Mod.Engine.ServerManager.CreateWSServer(port);
 
     public static bool RemoveWSServer(int port)
       => Mod.Engine.ServerManager.RemoveWSServer(port);

@@ -10,7 +10,6 @@
   <Assembly File="%ModDir%/Libs/ClearScript/Windows/ClearScript.Windows.Core.dll" Target="Any" Platform="Windows" />
   <!-- <Assembly File="%ModDir%/ClearScript/Windows/ClearScriptV8.win-x64.dll" Target="Any" Platform="Windows" /> -->
 
-  <!-- <Assembly File="%ModDir%/Libs/SharpHttpServer.dll" Target="Any" Platform="Any" /> -->
   <Assembly File="%ModDir%/Libs/Newtonsoft.Json.dll" Target="Any" Platform="Any" />
-  <Assembly File="%ModDir%/Libs/websocket-sharp.dll" Target="Any" Platform="Any" />
+  <Assembly File="%ModDir%/Libs/WatsonWebsocket.dll" Target="Any" Platform="Any" />
 </ModConfig>

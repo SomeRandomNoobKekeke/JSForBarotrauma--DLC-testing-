@@ -16,14 +16,15 @@ using BaroJunk;
 
 using System.Threading;
 using System.Threading.Tasks;
-using WebSocketSharp.Server;
+using WatsonWebsocket;
+using System.Text;
 
 namespace JSForBarotrauma
 {
   public class ServerManager
   {
     public Dictionary<int, Qoollo.Net.Http.HttpServer> HttpServers { get; } = new();
-    public Dictionary<int, WebSocketServer> WSServers { get; } = new();
+    public Dictionary<int, WatsonWsServer> WSServers { get; } = new();
 
 
     public bool HasHttpServer(int port) => HttpServers.ContainsKey(port);
@@ -53,29 +54,20 @@ namespace JSForBarotrauma
 
     public bool HasWSServer(int port) => WSServers.ContainsKey(port);
 
-    public CustomWSBehaviourBag CreateWSServer(int port, string route = "/")
+    public WSBag CreateWSServer(int port)
     {
       if (WSServers.ContainsKey(port))
       {
         throw new Exception($"WS server at [{port}] is already running");
       }
 
-      var server = new WebSocketServer($"ws://localhost:{port}/");
+      WSServers[port] = new WatsonWsServer("localhost", port, ssl: false);
 
-      CustomWSBehaviourBag bag = new CustomWSBehaviourBag(server);
-
-      //CRINGE i can't instantiate it myself, i can only inject it later
-      server.AddWebSocketService<CustomWSBehaviour>(route, () =>
-      {
-        CustomWSBehaviour behaviour = new();
-        bag.Behaviour = behaviour;
-        return behaviour;
-      });
-
-      WSServers[port] = server;
-
-      return bag;
+      return new WSBag(WSServers[port]);
     }
+
+
+
 
     public bool RemoveWSServer(int port)
     {
