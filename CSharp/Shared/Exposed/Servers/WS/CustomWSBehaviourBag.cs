@@ -22,68 +22,141 @@ using WebSocketSharp.Server;
 
 namespace JSForBarotrauma
 {
+  /// <summary>
+  /// WTF is this???
+  /// this is fake IPropertyBag object that is passed to js when you create new WS
+  /// It provides access to both the server and CustomWSBehaviour instance
+  /// Also CustomWSBehaviour is created by the server itself and injected here later
+  /// It's cringe and idk what i can do to make it less cringe
+  /// </summary>
   public class CustomWSBehaviourBag : ProxyBag
   {
-    public CustomWSBehaviour Behaviour { get; }
-    public WebSocketServer Server { get; }
-
-    public Dictionary<string, Func<object>> Getters = new();
-    public Dictionary<string, Action<object>> Setters = new();
-
-    public void AddProp(string name, Func<object> get = null, Action<object> set = null)
+    public class ProxyProp
     {
-      if (get != null) Getters[name] = get;
-      if (set != null) Setters[name] = set;
+      public Func<object> Getter { get; }
+      public Action<object> Setter { get; }
+
+      public object Value
+      {
+        get => Getter();
+        set => Setter(value);
+      }
+
+      public ProxyProp(Func<object> get = null, Action<object> set = null)
+      {
+        Getter = get ?? new Func<object>(() => null);
+        Setter = set ?? new Action<object>((value) => { });
+      }
     }
 
-    public CustomWSBehaviourBag(CustomWSBehaviour behaviour, WebSocketServer server)
+
+    public WebSocketServer Server { get; }
+    private CustomWSBehaviour behaviour; public CustomWSBehaviour Behaviour
     {
-      Behaviour = behaviour;
+      get => behaviour;
+      set
+      {
+        behaviour = value;
+        SyncValuesWithBehaviour(behaviour);
+      }
+    }
+    private void SyncValuesWithBehaviour(CustomWSBehaviour behaviour)
+    {
+      if (MessageScriptFunc != null) behaviour.MessageScriptFunc = MessageScriptFunc;
+      if (OpenScriptFunc != null) behaviour.OpenScriptFunc = OpenScriptFunc;
+      if (CloseScriptFunc != null) behaviour.CloseScriptFunc = CloseScriptFunc;
+      if (ErroScriptFunc != null) behaviour.ErroScriptFunc = ErroScriptFunc;
+    }
+
+
+    private object _MessageScriptFunc; public object MessageScriptFunc
+    {
+      get => _MessageScriptFunc;
+      set
+      {
+        _MessageScriptFunc = value;
+        if (Behaviour != null) Behaviour.MessageScriptFunc = value;
+      }
+    }
+
+    private object _OpenScriptFunc; public object OpenScriptFunc
+    {
+      get => _OpenScriptFunc;
+      set
+      {
+        _OpenScriptFunc = value;
+        if (Behaviour != null) Behaviour.OpenScriptFunc = value;
+      }
+    }
+
+    private object _CloseScriptFunc; public object CloseScriptFunc
+    {
+      get => _CloseScriptFunc;
+      set
+      {
+        _CloseScriptFunc = value;
+        if (Behaviour != null) Behaviour.CloseScriptFunc = value;
+      }
+    }
+
+    private object _ErroScriptFunc; public object ErroScriptFunc
+    {
+      get => _ErroScriptFunc;
+      set
+      {
+        _ErroScriptFunc = value;
+        if (Behaviour != null) Behaviour.ErroScriptFunc = value;
+      }
+    }
+
+    public Dictionary<string, ProxyProp> FakeProps { get; }
+
+    public CustomWSBehaviourBag(WebSocketServer server)
+    {
       Server = server;
 
       OnGet = (key) =>
       {
-        if (Getters.ContainsKey(key)) return Getters[key]();
-        else return null;
+        if (!FakeProps.ContainsKey(key)) return null;
+        return FakeProps[key].Value;
       };
       OnSet = (key, value) =>
       {
-        if (Setters.ContainsKey(key)) Setters[key](value);
+        if (FakeProps.ContainsKey(key)) return;
+        FakeProps[key].Value = value;
       };
 
-      AddProp("onMessage",
-        () => Behaviour.MessageCallback,
-        (value) => Behaviour.MessageScriptFunc = value
-      );
+      FakeProps = new Dictionary<string, ProxyProp>()
+      {
+        ["onMessage"] = new ProxyProp(
+          () => MessageScriptFunc,
+          (value) => MessageScriptFunc = value
+        ),
+        ["onOpen"] = new ProxyProp(
+          () => OpenScriptFunc,
+          (value) => OpenScriptFunc = value
+        ),
+        ["onClose"] = new ProxyProp(
+          () => CloseScriptFunc,
+          (value) => CloseScriptFunc = value
+        ),
+        ["onError"] = new ProxyProp(
+          () => ErroScriptFunc,
+          (value) => ErroScriptFunc = value
+        ),
+        ["Stop"] = new ProxyProp(
+          () => () => Server.Stop()
+        ),
+        ["Start"] = new ProxyProp(
+          () => () => Server.Start()
+        ),
+        ["Send"] = new ProxyProp(
+          () => (string data) => Behaviour?.Send(data)
+        ),
+      };
 
-      AddProp("onOpen",
-        () => Behaviour.OpenCallback,
-        (value) => Behaviour.OpenScriptFunc = value
-      );
 
-      AddProp("onClose",
-        () => Behaviour.CloseCallback,
-        (value) => Behaviour.CloseScriptFunc = value
-      );
-
-      AddProp("onError",
-        () => Behaviour.ErrorCallback,
-        (value) => Behaviour.ErroScriptFunc = value
-      );
-
-      AddProp("Stop",
-        () => () => Server.Stop()
-      );
-
-      AddProp("Start",
-        () => () => Server.Start()
-      );
-
-      AddProp("Send",
-        () => (string data) => Behaviour.Send(data)
-      );
-
-      Hints = Getters.Keys.ToHashSet();
+      Hints = FakeProps.Keys.ToHashSet();
     }
   }
 

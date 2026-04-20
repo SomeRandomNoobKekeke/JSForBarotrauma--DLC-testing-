@@ -16,6 +16,8 @@ using BaroJunk;
 
 namespace JSForBarotrauma
 {
+
+
   public class ProxyBag : IPropertyBag
   {
     public Action<string, object> OnSet { get; set; }

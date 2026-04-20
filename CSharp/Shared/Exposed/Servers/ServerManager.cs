@@ -62,17 +62,15 @@ namespace JSForBarotrauma
 
       var server = new WebSocketServer($"ws://localhost:{port}/");
 
-      CustomWSBehaviour behaviour = new CustomWSBehaviour();
-      CustomWSBehaviour BruhFactory()
+      CustomWSBehaviourBag bag = new CustomWSBehaviourBag(server);
+
+      //CRINGE i can't instantiate it myself, i can only inject it later
+      server.AddWebSocketService<CustomWSBehaviour>(route, () =>
       {
+        CustomWSBehaviour behaviour = new();
+        bag.Behaviour = behaviour;
         return behaviour;
-      }
-
-      server.AddWebSocketService<CustomWSBehaviour>(route, BruhFactory);
-
-      CustomWSBehaviourBag bag = new CustomWSBehaviourBag(
-        behaviour, server
-      );
+      });
 
       WSServers[port] = server;
 

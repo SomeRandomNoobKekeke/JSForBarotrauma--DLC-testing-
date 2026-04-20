@@ -64,21 +64,25 @@ namespace JSForBarotrauma
 
     protected override void OnMessage(MessageEventArgs e)
     {
+      UnifiedConsole.Log($"WS: message {e}");
       MessageCallback?.Invoke(e);
     }
 
     protected override void OnOpen()
     {
+      UnifiedConsole.Log($"WS: open");
       OpenCallback?.Invoke();
     }
 
     protected override void OnError(WebSocketSharp.ErrorEventArgs e)
     {
+      UnifiedConsole.Log($"WS: error");
       ErrorCallback?.Invoke(e);
     }
 
     protected override void OnClose(WebSocketSharp.CloseEventArgs e)
     {
+      UnifiedConsole.Log($"WS: close {e.Code} {e.Reason} {e.WasClean}");
       CloseCallback?.Invoke(e);
     }
 
