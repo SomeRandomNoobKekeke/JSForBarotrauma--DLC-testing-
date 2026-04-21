@@ -35,18 +35,17 @@ namespace JSForBarotrauma
       );
     }
 
-    public static object ToJSArray(IEnumerable csEnumerable)
+    //I've tried Array.from, it doesn't work well with PropertyBags
+    public static ScriptObject ToJSArray(IEnumerable csEnumerable)
     {
-      PropertyBag bag = new PropertyBag();
+      ScriptObject arr = (ScriptObject)Mod.Engine.Engine.Evaluate("[]");
 
-      int i = 0;
       foreach (object item in csEnumerable)
       {
-        bag[i.ToString()] = item;
-        i++;
+        arr.InvokeMethod("push", item);
       }
 
-      return Mod.Engine.Engine.Script.Array.from(bag);
+      return arr;
     }
 
   }

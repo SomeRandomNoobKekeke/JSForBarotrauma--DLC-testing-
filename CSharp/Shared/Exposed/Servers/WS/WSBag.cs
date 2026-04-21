@@ -22,6 +22,7 @@ using System.Text;
 namespace JSForBarotrauma
 {
 
+  //TODO make it use PropBag, make PropBag not useless
   public class WSBag : ProxyBag
   {
     public class ProxyProp
