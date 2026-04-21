@@ -44,6 +44,10 @@ namespace JSForBarotrauma
     {
       if (HttpServers.ContainsKey(port))
       {
+        if (HttpServers[port].IsListening)
+        {
+          HttpServers[port].Stop();
+        }
         HttpServers.Remove(port);
         return true;
       }

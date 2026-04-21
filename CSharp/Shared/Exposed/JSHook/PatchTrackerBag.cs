@@ -30,7 +30,7 @@ namespace JSForBarotrauma
       Props["Add"] = new ProxyProp(
         () => (MethodBase original, object scriptFunc, int priority = Priority.Normal) =>
         {
-          PatchTracker.Add(
+          return PatchTracker.Add(
             original,
             Mod.Engine.HostFunctions.del<DelegateT>(scriptFunc),
             priority

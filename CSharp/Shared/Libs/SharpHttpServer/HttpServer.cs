@@ -20,6 +20,7 @@ namespace Qoollo.Net.Http
     public string Hostname { get; set; } = "localhost";
 
     public string Scheme { get; set; } = "http";
+    public bool IsListening { get; private set; }
 
     public HttpServer(int port)
     {
@@ -53,6 +54,7 @@ namespace Qoollo.Net.Http
             listener.Prefixes.Add(BuildUri(path, query));
           });
 
+      IsListening = true;
       listener.Start();
 
       ThreadPool.QueueUserWorkItem((o) =>
@@ -90,6 +92,7 @@ namespace Qoollo.Net.Http
     {
       listener.Stop();
       listener.Close();
+      IsListening = false;
     }
 
     public RequestHandlerRegistrator Get
