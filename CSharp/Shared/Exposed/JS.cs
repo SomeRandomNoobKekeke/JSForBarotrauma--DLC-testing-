@@ -35,16 +35,6 @@ namespace JSForBarotrauma
       set => Mod.ConsoleInterface.REPL = value;
     }
 
-    public static void SetTimeout(Action action, int delay) => Utils.RunWithDelay(action, delay);
-
-    public static StackTrace GetStackTrace()
-    {
-      return new StackTrace(new StackTrace(1, true).GetFrames().SkipWhile(
-          frame => frame.GetMethod().DeclaringType?.Assembly != typeof(JSHook).Assembly
-        )//.Skip(1)
-      );
-    }
-
     public static void ReloadLua()
     {
       DebugConsole.ExecuteCommand("cl_reloadlua");

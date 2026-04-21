@@ -30,7 +30,7 @@ namespace JSForBarotrauma
         throw new Exception($"[{name}] command is already added");
       }
 
-      Action<object> action = (Action<object>)Mod.Engine.HostFunctions.proc(1, scriptFunc);
+      Action<object> action = Mod.Engine.HostFunctions.del<Action<object>>(scriptFunc);
 
       DebugConsole.Command command = new DebugConsole.Command(name, "", (string[] args) => action(args));
 

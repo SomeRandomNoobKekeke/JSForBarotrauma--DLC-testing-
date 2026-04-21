@@ -5,7 +5,8 @@ JS.Global["runWith"] = function (expression, context) {
   return func(...values);
 }
 
-JS.Global.GetMethod = (path, flags = lib.HarmonyLib.AccessTools.all) => {
+
+JS.Global['GetMethod'] = (path, flags = lib.HarmonyLib.AccessTools.all) => {
   if (typeof path != 'string') {
     Console.Warning('path should be string in this format: Barotrauma.GameMain.Update')
     return

@@ -39,6 +39,7 @@ namespace JSForBarotrauma
 
       Engine.AddHostType("JS", typeof(JS));
       Engine.AddHostType("Game", typeof(JS_Game));
+      Engine.AddHostType("Utils", typeof(JS_Utils));
       Engine.AddHostType("JSHook", typeof(JSHookExposed));
       Engine.AddHostType("Console", typeof(UnifiedConsole));
       Engine.AddHostType("ModInfo", typeof(PackageContext));
@@ -47,6 +48,12 @@ namespace JSForBarotrauma
       // Engine.AddHostType("ConsoleAPI", typeof(ConsoleAPI));
       // Engine.AddHostType("WebAPI", typeof(WebAPI));
       Engine.AddHostObject("API", API.ToBag());
+
+      Engine.Global["setTimeout"] = (object scriptFunc, int delay) =>
+      {
+        Utils.RunWithDelay(HostFunctions.del<Action>(scriptFunc), delay);
+        return (object)null; //TODO here should be cancelation token
+      };
 
 
       HostTypeCollection exposedAssemblies = new HostTypeCollection("mscorlib", "System", "System.Core");
