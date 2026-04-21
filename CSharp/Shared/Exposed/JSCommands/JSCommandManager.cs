@@ -45,6 +45,8 @@ namespace JSForBarotrauma
     public bool CommandExists(string name)
       => AddedCommands.ContainsKey(name);
 
+    public void ExecuteCommand(string command)
+      => DebugConsole.ExecuteCommand(command);
     public void RemoveCommand(string name)
     {
       if (!AddedCommands.ContainsKey(name))

@@ -25,6 +25,7 @@ namespace JSForBarotrauma
       ["AddCommand"] = (string name, object scriptFunc) => AddCommand(name, scriptFunc),
       ["CommandExists"] = (string name) => CommandExists(name),
       ["RemoveCommand"] = (string name) => RemoveCommand(name),
+      ["ExecuteCommand"] = (string command) => ExecuteCommand(command),
     };
 
     public static void AddCommand(string name, object scriptFunc)
@@ -35,5 +36,8 @@ namespace JSForBarotrauma
 
     public static void RemoveCommand(string name)
       => Mod.Engine.JSCommandManager.RemoveCommand(name);
+
+    public static void ExecuteCommand(string command)
+      => Mod.Engine.JSCommandManager.ExecuteCommand(command);
   }
 }
