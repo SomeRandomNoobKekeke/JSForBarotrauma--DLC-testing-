@@ -18,7 +18,7 @@ using BaroJunk;
 
 namespace JSForBarotrauma
 {
-  public static class JS_Game
+  public static class GameAPI
   {
     public static bool IsClient => IsSingleplayer || GameMain.NetworkMember.IsClient;
     public static bool IsServer => IsMultiplayer && GameMain.NetworkMember.IsServer;

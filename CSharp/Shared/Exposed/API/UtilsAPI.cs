@@ -15,12 +15,18 @@ using Microsoft.ClearScript.JavaScript;
 using Microsoft.ClearScript.V8;
 using System.Threading;
 using BaroJunk;
-
+using Barotrauma.Steam;
 
 namespace JSForBarotrauma
 {
-  public static class JS_Utils
+  public static class UtilsAPI
   {
+    public static PropertyBag ToBag() => new PropertyBag()
+    {
+      ["GetStackTrace"] = () => GetStackTrace(),
+      ["ToJSArray"] = (IEnumerable csEnumerable) => ToJSArray(csEnumerable),
+    };
+
     public static StackTrace GetStackTrace()
     {
       return new StackTrace(new StackTrace(1, true).GetFrames().SkipWhile(
@@ -28,7 +34,6 @@ namespace JSForBarotrauma
         )//.Skip(1)
       );
     }
-
 
     public static object ToJSArray(IEnumerable csEnumerable)
     {
@@ -43,5 +48,6 @@ namespace JSForBarotrauma
 
       return Mod.Engine.Engine.Script.Array.from(bag);
     }
+
   }
 }

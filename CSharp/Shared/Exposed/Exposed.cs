@@ -38,12 +38,9 @@ namespace JSForBarotrauma
       Engine.AddHostObject("xHost", ExtendedHostFunctions);
 
       Engine.AddHostType("JS", typeof(JS));
-      Engine.AddHostType("Game", typeof(JS_Game));
-      Engine.AddHostType("Utils", typeof(JS_Utils));
       Engine.AddHostType("JSHook", typeof(JSHookExposed));
       Engine.AddHostType("Console", typeof(UnifiedConsole));
       Engine.AddHostType("ModInfo", typeof(PackageContext));
-      Engine.AddHostType("HttpServer", typeof(Qoollo.Net.Http.HttpServer));
 
       // Engine.AddHostType("ConsoleAPI", typeof(ConsoleAPI));
       // Engine.AddHostType("WebAPI", typeof(WebAPI));
