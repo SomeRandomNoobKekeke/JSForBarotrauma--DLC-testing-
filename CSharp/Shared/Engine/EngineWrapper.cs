@@ -81,22 +81,39 @@ namespace JSForBarotrauma
 
     public void Stop()
     {
-      if (Engine == null) return;
+      try
+      {
+        if (Engine == null) return;
 
-      OnStop.Raise();
-      OnStop.Clear();
+        OnStop.Raise();
+        OnStop.Clear();
 
-      JSHook.Clear();
-      ServerManager.Clear();
-      JSCommandManager.Clear();
 
-      Engine.Interrupt();
-      Engine.Dispose();
-      Engine = null;
+        JSHook.Clear();
+        ServerManager.Clear();
+        JSCommandManager.Clear();
 
-      DocumentLoader.Default.DiscardCachedDocuments();
+        Engine.Interrupt();
+        Engine.Dispose();
+        Engine = null;
 
-      Mod.Logger.Log(ConsoleInterface.WrapInBraces(Logger.WrapInColor("JS Stopped", "White")));
+        DocumentLoader.Default.DiscardCachedDocuments();
+
+        Mod.Logger.Log(ConsoleInterface.WrapInBraces(Logger.WrapInColor("JS Stopped", "White")));
+      }
+      catch (Exception e)
+      {
+        Mod.Logger.Error($"Exception in JS.Stop: {e}");
+      }
+      finally
+      {
+        if (Engine != null)
+        {
+          Engine.Interrupt();
+          Engine.Dispose();
+          Engine = null;
+        }
+      }
     }
 
     public EngineWrapper()
