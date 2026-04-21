@@ -20,6 +20,22 @@ namespace JSForBarotrauma
 {
   public static class GameAPI
   {
+    public static IPropertyBag ToBag() => new PropBag(new Dictionary<string, PropBag.ProxyProp>()
+    {
+      ["IsClient"] = new PropBag.ProxyProp(
+        get: () => IsClient
+      ),
+      ["IsServer"] = new PropBag.ProxyProp(
+        get: () => IsServer
+      ),
+      ["IsSingleplayer"] = new PropBag.ProxyProp(
+        get: () => IsSingleplayer
+      ),
+      ["IsMultiplayer"] = new PropBag.ProxyProp(
+        get: () => IsMultiplayer
+      ),
+    });
+
     public static bool IsClient => IsSingleplayer || GameMain.NetworkMember.IsClient;
     public static bool IsServer => IsMultiplayer && GameMain.NetworkMember.IsServer;
     public static bool IsSingleplayer => GameMain.IsSingleplayer;

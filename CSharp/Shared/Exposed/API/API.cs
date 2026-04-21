@@ -25,7 +25,7 @@ namespace JSForBarotrauma
       ["Web"] = WebAPI.ToBag(),
       ["Console"] = ConsoleAPI.ToBag(),
       ["Utils"] = UtilsAPI.ToBag(),
-      ["Game"] = typeof(GameAPI),
+      ["Game"] = GameAPI.ToBag(),
     };
   }
 }
