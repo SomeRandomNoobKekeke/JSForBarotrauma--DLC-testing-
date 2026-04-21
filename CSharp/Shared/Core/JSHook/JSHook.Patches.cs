@@ -28,7 +28,7 @@ namespace JSForBarotrauma
 
         FakeRefObject Result = new FakeRefObject(__result);
         info.PTable.Args = __args;
-        foreach (JSHookExposed.JSPostfix postfix in info.Patches)
+        foreach (JSPostfix postfix in info.Patches)
         {
           postfix.Invoke(__instance, info.PTable, Result);
         }
@@ -58,7 +58,7 @@ namespace JSForBarotrauma
 
         FakeRefObject Result = new FakeRefObject(null);
         info.PTable.Args = __args;
-        foreach (JSHookExposed.JSPostfix postfix in info.Patches)
+        foreach (JSPostfix postfix in info.Patches)
         {
           postfix.Invoke(__instance, info.PTable, Result);
         }
@@ -93,7 +93,7 @@ namespace JSForBarotrauma
 
         FakeRefObject Result = new FakeRefObject(__result);
         info.PTable.Args = __args;
-        foreach (JSHookExposed.JSPrefix prefix in info.Patches)
+        foreach (JSPrefix prefix in info.Patches)
         {
           shouldRun = shouldRun && prefix.Invoke(__instance, info.PTable, Result);
         }
@@ -127,7 +127,7 @@ namespace JSForBarotrauma
 
         FakeRefObject Result = new FakeRefObject(null);
         info.PTable.Args = __args;
-        foreach (JSHookExposed.JSPrefix prefix in info.Patches)
+        foreach (JSPrefix prefix in info.Patches)
         {
           shouldRun = shouldRun && prefix.Invoke(__instance, info.PTable, Result);
         }
@@ -160,7 +160,7 @@ namespace JSForBarotrauma
 
         FakeRefObject Result = new FakeRefObject(__result);
         info.PTable.Args = __args;
-        foreach (JSHookExposed.JSFinalizer finalizer in info.Patches)
+        foreach (JSFinalizer finalizer in info.Patches)
         {
           __exception = finalizer.Invoke(__instance, info.PTable, Result, __exception);
         }
@@ -192,7 +192,7 @@ namespace JSForBarotrauma
 
         FakeRefObject Result = new FakeRefObject(null);
         info.PTable.Args = __args;
-        foreach (JSHookExposed.JSFinalizer finalizer in info.Patches)
+        foreach (JSFinalizer finalizer in info.Patches)
         {
           __exception = finalizer.Invoke(__instance, info.PTable, Result, __exception);
         }

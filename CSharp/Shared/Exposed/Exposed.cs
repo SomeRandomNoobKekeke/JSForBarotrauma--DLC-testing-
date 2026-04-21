@@ -38,18 +38,15 @@ namespace JSForBarotrauma
       Engine.AddHostObject("xHost", ExtendedHostFunctions);
 
       Engine.AddHostType("JS", typeof(JS));
-      Engine.AddHostType("JSHook", typeof(JSHookExposed));
       Engine.AddHostType("Console", typeof(UnifiedConsole));
-      Engine.AddHostType("ModInfo", typeof(PackageContext));
+      Engine.AddHostType("ModInfo", typeof(ModInfo));
 
-      // Engine.AddHostType("ConsoleAPI", typeof(ConsoleAPI));
-      // Engine.AddHostType("WebAPI", typeof(WebAPI));
       Engine.AddHostObject("API", API.ToBag());
 
       Engine.Global["setTimeout"] = (object scriptFunc, int delay) =>
       {
         Utils.RunWithDelay(HostFunctions.del<Action>(scriptFunc), delay);
-        return (object)null; //TODO here should be cancelation token
+        return (object)null; //TODO here should be a cancelation token
       };
 
 

@@ -17,8 +17,8 @@ using BaroJunk;
 using System.IO;
 namespace JSForBarotrauma
 {
-  //Why context, i thought mb also expose settings, permissions other metadata here
-  public static class PackageContext
+
+  public static class ModInfo
   {
     public static string FullPath => Path.Combine(
       Path.GetDirectoryName(Environment.ProcessPath),

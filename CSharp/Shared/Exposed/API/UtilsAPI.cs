@@ -27,26 +27,10 @@ namespace JSForBarotrauma
       ["ToJSArray"] = (IEnumerable csEnumerable) => ToJSArray(csEnumerable),
     };
 
-    public static StackTrace GetStackTrace()
-    {
-      return new StackTrace(new StackTrace(1, true).GetFrames().SkipWhile(
-          frame => frame.GetMethod().DeclaringType?.Assembly != typeof(JSHook).Assembly
-        )//.Skip(1)
-      );
-    }
+    public static StackTrace GetStackTrace() => Utils.GetStackTrace();
 
-    //I've tried Array.from, it doesn't work well with PropertyBags
     public static ScriptObject ToJSArray(IEnumerable csEnumerable)
-    {
-      ScriptObject arr = (ScriptObject)Mod.Engine.Engine.Evaluate("[]");
-
-      foreach (object item in csEnumerable)
-      {
-        arr.InvokeMethod("push", item);
-      }
-
-      return arr;
-    }
+      => Utils.ToJSArray(csEnumerable);
 
   }
 }

@@ -55,35 +55,8 @@ namespace JSForBarotrauma
     public static bool IsValidURL(string url) => Utils.IsValidURL(url).IsFailed;
 
 #if CLIENT
-    public static void OpenURLInSteam(string url)
-    {
-      if (Utils.IsValidURL(url).IsFailed)
-      {
-        UnifiedConsole.Error(Utils.IsValidURL(url).Errors.First().Message);
-        return;
-      }
-
-      SteamManager.OverlayCustomUrl(url);
-    }
-
-
-    public static void OpenURL(string url)
-    {
-      if (Utils.IsValidURL(url).IsFailed)
-      {
-        UnifiedConsole.Error(Utils.IsValidURL(url).Errors.First().Message);
-        return;
-      }
-
-      try
-      {
-        ToolBox.OpenFileWithShell(url);//BRUH why is this client only?
-      }
-      catch (Exception e)
-      {
-        UnifiedConsole.Error(e.Message); 
-      }
-    }
+    public static void OpenURLInSteam(string url) => Utils.OpenURLInSteam(url);
+    public static void OpenURL(string url) => Utils.OpenURL(url);
 #endif
 
   }
