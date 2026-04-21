@@ -1,7 +1,7 @@
 <ModConfig>
-  <Assembly Folder="%ModDir%/CSharp/Client" Target="Client" IsScript="true" UseInternalAccessName="true" />
-  <Assembly Folder="%ModDir%/CSharp/Server" Target="Server" IsScript="true" UseInternalAccessName="true" />
-  <Assembly Folder="%ModDir%/CSharp/Shared" Target="Any" IsScript="true" UseInternalAccessName="true" />
+  <Assembly Folder="%ModDir%/CSharp/Client" Target="Client" IsScript="true" UseInternalAccessName="false" />
+  <Assembly Folder="%ModDir%/CSharp/Server" Target="Server" IsScript="true" UseInternalAccessName="false" />
+  <Assembly Folder="%ModDir%/CSharp/Shared" Target="Any" IsScript="true" UseInternalAccessName="false" />
 
   <Assembly File="%ModDir%/Libs/ClearScript/ClearScript.Core.dll" Target="Any" Platform="Any" />
   <Assembly File="%ModDir%/Libs/ClearScript/ClearScript.V8.dll" Target="Any" Platform="Any" />
