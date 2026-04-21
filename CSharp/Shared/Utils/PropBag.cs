@@ -43,13 +43,10 @@ namespace JSForBarotrauma
       }
     }
 
-    private Dictionary<string, ProxyProp> Props { get; }
+    protected Dictionary<string, ProxyProp> Props { get; set; }
 
-    public PropBag(Dictionary<string, ProxyProp> props)
+    public PropBag()
     {
-      Props = props;
-      Hints = Props.Keys.ToHashSet();
-
       OnGet = (key) =>
       {
         if (!Props.ContainsKey(key)) return null;
@@ -60,6 +57,12 @@ namespace JSForBarotrauma
         if (!Props.ContainsKey(key)) return;
         Props[key].Value = value;
       };
+    }
+
+    public PropBag(Dictionary<string, ProxyProp> props) : this()
+    {
+      Props = props;
+      Hints = Props.Keys.ToHashSet();
     }
   }
 

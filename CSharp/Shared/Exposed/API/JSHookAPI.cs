@@ -19,9 +19,12 @@ namespace JSForBarotrauma
 {
   public static class JSHookAPI
   {
-    public static PatchTracker<JSHook.JSPrefix> Prefixes => JSHook.Prefixes;
-    public static PatchTracker<JSHook.JSPostfix> Postfixes => JSHook.Postfixes;
-    public static PatchTracker<JSHook.JSFinalizer> Finalizers => JSHook.Finalizers;
-    public static void Clear() => JSHook.Clear();
+    public static PropertyBag ToBag() => new PropertyBag()
+    {
+      ["Prefixes"] = new PatchTrackerBag<JSHook.JSPrefix>(JSHook.Prefixes),
+      ["Postfixes"] = new PatchTrackerBag<JSHook.JSPostfix>(JSHook.Postfixes),
+      ["Finalizers"] = new PatchTrackerBag<JSHook.JSFinalizer>(JSHook.Finalizers),
+      ["Clear"] = () => JSHook.Clear(),
+    };
   }
 }

@@ -23,7 +23,8 @@ namespace JSForBarotrauma
   }
 
 
-  public partial class PatchTracker<DelegateT> where DelegateT : Delegate
+
+  public partial class PatchTracker<DelegateT> : IPatchTracker where DelegateT : Delegate
   {
     public record PatchInfo<DelegateT>(DelegateT Delegate, int ID, int Priority);
     public class PatchedMethodInfo<DelegateT>
@@ -52,6 +53,10 @@ namespace JSForBarotrauma
 
 
     public bool WasPatched(MethodBase original) => PatchedMethods.Contains(original);
+
+
+    int IPatchTracker.Add(MethodBase original, Delegate patch, int priority = Priority.Normal)
+      => Add(original, (DelegateT)patch, priority);
 
     public int Add(MethodBase original, DelegateT patch, int priority = Priority.Normal)
     {
