@@ -2,7 +2,6 @@
 using BaroJunk;
 using Barotrauma;
 using Barotrauma.Items.Components;
-using Barotrauma.Plugins;
 using HarmonyLib;
 using Microsoft.ClearScript;
 using Microsoft.ClearScript.JavaScript;
@@ -15,24 +14,10 @@ using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 
-
 namespace JSForBarotrauma
 {
-  public partial class Mod : IBarotraumaPlugin
+  public partial class Mod
   {
-    // if i get this correctly they are injected only into static var on IBarotraumaPlugin, for whatever reason
-    public static IDebugConsole DebugConsole = PluginServiceProvider.GetService<IDebugConsole>();
-    public static ISettingsService SettingsService = PluginServiceProvider.GetService<ISettingsService>();
-    public static IItemComponentRegistrar ItemComponentRegistrar = PluginServiceProvider.GetService<IItemComponentRegistrar>();
-    public static ISimpleHookService HookService = PluginServiceProvider.GetService<ISimpleHookService>();
-    public static IHarmonyProvider HarmonyProvider = PluginServiceProvider.GetService<IHarmonyProvider>();
-    public static IContentFileRegistrar ContentFileRegistrar = PluginServiceProvider.GetService<IContentFileRegistrar>();
-    public static IGameNetwork GameNetwork = PluginServiceProvider.GetService<IGameNetwork>();
-    public static IStatusEffectService StatusEffectService = PluginServiceProvider.GetService<IStatusEffectService>();
-
-    public static PluginServices PluginServices { get; private set; } = new();
-
-
     public static Mod Instance { get; private set; }
     public static Logger Logger { get; private set; } = new()
     {
@@ -43,10 +28,12 @@ namespace JSForBarotrauma
     public static Harmony Harmony { get; private set; } = new Harmony("JSForBarotrauma");
     public static DebuggerTracker DebuggerTracker { get; private set; } = new();
 
-    public void Initialize() => Init();
+
     public void Init()
     {
       Instance = this;
+
+      InitBuildSpecific();
 
       Engine = new();
       ConsoleInterface = new(Engine);
@@ -60,16 +47,14 @@ namespace JSForBarotrauma
     }
 
 
-
-
-
-    public void OnContentLoaded() { }
     public void OnLoadCompleted() { }
     public void PreInitPatching() { }
 
+    public partial void InitBuildSpecific();
+    public partial void DisposeBuildSpecific();
+
     public void Dispose()
     {
-
       ConsoleInterface.RemoveCommands();
       ConsoleInterface = null;
 
@@ -81,16 +66,7 @@ namespace JSForBarotrauma
       DebuggerTracker.Untrack();
       DebuggerTracker = null;
 
-      DebugConsole = null;
-      SettingsService = null;
-      ItemComponentRegistrar = null;
-      HookService = null;
-      HarmonyProvider = null;
-      ContentFileRegistrar = null;
-      GameNetwork = null;
-      StatusEffectService = null;
-
-      PluginServices = null;
+      DisposeBuildSpecific();
 
       Instance = null;
     }

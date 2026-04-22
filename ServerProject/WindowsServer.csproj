@@ -1,11 +1,12 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <PlatformName>Windows</PlatformName>
-    <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
   </PropertyGroup>
   <Import Project="ServerItems.props" />
   <ItemGroup>
+    <PackageReference Include="FluentResults" Version="4.0.0" />
     <PackageReference Include="Microsoft.ClearScript" Version="7.5.0" />
+    <PackageReference Include="WatsonWebsocket" Version="4.1.8" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="ServerSource\" />

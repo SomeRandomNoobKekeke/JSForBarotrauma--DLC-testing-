@@ -2,6 +2,7 @@
 using System;
 using System.Reflection;
 using System.Linq;
+using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using Barotrauma;
@@ -15,7 +16,8 @@ using System.IO;
 using BaroJunk;
 
 using System.Threading.Tasks;
-
+using System.Diagnostics;
+using Barotrauma.Steam;
 namespace JSForBarotrauma
 {
   public static partial class Utils
@@ -29,20 +31,19 @@ namespace JSForBarotrauma
       Task.Delay(delay).ContinueWith((t) => action());
     }
 
-    // i don't get how to use it
-    // public static void RunWithDelay(Action action, float delay = 100)
-    // {
-    //   CoroutineManager.Invoke(action, delay);
-    // }
+    public static FluentResults.Result IsValidURL(string url)
+    {
+      Uri uriResult;
+      if (!Uri.TryCreate(url, UriKind.Absolute, out uriResult))
+      {
+        return FluentResults.Result.Fail($"it's not a valid url: [{url}]");
+      }
 
-    // rip
-    // public static void RunWithDelay(Action action, double delay = 100)
-    // {
-    //   GameMain.LuaCs.Timer.Wait((args) =>
-    //   {
-    //     action();
-    //   }, 100);
-    // }
+      return FluentResults.Result.Ok();
+      // return (uriResult.Scheme == Uri.UriSchemeHttp || uriResult.Scheme == Uri.UriSchemeHttps) ?
+      //   FluentResults.Result.Ok() :
+      //   FluentResults.Result.Fail($"it should be http or https scheme: [{url}]");
+    }
 
     public static void PrintAllPatchedMethods()
     {
@@ -75,6 +76,60 @@ namespace JSForBarotrauma
         }
       }
     }
+
+    public static StackTrace GetStackTrace()
+    {
+      return new StackTrace(new StackTrace(1, true).GetFrames().SkipWhile(
+          frame => frame.GetMethod().DeclaringType?.Assembly != typeof(JSHook).Assembly
+        )//.Skip(1)
+      );
+    }
+
+    //I've tried Array.from, it doesn't work well with PropertyBags
+    public static ScriptObject ToJSArray(IEnumerable csEnumerable)
+    {
+      ScriptObject arr = (ScriptObject)Mod.Engine.Engine.Evaluate("[]");
+
+      foreach (object item in csEnumerable)
+      {
+        arr.InvokeMethod("push", item);
+      }
+
+      return arr;
+    }
+
+#if CLIENT
+    public static void OpenURLInSteam(string url)
+    {
+      if (Utils.IsValidURL(url).IsFailed)
+      {
+        UnifiedConsole.Error(Utils.IsValidURL(url).Errors.First().Message);
+        return;
+      }
+
+      SteamManager.OverlayCustomUrl(url);
+    }
+
+
+    public static void OpenURL(string url)
+    {
+      if (Utils.IsValidURL(url).IsFailed)
+      {
+        UnifiedConsole.Error(Utils.IsValidURL(url).Errors.First().Message);
+        return;
+      }
+
+      try
+      {
+        ToolBox.OpenFileWithShell(url);//BRUH why is this client only?
+      }
+      catch (Exception e)
+      {
+        UnifiedConsole.Error(e.Message); 
+      }
+    }
+#endif
+
 
 
   }

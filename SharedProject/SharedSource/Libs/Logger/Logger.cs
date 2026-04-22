@@ -49,17 +49,22 @@ namespace BaroJunk
     /// Log with LogColor
     /// </summary>
     public void Log(object msg, [CallerFilePath] string source = "", [CallerLineNumber] int lineNumber = 0)
-    { if (PrintLogs) Print(msg, LogColor, source, lineNumber); }
+    {
+      if (!PrintLogs) return;
+      Print(msg, LogColor, source, lineNumber);
+    }
     public void Log(object msg1, object msg2, [CallerFilePath] string source = "", [CallerLineNumber] int lineNumber = 0)
     {
-      Log(msg1, LogColor, source, lineNumber);
-      Log(msg2, LogColor, source, lineNumber);
+      if (!PrintLogs) return;
+      Print(msg1, LogColor, source, lineNumber);
+      Print(msg2, LogColor, source, lineNumber);
     }
     public void Log(object msg1, object msg2, object msg3, [CallerFilePath] string source = "", [CallerLineNumber] int lineNumber = 0)
     {
-      Log(msg1, LogColor, source, lineNumber);
-      Log(msg2, LogColor, source, lineNumber);
-      Log(msg3, LogColor, source, lineNumber);
+      if (!PrintLogs) return;
+      Print(msg1, LogColor, source, lineNumber);
+      Print(msg2, LogColor, source, lineNumber);
+      Print(msg3, LogColor, source, lineNumber);
     }
 
     /// <summary>
@@ -118,19 +123,15 @@ namespace BaroJunk
 
     private void _Print(object msg, Color color)
     {
-      //TODO it doesn't relay messages to clients and IDebugConsole adds stupid amount of metadata to the messages, find something better
-      DebugConsole.NewMessage(Serializer.Serialize(msg), color);
       //LuaCsLogger.LogMessage(Serializer.Serialize(msg), color * 0.8f, color);
+      DebugConsole.NewMessage(Serializer.Serialize(msg), color);
     }
 
     private void _PrintFilePath(Color color, string source, int lineNumber)
     {
       var fi = new FileInfo(source);
-      DebugConsole.NewMessage(
-        $"{fi.Directory.Name}/{fi.Name}:{lineNumber}",
-        color
-      );
       //LuaCsLogger.LogMessage($"{fi.Directory.Name}/{fi.Name}:{lineNumber}", color * 0.8f, color);
+      DebugConsole.NewMessage($"{fi.Directory.Name}/{fi.Name}:{lineNumber}", color);
     }
 
     public void LogVars(object arg1,
