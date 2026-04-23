@@ -18,64 +18,54 @@ namespace JSForBarotrauma
 {
 
 
-  public class ProxyBag : IPropertyBag
+  public class ProxyBag2 : IPropertyBag
   {
-    public Action<string, object> OnSet { get; set; }
-    public Func<string, object> OnGet { get; set; }
+    public ProxyBag2(IDictionary<string, object> dict)
+    {
+      Dict = dict;
+    }
 
-    public HashSet<string> Hints { get; set; } = [];
+    public IDictionary<string, object> Dict { get; set; }
 
     public object this[string key]
     {
-      get => OnGet(key);
-      set => OnSet(key, value);
+      get => Dict[key];
+      set => Dict[key] = value;
     }
 
     #region IDictionary<string, object>
-    public ICollection<string> Keys => Hints;
-    public ICollection<object> Values => Hints.Select(key => OnGet(key)).ToArray();
-    public bool ContainsKey(string key) => Hints.Contains(key);
-    public void Add(string key, object value) => OnSet(key, value);
-    public bool Remove(string key) => false;
+    public ICollection<string> Keys => Dict.Keys;
+    public ICollection<object> Values => Dict.Values;
+    public bool ContainsKey(string key) => Dict.ContainsKey(key);
+    public void Add(string key, object value) => Dict.Add(key, value);
+    public bool Remove(string key) => Dict.Remove(key);
     public bool TryGetValue(string key, out object value)
-    {
-      if (ContainsKey(key))
-      {
-        value = OnGet(key); return true;
-      }
-      value = null; return false;
-    }
+      => Dict.TryGetValue(key, out value);
     #endregion
 
 
     #region ICollection<KeyValuePair<string, object>>
-    void ICollection<KeyValuePair<string, object>>.Add(KeyValuePair<string, object> kvp) { }
+    void ICollection<KeyValuePair<string, object>>.Add(KeyValuePair<string, object> kvp)
+      => Dict.Add(kvp);
     bool ICollection<KeyValuePair<string, object>>.Contains(KeyValuePair<string, object> kvp)
-      => ContainsKey(kvp.Key);
+      => Dict.Contains(kvp);
     bool ICollection<KeyValuePair<string, object>>.Remove(KeyValuePair<string, object> kvp)
-      => false;
-    void ICollection<KeyValuePair<string, object>>.CopyTo(KeyValuePair<string, object>[] array, int index) { }
+      => Dict.Remove(kvp);
+    void ICollection<KeyValuePair<string, object>>.CopyTo(KeyValuePair<string, object>[] array, int index)
+      => Dict.CopyTo(array, index);
 
-    public void Clear() { }
-    public int Count => Hints.Count();
+    public void Clear() => Dict.Clear();
+    public int Count => Dict.Count;
 
-    bool ICollection<KeyValuePair<string, object>>.IsReadOnly => false;
+    bool ICollection<KeyValuePair<string, object>>.IsReadOnly => Dict.IsReadOnly;
     #endregion
 
     #region IEnumerable
-    public IEnumerable<KeyValuePair<string, object>> Enumerate()
-    {
-      foreach (string key in Hints)
-      {
-        yield return new KeyValuePair<string, object>(key, OnGet(key));
-      }
-    }
-
     IEnumerator<KeyValuePair<string, object>> IEnumerable<KeyValuePair<string, object>>.GetEnumerator()
-      => Enumerate().GetEnumerator();
+      => Dict.GetEnumerator();
 
     IEnumerator IEnumerable.GetEnumerator()
-      => Enumerate().GetEnumerator();
+      => Dict.GetEnumerator();
     #endregion
 
 
