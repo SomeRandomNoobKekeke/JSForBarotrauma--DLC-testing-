@@ -23,16 +23,14 @@ namespace JSForBarotrauma
   {
     public Dictionary<string, DebugConsole.Command> AddedCommands = new();
 
-    public void AddCommand(string name, object scriptFunc)
+    public void AddCommand(string name, Action<string[]> action)
     {
       if (AddedCommands.ContainsKey(name))
       {
         throw new Exception($"[{name}] command is already added");
       }
 
-      Action<object> action = Mod.Engine.HostFunctions.del<Action<object>>(scriptFunc);
-
-      DebugConsole.Command command = new DebugConsole.Command(name, "", (string[] args) => action(args));
+      DebugConsole.Command command = new DebugConsole.Command(name, "", action);
 
 #if CLIENT
       command.RelayToServer = false;

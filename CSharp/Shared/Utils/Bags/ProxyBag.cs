@@ -1,67 +1,50 @@
-﻿
-using System;
+﻿using System;
+using System.Reflection;
+using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Diagnostics;
-using System.IO;
-
 using Barotrauma;
-using Microsoft.Xna.Framework;
 using HarmonyLib;
+using Microsoft.Xna.Framework;
 using Microsoft.ClearScript;
 using Microsoft.ClearScript.JavaScript;
 using Microsoft.ClearScript.V8;
+using System.Runtime.CompilerServices;
+using System.IO;
 using BaroJunk;
 
-using System.Threading;
-using System.Threading.Tasks;
-using WatsonWebsocket;
-using System.Text;
 
 namespace JSForBarotrauma
 {
 
-  public class PropBag2 : IPropertyBag
+  /// <summary>
+  /// It uses passed Get, Set, Has delegates to map IPropertyBag calls 
+  /// Typically to some c# dict
+  /// </summary>
+  public class ProxyBag : IPropertyBag
   {
-    public class Prop
-    {
-      public Func<object> Getter { get; }
-      public Action<object> Setter { get; }
-
-      public object Value
-      {
-        get => Getter();
-        set => Setter(value);
-      }
-
-      public Prop(Func<object> get = null, Action<object> set = null)
-      {
-        Getter = get ?? new Func<object>(() => null);
-        Setter = set ?? new Action<object>((value) => { });
-      }
-    }
-
-    protected Dictionary<string, Prop> Props { get; set; }
+    public required Action<string, object> Set { get; init; }
+    public required Func<string, object> Get { get; init; }
+    public required Func<string, bool> Has { get; init; }
+    public required Func<ICollection<string>> GetKeys { get; init; }
 
     public object this[string key]
     {
-      get => Props[key].Getter();
-      set => Props[key].Setter(value);
+      get => Get(key);
+      set => Set(key, value);
     }
 
     #region IDictionary<string, object>
-    public ICollection<string> Keys => Props.Keys;
-    public ICollection<object> Values => Props.Values.Select(p => p.Getter()).ToArray();
-    public bool ContainsKey(string key) => Props.ContainsKey(key);
+    public ICollection<string> Keys => GetKeys();
+    public ICollection<object> Values => GetKeys().Select(key => Get(key)).ToArray();
+    public bool ContainsKey(string key) => Has(key);
     public void Add(string key, object value) => this[key] = value;
-    public bool Remove(string key) => Props.Remove(key);
+    public bool Remove(string key) => false;
     public bool TryGetValue(string key, out object value)
     {
-      if (ContainsKey(key))
+      if (Has(key))
       {
-        value = this[key]; return true;
+        value = Get(key); return true;
       }
       value = null; return false;
     }
@@ -74,12 +57,12 @@ namespace JSForBarotrauma
     bool ICollection<KeyValuePair<string, object>>.Contains(KeyValuePair<string, object> kvp)
       => ContainsKey(kvp.Key);
     bool ICollection<KeyValuePair<string, object>>.Remove(KeyValuePair<string, object> kvp)
-      => Remove(kvp.Key);
+      => false;
     void ICollection<KeyValuePair<string, object>>.CopyTo(KeyValuePair<string, object>[] array, int index)
       => throw new NotImplementedException("too lazy");
 
-    public void Clear() => Props.Clear();
-    public int Count => Props.Count;
+    public void Clear() => throw new NotSupportedException("It's not a real bag");
+    public int Count => GetKeys().Count;
 
     bool ICollection<KeyValuePair<string, object>>.IsReadOnly => false;
     #endregion
@@ -87,12 +70,11 @@ namespace JSForBarotrauma
     #region IEnumerable
     public IEnumerable<KeyValuePair<string, object>> Enumerate()
     {
-      foreach (string key in Props.Keys)
+      foreach (string key in GetKeys())
       {
-        yield return new KeyValuePair<string, object>(key, Props[key].Getter());
+        yield return new KeyValuePair<string, object>(key, Get(key));
       }
     }
-
     IEnumerator<KeyValuePair<string, object>> IEnumerable<KeyValuePair<string, object>>.GetEnumerator()
       => Enumerate().GetEnumerator();
 
@@ -102,5 +84,5 @@ namespace JSForBarotrauma
   }
 
 
-
 }
+

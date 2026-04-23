@@ -27,14 +27,15 @@ namespace JSForBarotrauma
     public HttpServerBag(HttpServer server)
     {
       Server = server;
+
       this["Port"] = Server.Port;
       this["ServeStatic"] = ServeStatic;
       this["Run"] = () => Server.Run();
       this["Stop"] = () => Server.Stop();
-      this["Get"] = new RequestHandlerRegistratorBag(Server.Get);
-      this["Post"] = new RequestHandlerRegistratorBag(Server.Post);
-      this["Put"] = new RequestHandlerRegistratorBag(Server.Put);
-      this["Delete"] = new RequestHandlerRegistratorBag(Server.Delete);
+      this["Get"] = Server.Get.Handlers.ToBag();
+      this["Post"] = Server.Post.Handlers.ToBag();
+      this["Put"] = Server.Put.Handlers.ToBag();
+      this["Delete"] = Server.Delete.Handlers.ToBag();
     }
 
     public void ServeStatic(string rootDir, string url)
