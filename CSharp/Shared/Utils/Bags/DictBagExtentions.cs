@@ -25,7 +25,17 @@ namespace JSForBarotrauma
       return new ProxyBag()
       {
         Get = (key) => dict[key],
-        Set = (key, value) => dict[key] = value as TValue,
+        Set = (key, value) =>
+        {
+          try
+          {
+            dict[key] = (TValue)value;
+          }
+          catch (InvalidCastException e)
+          {
+            throw new InvalidCastException($"Error in ProxyBag, Can't cast {value.GetType().Name} to {typeof(TValue)}");
+          }
+        },
         Has = (key) => dict.ContainsKey(key),
         GetKeys = () => dict.Keys,
       };

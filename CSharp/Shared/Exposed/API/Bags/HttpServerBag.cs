@@ -32,11 +32,13 @@ namespace JSForBarotrauma
       this["ServeStatic"] = ServeStatic;
       this["Run"] = () => Server.Run();
       this["Stop"] = () => Server.Stop();
-      this["Get"] = Server.Get.Handlers.ToBag();
-      this["Post"] = Server.Post.Handlers.ToBag();
-      this["Put"] = Server.Put.Handlers.ToBag();
-      this["Delete"] = Server.Delete.Handlers.ToBag();
+      this["Get"] = new RequestHandlerRegistratorBag(Server.Get);
+      this["Post"] = new RequestHandlerRegistratorBag(Server.Post);
+      this["Put"] = new RequestHandlerRegistratorBag(Server.Put);
+      this["Delete"] = new RequestHandlerRegistratorBag(Server.Delete);
     }
+
+
 
     public void ServeStatic(string rootDir, string url)
     {

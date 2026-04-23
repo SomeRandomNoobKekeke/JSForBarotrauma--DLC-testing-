@@ -23,10 +23,10 @@ namespace JSForBarotrauma
   /// </summary>
   public class ProxyBag : IPropertyBag
   {
-    public required Action<string, object> Set { get; init; }
-    public required Func<string, object> Get { get; init; }
-    public required Func<string, bool> Has { get; init; }
-    public required Func<ICollection<string>> GetKeys { get; init; }
+    public Action<string, object> Set { get; set; }
+    public Func<string, object> Get { get; set; }
+    public Func<string, bool> Has { get; set; }
+    public Func<ICollection<string>> GetKeys { get; set; }
 
     public object this[string key]
     {

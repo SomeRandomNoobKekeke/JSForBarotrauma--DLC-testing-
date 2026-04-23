@@ -35,10 +35,6 @@ namespace JSForBarotrauma
 
 
       Engine.AddHostObject("host", HostFunctions);
-      Engine.AddHostObject("bruh", new Dictionary<string, object>()
-      {
-        ["kek"] = "cheburek"
-      });
       Engine.AddHostObject("xHost", ExtendedHostFunctions);
 
       Engine.AddHostType("JS", typeof(JS));
