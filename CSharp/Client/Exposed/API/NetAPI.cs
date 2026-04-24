@@ -21,12 +21,19 @@ namespace JSForBarotrauma
 {
   public static partial class NetAPI
   {
-    public static PropertyBag ToBag() => new PropertyBag()
+    public static IPropertyBag ToBag() => new PropBag(new Dictionary<string, PropBag.Prop>()
     {
-      ["Send"] = (string header, string data) => Mod.Engine.NetManager.Send(header, data),
-      ["ListenFor"] = (string header, object scriptFunc) => ListenFor(header, scriptFunc),
-      ["OnConnected"] = (object scriptFunc) => AddOnConnected(scriptFunc),
-    };
+      ["Send"] = new PropBag.Prop(
+        () => (string header, string data) => Mod.Engine.NetManager.Send(header, data)
+      ),
+      ["ListenFor"] = new PropBag.Prop(
+        () => (string header, object scriptFunc) => ListenFor(header, scriptFunc)
+      ),
+      ["OnConnected"] = new PropBag.Prop(
+        set: (object scriptFunc) => AddOnConnected(scriptFunc)
+      ),
+    });
+
 
     public static void ListenFor(string header, object scriptFunc)
     {
