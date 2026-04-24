@@ -21,6 +21,13 @@ namespace JSForBarotrauma
 {
   public static partial class NetAPI
   {
+    public static PropertyBag ToBag() => new PropertyBag()
+    {
+      ["Send"] = (string header, string data) => Mod.Engine.NetManager.Send(header, data),
+      ["ListenFor"] = (string header, object scriptFunc) => ListenFor(header, scriptFunc),
+      ["OnConnected"] = (object scriptFunc) => AddOnConnected(scriptFunc),
+    };
+
     public static void ListenFor(string header, object scriptFunc)
     {
       Mod.Engine.NetManager.ListenFor(
@@ -29,7 +36,11 @@ namespace JSForBarotrauma
       );
     }
 
-    public static void Send(string header, string data)
-      => Mod.Engine.NetManager.Send(header, data);
+    public static void AddOnConnected(object scriptFunc)
+    {
+      Mod.Engine.NetManager.OnConnected.Add(
+        Mod.Engine.HostFunctions.del<Action>(scriptFunc)
+      );
+    }
   }
 }

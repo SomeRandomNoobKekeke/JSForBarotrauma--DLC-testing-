@@ -24,26 +24,21 @@ namespace JSForBarotrauma
   {
     public static string JSHeader = "JS";
 
-    public void Send(string header, string data)
-    {
-      if (GameMain.IsSingleplayer) return;
-
-      IWriteMessage msg = LuaCsSetup.Instance.Networking.Start(JSHeader);
-      msg.WriteString(header);
-      msg.WriteString(data);
-      LuaCsSetup.Instance.Networking.Send(msg);
-    }
-
     public void Init()
     {
       if (GameMain.IsSingleplayer) return;
       LuaCsSetup.Instance.Networking.Receive(JSHeader, MessageHandler);
+
+      DoHandshake();
     }
 
     public void Dispose()
     {
       if (GameMain.IsSingleplayer) return;
       Listeners.Clear();
+#if CLIENT
+      OnConnected.Clear();
+#endif
       LuaCsSetup.Instance.Networking.Receive(JSHeader, EmptyHandler);
     }
   }

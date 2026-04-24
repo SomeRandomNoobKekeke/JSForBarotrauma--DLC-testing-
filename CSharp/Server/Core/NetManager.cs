@@ -22,12 +22,36 @@ namespace JSForBarotrauma
 {
   public partial class NetManager
   {
-    public Dictionary<string, Action<string, Client>> Listeners { get; } = new();
+    public Dictionary<string, HashSet<Action<string, Client>>> Listeners { get; } = new();
 
     public void ListenFor(string header, Action<string, Client> listener)
     {
       if (GameMain.IsSingleplayer) return;
-      Listeners[header] = listener;
+
+      if (!Listeners.ContainsKey(header)) Listeners[header] = new();
+      Listeners[header].Add(listener);
+    }
+
+    public void Broadcast(string header, string data) => Send(header, data, null);
+    public void Send(string header, string data, Client client)
+    {
+      if (GameMain.IsSingleplayer) return;
+
+      IWriteMessage msg = LuaCsSetup.Instance.Networking.Start(JSHeader);
+      msg.WriteString(header);
+      msg.WriteString(data);
+
+      LuaCsSetup.Instance.Networking.Send(msg, client?.Connection);
+    }
+
+    public void DoHandshake()
+    {
+      ListenFor("__jshandshake", (string data, Client client) =>
+      {
+        Send("__jshandshake", "hi", client);
+      });
+
+      Broadcast("__jshandshake", "hi");
     }
 
     public void EmptyHandler(IReadMessage msg, Client connection) { }
@@ -38,7 +62,10 @@ namespace JSForBarotrauma
 
       if (Listeners.ContainsKey(header))
       {
-        Listeners[header].Invoke(data, connection);
+        foreach (Action<string, Client> listener in Listeners[header])
+        {
+          listener.Invoke(data, connection);
+        }
       }
     }
   }

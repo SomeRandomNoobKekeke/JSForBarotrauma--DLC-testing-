@@ -21,10 +21,6 @@ namespace JSForBarotrauma
 {
   public static partial class NetAPI
   {
-    public static PropertyBag ToBag() => new PropertyBag()
-    {
-      ["Send"] = (string header, string data) => Send(header, data),
-      ["ListenFor"] = (string header, object scriptFunc) => ListenFor(header, scriptFunc),
-    };
+
   }
 }
