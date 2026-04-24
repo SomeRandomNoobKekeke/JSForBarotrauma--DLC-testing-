@@ -18,7 +18,7 @@ namespace JSForBarotrauma
 {
 
   /// <summary>
-  /// It uses passed Get, Set, Has delegates to map IPropertyBag calls 
+  /// It uses Get, Set, Has delegates to map IPropertyBag calls 
   /// Typically to some c# dict
   /// </summary>
   public class ProxyBag : IPropertyBag
