@@ -40,6 +40,7 @@ namespace JSForBarotrauma
 
     public ScriptLoader ScriptLoader { get; private set; }
     public JSCommandManager JSCommandManager { get; private set; } = new();
+    public NetManager NetManager { get; private set; } = new();
 
 #if CLIENT
     public ServerManager ServerManager { get; private set; } = new();
@@ -66,6 +67,7 @@ namespace JSForBarotrauma
       };
 
       ExposeStuff();
+      NetManager.Init();
 
       Mod.Logger.Log(ConsoleInterface.WrapInBraces(Logger.WrapInColor("JS Started", "White")));
 
@@ -97,6 +99,8 @@ namespace JSForBarotrauma
 #if CLIENT
         ServerManager.Clear();
 #endif
+
+        NetManager.Dispose();
 
         Engine.Interrupt();
         Engine.Dispose();
