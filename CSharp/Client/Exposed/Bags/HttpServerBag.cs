@@ -32,6 +32,7 @@ namespace JSForBarotrauma
       this["ServeStatic"] = ServeStatic;
       this["Run"] = () => Server.Run();
       this["Stop"] = () => Server.Stop();
+      this["IsRunning"] = () => Server.IsListening;
       this["Get"] = new RequestHandlerRegistratorBag(Server.Get);
       this["Post"] = new RequestHandlerRegistratorBag(Server.Post);
       this["Put"] = new RequestHandlerRegistratorBag(Server.Put);
