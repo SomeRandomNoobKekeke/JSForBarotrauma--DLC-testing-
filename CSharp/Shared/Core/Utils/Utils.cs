@@ -98,6 +98,19 @@ namespace JSForBarotrauma
       return arr;
     }
 
+    public static object[] ToCSArray(object scriptArray)
+    {
+      if (scriptArray is not ScriptObject so) throw new Exception("it's not an array");
+      if (so["length"] is Undefined) throw new Exception("it's not an array");
+
+      object[] array = new object[(int)so["length"]];
+      for (int i = 0; i < array.Length; i++)
+      {
+        array[i] = so[i];
+      }
+      return array;
+    }
+
 #if CLIENT
     public static void OpenURLInSteam(string url)
     {

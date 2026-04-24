@@ -25,6 +25,7 @@ namespace JSForBarotrauma
     {
       ["GetStackTrace"] = () => Utils.GetStackTrace(),
       ["ToJSArray"] = (IEnumerable csEnumerable) => Utils.ToJSArray(csEnumerable),
+      ["ToCSArray"] = (object scriptArray) => Utils.ToCSArray(scriptArray),
     };
   }
 }
