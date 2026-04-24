@@ -39,8 +39,11 @@ namespace JSForBarotrauma
     }
 
     public ScriptLoader ScriptLoader { get; private set; }
-    public ServerManager ServerManager { get; private set; } = new();
     public JSCommandManager JSCommandManager { get; private set; } = new();
+
+#if CLIENT
+    public ServerManager ServerManager { get; private set; } = new();
+#endif
 
     public void Start()
     {
@@ -90,8 +93,10 @@ namespace JSForBarotrauma
 
 
         JSHook.Clear();
-        ServerManager.Clear();
         JSCommandManager.Clear();
+#if CLIENT
+        ServerManager.Clear();
+#endif
 
         Engine.Interrupt();
         Engine.Dispose();

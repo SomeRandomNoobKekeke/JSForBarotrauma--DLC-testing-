@@ -23,9 +23,8 @@ namespace JSForBarotrauma
 {
   /// <summary>
   /// This class stores all created servers
-  /// 
   /// </summary>
-  public class ServerManager
+  public partial class ServerManager
   {
     public Dictionary<int, Qoollo.Net.Http.HttpServer> HttpServers { get; } = new();
     public Dictionary<int, WatsonWsServer> WSServers { get; } = new();
