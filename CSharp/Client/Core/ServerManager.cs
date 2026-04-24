@@ -90,7 +90,10 @@ namespace JSForBarotrauma
     {
       foreach (var server in HttpServers.Values)
       {
-        server.Stop();
+        if (server.IsListening)
+        {
+          server.Stop();
+        }
       }
       HttpServers.Clear();
 
