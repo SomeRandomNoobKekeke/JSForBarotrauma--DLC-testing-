@@ -40,7 +40,7 @@ namespace JSForBarotrauma
       Engine.AddHostType("JS", typeof(JS));
       Engine.AddHostType("Console", typeof(UnifiedConsole));
       Engine.AddHostType("ModInfo", typeof(ModInfo));
-
+      Engine.AddHostType("ObjectExtentions", typeof(HiddenNamespace.ObjectExtentions));
 
 
       Engine.AddHostObject("API", API.ToBag());
@@ -52,36 +52,39 @@ namespace JSForBarotrauma
       };
 
 
-      HostTypeCollection exposedAssemblies = new HostTypeCollection("mscorlib", "System", "System.Core");
+      HostTypeCollection exposedAssemblies = new HostTypeCollection();
+      // exposedAssemblies.AddAssembly("mscorlib");
+      // exposedAssemblies.AddAssembly("System");
+      // exposedAssemblies.AddAssembly("System.Core");
 
 #if CLIENT
-      exposedAssemblies.AddAssembly("Barotrauma");
+      // exposedAssemblies.AddAssembly("Barotrauma");
 #elif SERVER
-      exposedAssemblies.AddAssembly("DedicatedServer");
+      // exposedAssemblies.AddAssembly("DedicatedServer");
 #endif
-      exposedAssemblies.AddAssembly(typeof(Harmony).Assembly);
-      exposedAssemblies.AddAssembly(typeof(Vector2).Assembly);
-      exposedAssemblies.AddAssembly(typeof(List<int>).Assembly);
+      // exposedAssemblies.AddAssembly(typeof(Harmony).Assembly);
+      // exposedAssemblies.AddAssembly(typeof(List<int>).Assembly);
+      // exposedAssemblies.AddAssembly(typeof(Vector2).Assembly);
+      // exposedAssemblies.AddAssembly(typeof(Steamworks.SteamFriends).Assembly);
 
       Engine.AddHostObject("lib", HostItemFlags.PrivateAccess, exposedAssemblies);
 
 
-      //FIXME it's borked, if two mods have same namespace it won't be added
-      HostTypeCollection modAssemblies = new HostTypeCollection();
-      foreach (Assembly assembly in Utils.AllModAssemblies())
-      {
-        try
-        {
-          modAssemblies.AddAssembly(assembly);
-        }
-        catch (InvalidOperationException e)
-        {
-          Mod.Logger.Warning($"Couldn't add [{assembly}] to modAssemblies");
-        }
-      }
-      Engine.AddHostObject("modlib", HostItemFlags.PrivateAccess, modAssemblies);
+      // //FIXME it's borked, if two mods have same namespace it won't be added
+      // HostTypeCollection modAssemblies = new HostTypeCollection();
+      // foreach (Assembly assembly in Utils.AllModAssemblies())
+      // {
+      //   try
+      //   {
+      //     modAssemblies.AddAssembly(assembly);
+      //   }
+      //   catch (InvalidOperationException e)
+      //   {
+      //     Mod.Logger.Warning($"Couldn't add [{assembly}] to modAssemblies");
+      //   }
+      // }
+      // Engine.AddHostObject("modlib", HostItemFlags.PrivateAccess, modAssemblies);
 
-      // Engine.Execute("function Throw(e){ throw e }");
     }
   }
 
