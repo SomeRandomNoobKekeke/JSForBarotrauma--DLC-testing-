@@ -119,17 +119,21 @@ namespace JSForBarotrauma
     {
       AddedCommands.Add(new DebugConsole.Command("js", "", JS_Command,
       () => new string[][] { EngineWrapper.Engine.Global.PropertyNames.ToArray() }));
-      AddedCommands.Add(new DebugConsole.Command("js_reload", "", JSReloadCommand));
-
       AddedCommands.Add(new DebugConsole.Command("js_stop", "", JSStopCommand));
       AddedCommands.Add(new DebugConsole.Command("js_start", "", JSStartCommand));
       AddedCommands.Add(new DebugConsole.Command("crash", "", Crash_Command));
       AddedCommands.Add(new DebugConsole.Command("printallharmonypatches", "", PrintAllHarmonyPatches));
 
-      AddedCommands.Add(new DebugConsole.Command("bruh2", "", (args) =>
+      AddedCommands.Add(new DebugConsole.Command("js_reload", "", (args) =>
       {
-        UnifiedConsole.Log("hi");
+        JSReloadCommand(args);
+
+        if (GameMain.IsMultiplayer && GameMain.NetworkMember.IsClient)
+        {
+          DebugConsole.ExecuteCommand("js_reloadsv");
+        }
       }));
+      AddedCommands.Add(new DebugConsole.Command("js_reloadcl", "", JSReloadCommand));
 
 #if CLIENT
       foreach (DebugConsole.Command command in AddedCommands)
@@ -138,17 +142,7 @@ namespace JSForBarotrauma
       }
 #endif
 
-      AddedCommands.Add(new DebugConsole.Command("bruh3", "", (args) =>
-      {
-        UnifiedConsole.Log("hi");
-      }));
-
-      AddedCommands.Add(new DebugConsole.Command("bruh", "", (args) =>
-      {
-        UnifiedConsole.Log("hi");
-      }));
-
-
+      AddedCommands.Add(new DebugConsole.Command("js_reloadsv", "", JSReloadCommand));
 
       DebugConsole.Commands.InsertRange(0, AddedCommands);
     }
