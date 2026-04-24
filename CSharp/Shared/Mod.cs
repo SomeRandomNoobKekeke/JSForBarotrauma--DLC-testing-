@@ -28,7 +28,6 @@ namespace JSForBarotrauma
     public static Harmony Harmony { get; private set; } = new Harmony("JSForBarotrauma");
     public static DebuggerTracker DebuggerTracker { get; private set; } = new();
 
-
     public void Init()
     {
       Instance = this;

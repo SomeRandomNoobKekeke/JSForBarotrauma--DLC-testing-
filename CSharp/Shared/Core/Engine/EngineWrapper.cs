@@ -41,6 +41,7 @@ namespace JSForBarotrauma
     public ScriptLoader ScriptLoader { get; private set; }
     public JSCommandManager JSCommandManager { get; private set; } = new();
     public NetManager NetManager { get; private set; } = new();
+    public XMLHookManager XMLHookManager { get; private set; } = new();
 
 #if CLIENT
     public ServerManager ServerManager { get; private set; } = new();
@@ -96,6 +97,7 @@ namespace JSForBarotrauma
 
         JSHook.Clear();
         JSCommandManager.Clear();
+        XMLHookManager.Clear();
 #if CLIENT
         ServerManager.Clear();
 #endif

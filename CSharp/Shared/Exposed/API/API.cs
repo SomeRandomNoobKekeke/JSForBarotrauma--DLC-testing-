@@ -30,6 +30,7 @@ namespace JSForBarotrauma
       ["Utils"] = UtilsAPI.ToBag(),
       ["Game"] = GameAPI.ToBag(),
       ["JSHook"] = JSHookAPI.ToBag(),
+      ["XMLHook"] = XMLHookAPI.ToBag(),
     };
   }
 }
