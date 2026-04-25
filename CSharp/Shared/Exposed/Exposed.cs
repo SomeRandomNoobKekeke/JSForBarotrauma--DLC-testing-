@@ -14,7 +14,7 @@ using Microsoft.ClearScript.JavaScript;
 using Microsoft.ClearScript.V8;
 using System.Threading;
 using BaroJunk;
-
+using System.Runtime.CompilerServices;
 
 namespace JSForBarotrauma
 {
@@ -33,6 +33,7 @@ namespace JSForBarotrauma
       HostFunctions = new();
       ExtendedHostFunctions = new();
 
+      Stopwatch sw = Stopwatch.StartNew();
 
       Engine.AddHostObject("host", HostFunctions);
       Engine.AddHostObject("xHost", ExtendedHostFunctions);
@@ -50,6 +51,44 @@ namespace JSForBarotrauma
         Utils.RunWithDelay(HostFunctions.del<Action>(scriptFunc), delay);
         return (object)null; //TODO here should be a cancelation token
       };
+
+      HostTypeCollection exposedAssemblies = new HostTypeCollection();
+      exposedAssemblies.AddAssembly("mscorlib", NoExtensionTypes);
+      exposedAssemblies.AddAssembly("System", NoExtensionTypes);
+      exposedAssemblies.AddAssembly("System.Core", NoExtensionTypes);
+      // exposedAssemblies.AddType(typeof(System.Array));
+
+
+      exposedAssemblies.AddAssembly(typeof(GameMain).Assembly, NoExtensionTypes);
+      exposedAssemblies.AddAssembly(typeof(Harmony).Assembly, NoExtensionTypes);
+      exposedAssemblies.AddAssembly(typeof(Vector2).Assembly, NoExtensionTypes);
+      exposedAssemblies.AddAssembly(typeof(Steamworks.SteamFriends).Assembly, NoExtensionTypes);
+
+      Engine.AddHostObject("lib", HostItemFlags.PrivateAccess, exposedAssemblies);
+
+
+      sw.Stop();
+      Mod.Logger.Log($"exposed types in {sw.ElapsedMilliseconds}ms");
+    }
+
+    public static bool NoExtensionTypes(Type T) => !IsExtensionType(T);
+    public static bool IsExtensionType(Type T)
+      => T.IsSealed && !T.IsGenericType && !T.IsNested &&
+         T.GetMethods(BindingFlags.Static | BindingFlags.Public).Any(mi =>
+           mi.IsDefined(typeof(ExtensionAttribute), false)
+         );
+
+
+
+    public static void PrintAllExtensionClasses(Assembly assembly)
+    {
+      foreach (Type T in assembly.GetTypes())
+      {
+        if (IsExtensionType(T))
+        {
+          Mod.Logger.Log($"extension class: [{T}]");
+        }
+      }
     }
   }
 
