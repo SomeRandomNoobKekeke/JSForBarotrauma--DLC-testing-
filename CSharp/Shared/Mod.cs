@@ -30,7 +30,7 @@ namespace JSForBarotrauma
 
     public static LoadTimeTracker LoadTimeTracker { get; private set; } = new()
     {
-      Enabled = true
+      Enabled = false
     };
 
     public void Init()
