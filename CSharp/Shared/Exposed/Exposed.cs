@@ -30,6 +30,7 @@ namespace JSForBarotrauma
 
     private void AddExtraObjects()
     {
+      Mod.LoadTimeTracker.Start("Exposing misc");
       HostFunctions = new();
       ExtendedHostFunctions = new();
 
@@ -50,6 +51,9 @@ namespace JSForBarotrauma
         return (object)null; //TODO here should be a cancelation token
       };
 
+      Mod.LoadTimeTracker.Stop("Exposing misc");
+
+      Mod.LoadTimeTracker.Start("Exposing assemblies");
       HostTypeCollection exposedAssemblies = new HostTypeCollection();
       exposedAssemblies.AddAssembly("mscorlib", NoExtensionTypes);
       exposedAssemblies.AddAssembly("System", NoExtensionTypes);
@@ -63,6 +67,7 @@ namespace JSForBarotrauma
       exposedAssemblies.AddAssembly(typeof(Steamworks.SteamFriends).Assembly, NoExtensionTypes);
 
       Engine.AddHostObject("lib", HostItemFlags.PrivateAccess, exposedAssemblies);
+      Mod.LoadTimeTracker.Stop("Exposing assemblies");
     }
 
     public static bool NoExtensionTypes(Type T) => !IsExtensionType(T);
