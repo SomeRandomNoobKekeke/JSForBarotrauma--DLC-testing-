@@ -33,8 +33,6 @@ namespace JSForBarotrauma
       HostFunctions = new();
       ExtendedHostFunctions = new();
 
-      Stopwatch sw = Stopwatch.StartNew();
-
       Engine.AddHostObject("host", HostFunctions);
       Engine.AddHostObject("xHost", ExtendedHostFunctions);
 
@@ -65,10 +63,6 @@ namespace JSForBarotrauma
       exposedAssemblies.AddAssembly(typeof(Steamworks.SteamFriends).Assembly, NoExtensionTypes);
 
       Engine.AddHostObject("lib", HostItemFlags.PrivateAccess, exposedAssemblies);
-
-
-      sw.Stop();
-      Mod.Logger.Log($"exposed types in {sw.ElapsedMilliseconds}ms");
     }
 
     public static bool NoExtensionTypes(Type T) => !IsExtensionType(T);

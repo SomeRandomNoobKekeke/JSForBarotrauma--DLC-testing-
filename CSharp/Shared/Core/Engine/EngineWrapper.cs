@@ -55,6 +55,7 @@ namespace JSForBarotrauma
         return;
       }
 
+      Mod.LoadTimeTracker.Start("Engine creation");
       Engine = new V8ScriptEngine(V8ScriptEngineFlags.EnableDebugging, DebugPort)
       {
         AccessContext = typeof(GameMain),
@@ -66,13 +67,21 @@ namespace JSForBarotrauma
           AccessFlags = DocumentAccessFlags.EnableAllLoading,
         },
       };
+      Mod.LoadTimeTracker.Stop("Engine creation");
 
+      Mod.LoadTimeTracker.Start("Exposing stuff");
       ExposeStuff();
+      Mod.LoadTimeTracker.Stop("Exposing stuff");
+
+      Mod.LoadTimeTracker.Start("NetManager.Init()");
       NetManager.Init();
+      Mod.LoadTimeTracker.Stop("NetManager.Init()");
 
       Mod.Logger.Log(ConsoleInterface.WrapInBraces(Logger.WrapInColor("JS Started", "White")));
 
+      Mod.LoadTimeTracker.Start("Script loading");
       ScriptLoader.LoadScripts();
+      Mod.LoadTimeTracker.Stop("Script loading");
     }
 
     public void Reload()

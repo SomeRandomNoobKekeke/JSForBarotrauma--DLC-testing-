@@ -28,12 +28,18 @@ namespace JSForBarotrauma
     public static Harmony Harmony { get; private set; } = new Harmony("JSForBarotrauma");
     public static DebuggerTracker DebuggerTracker { get; private set; } = new();
 
+    public static LoadTimeTracker LoadTimeTracker { get; private set; } = new()
+    {
+      Enabled = true
+    };
+
     public void Init()
     {
       Instance = this;
 
       InitBuildSpecific();
 
+      LoadTimeTracker.Start("Whole Init");
       Engine = new();
       ConsoleInterface = new(Engine);
       ConsoleInterface.AddPatches(Harmony);
@@ -41,7 +47,12 @@ namespace JSForBarotrauma
       ConsoleInterface.AddCommands();
       DebuggerTracker.Track();
 
+      LoadTimeTracker.Start("Engine.Start()");
       Engine.Start();
+      LoadTimeTracker.Stop("Engine.Start()");
+
+      LoadTimeTracker.Stop("Whole Init");
+      LoadTimeTracker.Report();
       // Utils.PrintAllPatchedMethods();
     }
 
@@ -64,6 +75,8 @@ namespace JSForBarotrauma
 
       DebuggerTracker.Untrack();
       DebuggerTracker = null;
+
+      LoadTimeTracker = null;
 
       DisposeBuildSpecific();
 
