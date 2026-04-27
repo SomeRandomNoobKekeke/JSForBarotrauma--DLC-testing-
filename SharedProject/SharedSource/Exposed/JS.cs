@@ -28,6 +28,8 @@ namespace JSForBarotrauma
       remove => Mod.Engine.OnStop.Remove(value);
     }
 
+    // Just to check added extension props
+    public static object EmptyObject => new object();
 
     public static bool REPL
     {

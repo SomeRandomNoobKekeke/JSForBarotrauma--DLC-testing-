@@ -22,11 +22,15 @@ namespace JSForBarotrauma
   {
     public static PropertyBag ToBag() => new PropertyBag()
     {
+#if CLIENT
       ["Web"] = WebAPI.ToBag(),
+#endif
+      ["Net"] = NetAPI.ToBag(),
       ["Console"] = ConsoleAPI.ToBag(),
       ["Utils"] = UtilsAPI.ToBag(),
       ["Game"] = GameAPI.ToBag(),
       ["JSHook"] = JSHookAPI.ToBag(),
+      ["XMLHook"] = XMLHookAPI.ToBag(),
     };
   }
 }

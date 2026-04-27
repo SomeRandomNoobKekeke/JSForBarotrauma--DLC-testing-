@@ -54,7 +54,8 @@ namespace JSForBarotrauma
         return null;
       }
     }
-
+    public void LoadScriptsFromMod(ContentPackage package)
+      => LoadScriptsFromMod(Path.Combine(Directory.GetCurrentDirectory(), package.Dir));
     public void LoadScriptsFromMod(string path)
     {
       if (!Directory.Exists(Path.Combine(path, AutorunPath))) return;

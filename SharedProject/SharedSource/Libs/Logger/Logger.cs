@@ -123,14 +123,12 @@ namespace BaroJunk
 
     private void _Print(object msg, Color color)
     {
-      //LuaCsLogger.LogMessage(Serializer.Serialize(msg), color * 0.8f, color);
       DebugConsole.NewMessage(Serializer.Serialize(msg), color);
     }
 
     private void _PrintFilePath(Color color, string source, int lineNumber)
     {
       var fi = new FileInfo(source);
-      //LuaCsLogger.LogMessage($"{fi.Directory.Name}/{fi.Name}:{lineNumber}", color * 0.8f, color);
       DebugConsole.NewMessage($"{fi.Directory.Name}/{fi.Name}:{lineNumber}", color);
     }
 

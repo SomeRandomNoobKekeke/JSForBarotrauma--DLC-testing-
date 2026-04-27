@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 18
-VisualStudioVersion = 18.1.11312.151 d18.0
+# Visual Studio Version 17
+VisualStudioVersion = 17.14.36915.13 d17.14
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LinuxClient", "ClientProject\LinuxClient.csproj", "{30CD80EA-6AC6-4281-8EB2-609FE79AF1C7}"
 EndProject
@@ -31,6 +31,10 @@ Global
 		{8055E3C4-D392-457F-8C3C-0977351F378C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8055E3C4-D392-457F-8C3C-0977351F378C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8055E3C4-D392-457F-8C3C-0977351F378C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{865A7165-545C-42B3-D141-B69E5497EB3C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{865A7165-545C-42B3-D141-B69E5497EB3C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{865A7165-545C-42B3-D141-B69E5497EB3C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{865A7165-545C-42B3-D141-B69E5497EB3C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

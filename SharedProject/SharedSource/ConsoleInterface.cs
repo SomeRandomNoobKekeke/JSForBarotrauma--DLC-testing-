@@ -49,6 +49,13 @@ namespace JSForBarotrauma
     public static void DebugConsole_Update_Enter() { FromDebugConsole = true; }
     public static void DebugConsole_Update_Exit() { FromDebugConsole = false; }
 
+#if CLIENT
+   public static void PermitCommands(Identifier command, GameClient client, ref bool __result)
+   {
+     if (Mod.ConsoleInterface is null) return;
+     if (Mod.ConsoleInterface.AddedCommands.Any(c => c.Names.Contains(command))) __result = true;
+   }
+#endif
 
     public static void InterceptJSREPL(string inputtedCommands, ref bool __runOriginal)
     {
@@ -119,11 +126,21 @@ namespace JSForBarotrauma
     {
       AddedCommands.Add(new DebugConsole.Command("js", "", JS_Command,
       () => new string[][] { EngineWrapper.Engine.Global.PropertyNames.ToArray() }));
-      AddedCommands.Add(new DebugConsole.Command("js_reload", "", JSReloadCommand));
       AddedCommands.Add(new DebugConsole.Command("js_stop", "", JSStopCommand));
       AddedCommands.Add(new DebugConsole.Command("js_start", "", JSStartCommand));
       AddedCommands.Add(new DebugConsole.Command("crash", "", Crash_Command));
       AddedCommands.Add(new DebugConsole.Command("printallharmonypatches", "", PrintAllHarmonyPatches));
+
+      AddedCommands.Add(new DebugConsole.Command("js_reload", "", (args) =>
+      {
+        JSReloadCommand(args);
+
+        if (GameMain.IsMultiplayer && GameMain.NetworkMember.IsClient)
+        {
+          DebugConsole.ExecuteCommand("js_reloadsv");
+        }
+      }));
+      AddedCommands.Add(new DebugConsole.Command("js_reloadcl", "", JSReloadCommand));
 
 #if CLIENT
       foreach (DebugConsole.Command command in AddedCommands)
@@ -131,6 +148,8 @@ namespace JSForBarotrauma
         command.RelayToServer = false;
       }
 #endif
+
+      AddedCommands.Add(new DebugConsole.Command("js_reloadsv", "", JSReloadCommand));
 
       DebugConsole.Commands.InsertRange(0, AddedCommands);
     }

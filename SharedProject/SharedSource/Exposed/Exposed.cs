@@ -14,7 +14,7 @@ using Microsoft.ClearScript.JavaScript;
 using Microsoft.ClearScript.V8;
 using System.Threading;
 using BaroJunk;
-
+using System.Runtime.CompilerServices;
 
 namespace JSForBarotrauma
 {
@@ -30,9 +30,9 @@ namespace JSForBarotrauma
 
     private void AddExtraObjects()
     {
+      Mod.LoadTimeTracker.Start("Exposing misc");
       HostFunctions = new();
       ExtendedHostFunctions = new();
-
 
       Engine.AddHostObject("host", HostFunctions);
       Engine.AddHostObject("xHost", ExtendedHostFunctions);
@@ -40,6 +40,8 @@ namespace JSForBarotrauma
       Engine.AddHostType("JS", typeof(JS));
       Engine.AddHostType("Console", typeof(UnifiedConsole));
       Engine.AddHostType("ModInfo", typeof(ModInfo));
+      Engine.AddHostType("ObjectExtentions", typeof(HiddenNamespace.ObjectExtentions));
+      Engine.AddHostType("BindingFlags", typeof(CustomBindingFlags));
 
       Engine.AddHostObject("API", API.ToBag());
 
@@ -49,19 +51,43 @@ namespace JSForBarotrauma
         return (object)null; //TODO here should be a cancelation token
       };
 
+      Mod.LoadTimeTracker.Stop("Exposing misc");
 
-      HostTypeCollection exposedAssemblies = new HostTypeCollection("mscorlib", "System", "System.Core");
+      Mod.LoadTimeTracker.Start("Exposing assemblies");
+      HostTypeCollection exposedAssemblies = new HostTypeCollection();
+      exposedAssemblies.AddAssembly("mscorlib", NoExtensionTypes);
+      exposedAssemblies.AddAssembly("System", NoExtensionTypes);
+      exposedAssemblies.AddAssembly("System.Core", NoExtensionTypes);
+      // exposedAssemblies.AddType(typeof(System.Array));
 
-#if CLIENT
-      exposedAssemblies.AddAssembly("Barotrauma");
-#elif SERVER
-      exposedAssemblies.AddAssembly("DedicatedServer");
-#endif
-      exposedAssemblies.AddAssembly(typeof(Harmony).Assembly);
-      exposedAssemblies.AddAssembly(typeof(Vector2).Assembly);
-      exposedAssemblies.AddAssembly(typeof(List<int>).Assembly);
+
+      exposedAssemblies.AddAssembly(typeof(GameMain).Assembly, NoExtensionTypes);
+      exposedAssemblies.AddAssembly(typeof(Harmony).Assembly, NoExtensionTypes);
+      exposedAssemblies.AddAssembly(typeof(Vector2).Assembly, NoExtensionTypes);
+      exposedAssemblies.AddAssembly(typeof(Steamworks.SteamFriends).Assembly, NoExtensionTypes);
 
       Engine.AddHostObject("lib", HostItemFlags.PrivateAccess, exposedAssemblies);
+      Mod.LoadTimeTracker.Stop("Exposing assemblies");
+    }
+
+    public static bool NoExtensionTypes(Type T) => !IsExtensionType(T);
+    public static bool IsExtensionType(Type T)
+      => T.IsSealed && !T.IsGenericType && !T.IsNested &&
+         T.GetMethods(BindingFlags.Static | BindingFlags.Public).Any(mi =>
+           mi.IsDefined(typeof(ExtensionAttribute), false)
+         );
+
+
+
+    public static void PrintAllExtensionClasses(Assembly assembly)
+    {
+      foreach (Type T in assembly.GetTypes())
+      {
+        if (IsExtensionType(T))
+        {
+          Mod.Logger.Log($"extension class: [{T}]");
+        }
+      }
     }
   }
 

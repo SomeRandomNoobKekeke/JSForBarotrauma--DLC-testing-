@@ -1,30 +1,42 @@
 ﻿
-using System;
-using System.Reflection;
-using System.Linq;
-using System.Collections;
-using System.Collections.Generic;
-using System.Collections.Immutable;
+using BaroJunk;
 using Barotrauma;
+using Barotrauma.Plugins;
+using Barotrauma.Steam;
 using HarmonyLib;
-using Microsoft.Xna.Framework;
 using Microsoft.ClearScript;
 using Microsoft.ClearScript.JavaScript;
 using Microsoft.ClearScript.V8;
-using System.Runtime.CompilerServices;
-using System.IO;
-using BaroJunk;
-
-using System.Threading.Tasks;
+using Microsoft.Xna.Framework;
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Diagnostics;
-using Barotrauma.Steam;
+using System.IO;
+using System.Linq;
+using System.Reflection;
+using System.Runtime.CompilerServices;
+using System.Threading.Tasks;
 namespace JSForBarotrauma
 {
   public static partial class Utils
   {
+    public static ContentPackage JSForBarotraumaPackage
+    {
+      get
+      {
+        foreach (PluginLoader.LoadedPlugin plugin in PluginLoader.LoadedPlugins)
+        {
+          if (plugin.Assembly == Assembly.GetExecutingAssembly())
+          {
+            return plugin.Info.ContentPackage;
+          }
+        }
 
-    // public static partial IEnumerable<Assembly> AllModAssemblies();
-    // public static partial ContentPackage JSForBarotraumaPackage { get; }
+        return null;
+      }
+    }
 
     public static void RunWithDelay(Action action, int delay = 100)
     {
@@ -96,6 +108,19 @@ namespace JSForBarotrauma
       }
 
       return arr;
+    }
+
+    public static object[] ToCSArray(object scriptArray)
+    {
+      if (scriptArray is not ScriptObject so) throw new Exception("it's not an array");
+      if (so["length"] is Undefined) throw new Exception("it's not an array");
+
+      object[] array = new object[(int)so["length"]];
+      for (int i = 0; i < array.Length; i++)
+      {
+        array[i] = so[i];
+      }
+      return array;
     }
 
 #if CLIENT

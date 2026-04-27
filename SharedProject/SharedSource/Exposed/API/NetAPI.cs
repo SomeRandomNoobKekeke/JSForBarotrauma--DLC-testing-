@@ -12,20 +12,14 @@ using HarmonyLib;
 using Microsoft.ClearScript;
 using Microsoft.ClearScript.JavaScript;
 using Microsoft.ClearScript.V8;
+using System.Threading;
 using BaroJunk;
 using Barotrauma.Networking;
 
 namespace JSForBarotrauma
 {
-  public partial class ConsoleInterface
+  public static partial class NetAPI
   {
-#if CLIENT
-   public static void PermitCommands(Identifier command, GameClient client, ref bool __result)
-   {
-     if (Mod.ConsoleInterface is null) return;
-     if (Mod.ConsoleInterface.AddedCommands.Any(c => c.Names.Contains(command))) __result = true;
-   }
-#endif
-  }
 
+  }
 }

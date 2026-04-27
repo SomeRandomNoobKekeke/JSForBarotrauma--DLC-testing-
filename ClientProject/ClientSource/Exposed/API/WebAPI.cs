@@ -39,15 +39,15 @@ namespace JSForBarotrauma
       => Mod.Engine.ServerManager.HasHttpServer(port);
 
     public static HttpServerBag CreateHttpServer(int port)
-      => Mod.Engine.ServerManager.CreateHttpServer(port);
+      => new HttpServerBag(Mod.Engine.ServerManager.CreateHttpServer(port));
 
     public static bool RemoveHttpServer(int port)
       => Mod.Engine.ServerManager.RemoveHttpServer(port);
 
     public static bool HasWSServer(int port)
       => Mod.Engine.ServerManager.HasWSServer(port);
-    public static WSBag CreateWSServer(int port)
-      => Mod.Engine.ServerManager.CreateWSServer(port);
+    public static WSServerBag CreateWSServer(int port)
+      => new WSServerBag(Mod.Engine.ServerManager.CreateWSServer(port));
 
     public static bool RemoveWSServer(int port)
       => Mod.Engine.ServerManager.RemoveWSServer(port);

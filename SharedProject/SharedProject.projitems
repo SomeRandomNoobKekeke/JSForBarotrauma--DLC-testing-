@@ -12,10 +12,6 @@
     <Content Include="$(MSBuildThisFileDirectory)SharedItems.props" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="$(MSBuildThisFileDirectory)SharedSource\BuildSpecific\ConsoleInterface.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)SharedSource\BuildSpecific\Mod.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)SharedSource\BuildSpecific\ScriptLoader.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)SharedSource\BuildSpecific\Utils.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SharedSource\CompilePls.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SharedSource\ConsoleInterface.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SharedSource\Core\Engine\DebuggerTracker.cs" />
@@ -29,20 +25,25 @@
     <Compile Include="$(MSBuildThisFileDirectory)SharedSource\Core\JSHook\LilParamTable.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SharedSource\Core\JSHook\PatchCollection.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SharedSource\Core\JSHook\PatchTracker.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)SharedSource\Core\ServerManager.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)SharedSource\Core\NetManager.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)SharedSource\Core\Utils\Bags\DictBagExtentions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)SharedSource\Core\Utils\Bags\PropBag.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)SharedSource\Core\Utils\Bags\ProxyBag.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)SharedSource\Core\Utils\Utils.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)SharedSource\Core\XMLHookManager.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SharedSource\Exposed\API\API.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)SharedSource\Exposed\API\Bags\PatchTrackerBag.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SharedSource\Exposed\API\ConsoleAPI.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SharedSource\Exposed\API\GameAPI.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SharedSource\Exposed\API\JSHookAPI.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)SharedSource\Exposed\API\NetAPI.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SharedSource\Exposed\API\UtilsAPI.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)SharedSource\Exposed\API\WebAPI.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)SharedSource\Exposed\API\XMLHookAPI.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)SharedSource\Exposed\CustomBindingFlags.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SharedSource\Exposed\Exposed.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SharedSource\Exposed\JS.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)SharedSource\Exposed\JSHook\PatchTrackerBag.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SharedSource\Exposed\ModInfo.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)SharedSource\Exposed\Servers\Http\HttpServerBag.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)SharedSource\Exposed\Servers\Http\RequestHandlerRegistratorBag.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)SharedSource\Exposed\Servers\WS\WSBag.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)SharedSource\Exposed\ObjectExtentions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SharedSource\Exposed\UnifiedConsole.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SharedSource\Libs\ClearableEvent\ClearableEvent.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SharedSource\Libs\ClearableEvent\ClearableEvent.Variants1.cs" />
@@ -54,19 +55,10 @@
     <Compile Include="$(MSBuildThisFileDirectory)SharedSource\Libs\ClearableEvent\EventSubscription.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SharedSource\Libs\Logger\Logger.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SharedSource\Libs\Logger\Logger.Wrap.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)SharedSource\Libs\SharpHttpServer\HttpListenerRequestExtensions.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)SharedSource\Libs\SharpHttpServer\HttpMethod.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)SharedSource\Libs\SharpHttpServer\HttpServer.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)SharedSource\Libs\SharpHttpServer\RequestHandlerRegistrator.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)SharedSource\Libs\SharpHttpServer\Router.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)SharedSource\LoadTimeTracker.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SharedSource\Mod.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)SharedSource\Utils\PropBag.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)SharedSource\Utils\ProxyBag.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)SharedSource\Utils\Utils.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="$(MSBuildThisFileDirectory)SharedSource\Libs\ClearableEvent\ClearableEvent.Variants.tcs" />
-    <None Include="$(MSBuildThisFileDirectory)SharedSource\Libs\SharpHttpServer\LICENSE" />
-    <None Include="$(MSBuildThisFileDirectory)SharedSource\Libs\SharpHttpServer\README.md" />
   </ItemGroup>
 </Project>

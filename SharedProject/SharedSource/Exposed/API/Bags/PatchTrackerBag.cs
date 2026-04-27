@@ -25,9 +25,7 @@ namespace JSForBarotrauma
     {
       PatchTracker = patchTracker;
 
-      Props = new Dictionary<string, ProxyProp>();
-
-      Props["Add"] = new ProxyProp(
+      Props["Add"] = new Prop(
         () => (MethodBase original, object scriptFunc, int priority = Priority.Normal) =>
         {
           return PatchTracker.Add(
@@ -38,19 +36,17 @@ namespace JSForBarotrauma
         }
       );
 
-      Props["WasPatched"] = new ProxyProp(
+      Props["WasPatched"] = new Prop(
         () => (MethodBase original) => PatchTracker.WasPatched(original)
       );
 
-      Props["Remove"] = new ProxyProp(
+      Props["Remove"] = new Prop(
         () => (MethodBase original, int ID) => PatchTracker.Remove(original, ID)
       );
 
-      Props["Clear"] = new ProxyProp(
+      Props["Clear"] = new Prop(
         () => () => PatchTracker.Clear()
       );
-
-      Hints = Props.Keys.ToHashSet();
     }
   }
 }

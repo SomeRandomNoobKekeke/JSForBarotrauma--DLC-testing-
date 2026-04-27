@@ -23,14 +23,9 @@ namespace JSForBarotrauma
   {
     public static PropertyBag ToBag() => new PropertyBag()
     {
-      ["GetStackTrace"] = () => GetStackTrace(),
-      ["ToJSArray"] = (IEnumerable csEnumerable) => ToJSArray(csEnumerable),
+      ["GetStackTrace"] = () => Utils.GetStackTrace(),
+      ["ToJSArray"] = (IEnumerable csEnumerable) => Utils.ToJSArray(csEnumerable),
+      ["ToCSArray"] = (object scriptArray) => Utils.ToCSArray(scriptArray),
     };
-
-    public static StackTrace GetStackTrace() => Utils.GetStackTrace();
-
-    public static ScriptObject ToJSArray(IEnumerable csEnumerable)
-      => Utils.ToJSArray(csEnumerable);
-
   }
 }

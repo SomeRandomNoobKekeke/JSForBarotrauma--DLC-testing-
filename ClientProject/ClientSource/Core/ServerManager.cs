@@ -21,7 +21,10 @@ using System.Text;
 
 namespace JSForBarotrauma
 {
-  public class ServerManager
+  /// <summary>
+  /// This class stores all created servers
+  /// </summary>
+  public partial class ServerManager
   {
     public Dictionary<int, Qoollo.Net.Http.HttpServer> HttpServers { get; } = new();
     public Dictionary<int, WatsonWsServer> WSServers { get; } = new();
@@ -29,7 +32,7 @@ namespace JSForBarotrauma
 
     public bool HasHttpServer(int port) => HttpServers.ContainsKey(port);
 
-    public HttpServerBag CreateHttpServer(int port)
+    public Qoollo.Net.Http.HttpServer CreateHttpServer(int port)
     {
       if (HttpServers.ContainsKey(port))
       {
@@ -37,7 +40,7 @@ namespace JSForBarotrauma
       }
 
       HttpServers[port] = new Qoollo.Net.Http.HttpServer(port);
-      return new HttpServerBag(HttpServers[port]);
+      return HttpServers[port];
     }
 
     public bool RemoveHttpServer(int port)
@@ -58,7 +61,7 @@ namespace JSForBarotrauma
 
     public bool HasWSServer(int port) => WSServers.ContainsKey(port);
 
-    public WSBag CreateWSServer(int port)
+    public WatsonWsServer CreateWSServer(int port)
     {
       if (WSServers.ContainsKey(port))
       {
@@ -67,11 +70,8 @@ namespace JSForBarotrauma
 
       WSServers[port] = new WatsonWsServer("localhost", port, ssl: false);
 
-      return new WSBag(WSServers[port]);
+      return WSServers[port];
     }
-
-
-
 
     public bool RemoveWSServer(int port)
     {
@@ -90,7 +90,10 @@ namespace JSForBarotrauma
     {
       foreach (var server in HttpServers.Values)
       {
-        server.Stop();
+        if (server.IsListening)
+        {
+          server.Stop();
+        }
       }
       HttpServers.Clear();
 

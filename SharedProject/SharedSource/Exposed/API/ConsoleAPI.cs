@@ -29,7 +29,10 @@ namespace JSForBarotrauma
     };
 
     public static void AddCommand(string name, object scriptFunc)
-      => Mod.Engine.JSCommandManager.AddCommand(name, scriptFunc);
+      => Mod.Engine.JSCommandManager.AddCommand(
+        name,
+        Mod.Engine.HostFunctions.del<Action<string[]>>(scriptFunc)
+      );
 
     public static bool CommandExists(string name)
       => Mod.Engine.JSCommandManager.CommandExists(name);

@@ -13,26 +13,11 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
-using Barotrauma.Plugins;
 
 namespace JSForBarotrauma
 {
-  public partial class Mod : IBarotraumaPlugin
+  public partial class Mod
   {
-    public void Initialize() => Init();
 
-    public partial void InitBuildSpecific()
-    {
-
-    }
-    public partial void DisposeBuildSpecific()
-    {
-
-    }
-
-    public void OnContentLoaded()
-    {
-
-    }
   }
 }

@@ -39,8 +39,13 @@ namespace JSForBarotrauma
     }
 
     public ScriptLoader ScriptLoader { get; private set; }
-    public ServerManager ServerManager { get; private set; } = new();
     public JSCommandManager JSCommandManager { get; private set; } = new();
+    public NetManager NetManager { get; private set; } = new();
+    public XMLHookManager XMLHookManager { get; private set; } = new();
+
+#if CLIENT
+    public ServerManager ServerManager { get; private set; } = new();
+#endif
 
     public void Start()
     {
@@ -50,6 +55,7 @@ namespace JSForBarotrauma
         return;
       }
 
+      Mod.LoadTimeTracker.Start("Engine creation");
       Engine = new V8ScriptEngine(V8ScriptEngineFlags.EnableDebugging, DebugPort)
       {
         AccessContext = typeof(GameMain),
@@ -61,12 +67,21 @@ namespace JSForBarotrauma
           AccessFlags = DocumentAccessFlags.EnableAllLoading,
         },
       };
+      Mod.LoadTimeTracker.Stop("Engine creation");
 
+      Mod.LoadTimeTracker.Start("Exposing stuff");
       ExposeStuff();
+      Mod.LoadTimeTracker.Stop("Exposing stuff");
+
+      Mod.LoadTimeTracker.Start("NetManager.Init()");
+      NetManager.Init();
+      Mod.LoadTimeTracker.Stop("NetManager.Init()");
 
       Mod.Logger.Log(ConsoleInterface.WrapInBraces(Logger.WrapInColor("JS Started", "White")));
 
+      Mod.LoadTimeTracker.Start("Script loading");
       ScriptLoader.LoadScripts();
+      Mod.LoadTimeTracker.Stop("Script loading");
     }
 
     public void Reload()
@@ -90,8 +105,13 @@ namespace JSForBarotrauma
 
 
         JSHook.Clear();
-        ServerManager.Clear();
         JSCommandManager.Clear();
+        XMLHookManager.Clear();
+#if CLIENT
+        ServerManager.Clear();
+#endif
+
+        NetManager.Dispose();
 
         Engine.Interrupt();
         Engine.Dispose();
