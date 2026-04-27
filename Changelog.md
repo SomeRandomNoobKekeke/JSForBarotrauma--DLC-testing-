@@ -1,3 +1,6 @@
+# 0.4.1
+- added BindingFlags because lib.HarmonyLib.AccessTools.all was removed by extension filter
+
 # 0.4.0
 - Removed extension classes from the lib
 They just littering the object inspection and slow down c#->js conversion
