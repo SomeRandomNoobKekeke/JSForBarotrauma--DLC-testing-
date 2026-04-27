@@ -41,6 +41,7 @@ namespace JSForBarotrauma
       Engine.AddHostType("Console", typeof(UnifiedConsole));
       Engine.AddHostType("ModInfo", typeof(ModInfo));
       Engine.AddHostType("ObjectExtentions", typeof(HiddenNamespace.ObjectExtentions));
+      Engine.AddHostType("BindingFlags", typeof(CustomBindingFlags));
 
 
       Engine.AddHostObject("API", API.ToBag());
